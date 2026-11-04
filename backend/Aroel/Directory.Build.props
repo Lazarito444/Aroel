@@ -1,0 +1,28 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework>net10.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+
+    <Nullable>enable</Nullable>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <WarningsNotAsErrors></WarningsNotAsErrors>
+    <WarningLevel>5</WarningLevel>
+
+    <EnableNETAnalyzers>true</EnableNETAnalyzers>
+    <AnalysisLevel>latest-recommended</AnalysisLevel>
+    <EnforceCodeStyleInBuild>true</EnforceCodeStyleInBuild>
+    <RunAnalyzersDuringBuild>true</RunAnalyzersDuringBuild>
+
+    <ImplicitUsings>enable</ImplicitUsings>
+    <ImplicitlyExpandNETStandardFacades>true</ImplicitlyExpandNETStandardFacades>
+
+    <Deterministic>true</Deterministic>
+    <ContinuousIntegrationBuild Condition="'$(CI)' == 'true'">true</ContinuousIntegrationBuild>
+    <NuGetAudit>true</NuGetAudit>
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+
+    <GeneratedCodeAnalysisSettings>GenerateCodeAnalysisSettings</GeneratedCodeAnalysisSettings>
+  </PropertyGroup>
+
+</Project>
