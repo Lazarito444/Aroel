@@ -28,6 +28,7 @@ publish/
 project.lock.json
 *.rsuser
 *.sln.docstates
+**/appsettings.*.json
 
 # Test / coverage
 TestResults/
