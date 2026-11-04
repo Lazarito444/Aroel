@@ -1,7 +1,9 @@
 <Solution>
   <Folder Name="/src/">
     <Project Path="Aroel.Api/Aroel.Api.csproj" />
+    <Project Path="Aroel.Application/Aroel.Application.csproj" Id="c9557823-a9cc-4cda-a5fc-80d0a930979e" />
     <Project Path="Aroel.Core/Aroel.Core.csproj" Id="e95f8ba1-e5dc-4cbd-b38f-4d0114748035" />
+    <Project Path="Aroel.Data/Aroel.Data.csproj" Id="b9181651-1c3f-4915-ab39-d8122e0dcdbc" />
   </Folder>
   <Folder Name="/tests/" />
   <Folder Name="/Solution Items/">

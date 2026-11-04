@@ -15,7 +15,6 @@ public sealed record AppError
     public AppError(string code, params object?[] args)
     {
         ArgumentNullException.ThrowIfNull(code);
-
         Code = code;
         Args = args is null ? [] : args;
     }
