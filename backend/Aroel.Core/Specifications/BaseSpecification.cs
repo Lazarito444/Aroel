@@ -144,25 +144,32 @@ public abstract class BaseSpecification<T> : ISpecification<T>
 
 /// <summary>
 /// Base builder for <see cref="ISpecification{T, TResult}"/>: all <see cref="BaseSpecification{T}"/>
-/// capabilities plus the projection every matched item passes through.
+/// capabilities plus the projection every matched item passes through, stored through
+/// <see cref="Select"/> inside the deriving constructor.
 /// </summary>
 /// <typeparam name="T">The type of the items the specification queries.</typeparam>
 /// <typeparam name="TResult">The type the selector produces.</typeparam>
 public abstract class BaseSpecification<T, TResult> : BaseSpecification<T>, ISpecification<T, TResult>
 {
     /// <summary>
-    /// Creates a specification whose results are the projection of each matched item.
+    /// Gets the selector applied after filtering, ordering and paging. Until <see cref="Select"/>
+    /// stores the real one, evaluating the selector throws, so a specification built without a
+    /// projection fails at query construction instead of dereferencing a null selector.
     /// </summary>
-    /// <param name="selector">The expression applied after filtering, ordering and paging.</param>
-    protected BaseSpecification(Expression<Func<T, TResult>> selector)
+    public Expression<Func<T, TResult>> Selector { get; protected set; } = Expression.Lambda<Func<T, TResult>>(
+        Expression.Throw(
+            Expression.Constant(new InvalidOperationException("Projection specifications must call Select before use.")),
+            typeof(TResult)),
+        Expression.Parameter(typeof(T)));
+
+    /// <summary>
+    /// Stores the expression applied after filtering, ordering and paging — every item the query
+    /// returns passes through it.
+    /// </summary>
+    protected void Select(Expression<Func<T, TResult>> selector)
     {
         ArgumentNullException.ThrowIfNull(selector);
 
         Selector = selector;
     }
-
-    /// <summary>
-    /// Gets the selector applied after filtering, ordering and paging.
-    /// </summary>
-    public Expression<Func<T, TResult>> Selector { get; }
 }

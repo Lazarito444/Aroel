@@ -34,6 +34,7 @@ public interface ISpecification<T>
 /// <summary>
 /// An <see cref="ISpecification{T}"/> that also projects each matched item into its final result
 /// shape, applied after filtering, ordering and paging so pagination works on the source items.
+/// The filter, sort chain and page come from <see cref="BaseSpecification{T, TResult}"/>.
 /// </summary>
 /// <typeparam name="T">The type of the items the specification queries.</typeparam>
 /// <typeparam name="TResult">The type the selector produces.</typeparam>
