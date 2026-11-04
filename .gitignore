@@ -1,0 +1,117 @@
+# --- General ---
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+*.tmp
+*.bak
+*~
+
+# --- IDE / Editor ---
+.idea/
+.vs/
+.vscode/
+.fleet/
+*.swp
+*.swo
+*.user
+*.suo
+*.userprefs
+
+# --- .NET ---
+bin/
+obj/
+artifacts/
+publish/
+*.binlog
+*.cache
+project.lock.json
+*.rsuser
+*.sln.docstates
+
+# Test / coverage
+TestResults/
+test-results/
+coverage/
+*.coverage
+*.coveragexml
+CoverletResults/
+
+# ReSharper / Rider
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# NuGet
+*.nupkg
+*.snupkg
+packages/
+nuget.exe
+
+# --- Flutter / Dart ---
+.dart_tool/
+.flutter-plugins
+.flutter-plugins-dependencies
+.packages
+build/
+generated_plugin_registrant.*
+
+# Generated Dart files — uncomment to ignore, or keep *.g.dart committed for drift
+*.freezed.dart
+*.g.dart
+
+# Note: pubspec.lock is NOT ignored — Flutter apps should commit it (only packages ignore it)
+
+# FFI / platform build output
+*.dylib
+*.so
+*.aar
+
+# Platform & device artifacts
+**/ios/Flutter/.last_build_id
+**/ios/Flutter/flutter_assets/
+**/macos/Flutter/flutter/
+**/macos/Flutter/Generated.xcconfig
+**/linux/flutter/ephemeral/
+**/windows/flutter/ephemeral/
+
+# --- iOS ---
+ios/Pods/
+ios/.symlinks/
+ios/Flutter/Generated.xcconfig
+ios/Flutter/ephemeral/
+DerivedData/
+xcuserdata/
+*.ipa
+*.xcuserstate
+*.xcscmblueprint
+*.mode1v3
+*.mode2v3
+*.perspectivev3
+
+# --- Android ---
+.gradle/
+android/.gradle/
+android/local.properties
+android/key.properties
+captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+*.apk.idsig
+*.keystore
+*.jks
+**/upload-keystore.*
+
+# --- Sign-in / secrets (never commit) ---
+auth_service_account.json
+service-account*.json
+
+# --- Environment / config secrets ---
+.env
+.env.*
+!.env.example
+env.json
+env.*.json
+!env.example.json

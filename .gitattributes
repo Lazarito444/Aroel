@@ -1,0 +1,60 @@
+# Normalize line endings: LF in the repo, checked out as-is on all platforms
+* text=auto eol=lf
+
+# --- Source code ---
+*.cs text diff=csharp
+*.dart text diff
+*.gradle text
+*.kts text
+*.yaml text
+*.yml text
+*.json text
+*.xml text
+*.html text
+*.css text
+*.js text
+*.md text
+*.ps1 text
+*.sh text eol=lf
+*.bat text eol=crlf
+*.cmd text eol=crlf
+
+# --- Mobile platform files ---
+Podfile text
+Podfile.lock text
+*.plist text
+*.xcconfig text
+*.entitlements text
+*.storyboard text
+*.xib text
+*.swift text
+
+# --- Binary assets — never touch ---
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.ttf binary
+*.otf binary
+*.woff binary
+*.woff2 binary
+*.pdf binary
+*.dll binary
+*.exe binary
+*.pdb binary
+*.so binary
+*.dylib binary
+*.aar binary
+*.jar binary
+*.apk binary
+*.aab binary
+*.ipa binary
+*.keystore binary
+*.jks binary
+*.db binary
+*.sqlite binary
+*.xcassets binary
+*.nupkg binary
+*.snupkg binary
