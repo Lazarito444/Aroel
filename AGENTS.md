@@ -1,21 +1,28 @@
 # AGENTS.md
 
-Aroel is a personal journaling app for iOS/Android. **The repo is currently docs-only — no code,
-manifest, or CI exists yet.** The single source of truth is [`docs/scope-and-design.md`](docs/scope-and-design.md)
+Aroel is a personal journaling app for iOS/Android. **The repo is docs-only on the client side —
+no Flutter app exists yet**; the server scaffold lives in [`backend/`](backend). The single source
+of truth is [`docs/scope-and-design.md`](docs/scope-and-design.md)
 (v1 scope, domain model, screens, design system, architecture, milestones). Read it before
 building anything; `README.md` is just a pointer to it.
 
 ## Commands
 
-None exist. There is no `package.json`, `pubspec.yaml`, `.sln`, Makefile, or workflow to
-discover — do not hunt for scripts. When you scaffold the first code (milestone M0 in §9),
-create the tooling then and record the real commands here. Verify what you add actually runs
-before claiming a milestone is done.
+Backend (SDK pinned by `global.json` to 11.0.x, C# 15):
+
+```
+dotnet build backend/Aroel.slnx
+dotnet run --project backend/Aroel.Api
+```
+
+Client: no `package.json` or `pubspec.yaml` exists yet — do not hunt for scripts. When you
+scaffold the first Flutter code (milestone M0 in §9), create the tooling then and record the
+real commands here. Verify what you add actually runs before claiming a milestone is done.
 
 ## Mandated stack (§7)
 
 - **Client:** Flutter + Riverpod + `go_router` + `drift` (SQLite) + `freezed` + `dio`/`retrofit`.
-- **Server:** .NET 9 minimal APIs, vertical slices, EF Core + Npgsql, one project.
+- **Server:** .NET 11 minimal APIs (C# 15), vertical slices, EF Core + Npgsql, one project.
 - Layout is feature-first: `lib/app`, `lib/core`, `lib/data`, `lib/features/<feature>`, `lib/ui`.
   No cross-feature imports except through `ui/` and `core/`.
 - API is versioned under `/v1`; endpoint list is in §7.2.
@@ -35,8 +42,17 @@ Don't substitute a different stack or a monorepo split without asking.
 - **Offline-first:** every read comes from SQLite, every write lands in SQLite first. The network
   is a sync process, never a dependency of an interaction.
 - **No LLM, no social features, no paywall in v1** (§1.4, §3.1, §8.3). Only on-device sentiment
-  behind one `SentimentService`; degrade to nothing when unavailable.
-- Writes during a session autosave per keystroke with a 2 s debounced flush; nothing typed may
+  behind one `SentimentService`; degrade to nothing when unavailable. Every analytics number is
+  local arithmetic — no model writes a number or a sentence.
+- **No guided programs, sessions or enrollments in v1** (§1.2, §1.4, §3.1). The day record is
+  the core loop: rating, tags, gratitude, sentiment, per-day writing. US-301…306 are retired IDs
+  — do not reuse them.
+- **The account is optional** (§5.1, §4.2). The client owns its `uuid7` user id from first
+  launch and works local-only until the user signs up; signing up adopts the local journal
+  without re-keying a row. Never put a sign-in wall in front of writing.
+- The streak forgives one missed day and can be recovered by hand; notes never count toward it
+  (§2.3, §2.6). No streak-guilt copy, ever.
+- Writes autosave per keystroke with a 2 s debounced flush; nothing typed may
   be lost across app kill or airplane mode.
 
 ## Design system is specified, not invented (§6)
@@ -51,10 +67,11 @@ Don't substitute a different stack or a monorepo split without asking.
   approximate.
 - Spacing steps 4/8/12/16/24/32/48, radii 8/12/16/24/999, motion 120/220/320 ms.
 - Copy is second person, no exclamation marks, no streak guilt, no diagnosis language (store-risk
-  constraint, §10.6).
+  constraint, §10.5).
 
 ## Open questions (§10) are unresolved
 
-Scale direction, program authorship, rating editability, voice capture, and the "free forever"
-promise are undecided. Don't silently pick one; surface the choice. Tree state may be ahead of
-the doc's "pre-build" status — when prose and code disagree, trust the code and update the doc.
+Scale direction, rating editability, sentiment manual versus computed (§10.3), streak recovery
+rules (§10.8), differentiation without a curriculum (§10.7), and the "free forever" promise are
+undecided. Don't silently pick one; surface the choice. Tree state may be ahead of the doc's
+"pre-build" status — when prose and code disagree, trust the code and update the doc.

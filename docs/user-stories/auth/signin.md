@@ -3,8 +3,10 @@
 Epic E1 · Milestone M1 · Source: [`../README.md`](../README.md)
 
 ### US-101 · Sign up with email
-As a **Writer**, I want to create an account with email and password, so that I can sync my journal across devices. [§5.1]
+As a **Writer**, I want to create an account with email and password, so that my journal can follow me to another device. [§5.1]
 
+- **The app never requires an account.** Writing, rating, tags, gratitude, notes and the streak all work with no account at all, and no sign-in wall is ever shown. **[invariant]** [§5.1, §7.1]
+- Signing up later adopts the journal already on the device: the client sends its own `uuid7` user id at registration and the server rejects an id that is taken, so not one row is re-keyed. **[invariant]** [§4.2]
 - Password minimum 10 characters, no composition rules. [§5.1]
 - Email verification is required **before the first sync but not before writing** — the app is fully usable offline immediately after signup, with zero account interaction. **[invariant]** [§5.1]
 - Payload is hashed with Argon2id; no password rules messages beyond the length check. [§7.2, §8.2]

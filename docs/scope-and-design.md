@@ -1,50 +1,64 @@
 # Aroel — v1 Scope & Design
 
-**Status:** definition · **Date:** 2026-11-03 · **Stage:** pre-build (empty repo)
+**Status:** definition · **Date:** 2026-11-11 · **Stage:** pre-build (no Flutter client yet;
+backend scaffold in `backend/`)
+
+> **Change 2026-11-11 — v1 trimmed to six things.** Account + sync (optional), the day
+> record (per-day writing, rating, tags, sentiment, gratitude), notes, a recoverable
+> streak, and weekly + monthly analytics. Everything else — guided programs, search,
+> export, photos, reminders, timelines, privacy screens — is deferred to "Later" (§3.1).
+> Earlier versions of this doc specified a larger product; §10.9 keeps the history.
 
 ---
 
 ## 1. What Aroel is
 
-A guided introspection app for iOS and Android. Aroel turns journaling into a program
-you walk, not a page you face: each day it hands you one short, timed session of one to
-three prompts, and free writing exists as the escape hatch rather than the product.
+A quiet journaling app for iOS and Android. Most days cost four seconds: rate the day,
+tap a few tags, name three small things. On the days you have more to say, you write, and
+the writing belongs to that day. Notes live outside the calendar, for the things that have
+no date.
 
-Alongside the session sits a **day record** — a rating, a few tags, three lines of
-gratitude — which takes twenty seconds and is worth doing on the days you have no words.
+There is no sign-in wall. The app is complete without an account; create one only if you
+want your journal on a second device.
 
-**One-liner:** Aroel turns journaling into a program you walk, not a page you face.
+**One-liner:** Aroel is a four-second journal that keeps a record of your days.
 
 ### 1.1 Who it is for
 
 Adults 24–40 who have tried Day One, Journey or plain Notes and fell off within a month.
-They do not lack the desire to reflect; they lack a reason to start on any given evening
-and a sense of progress when they do. They are mildly anxious rather than clinically ill,
-privacy-aware, and willing to pay nothing but unwilling to be advertised to.
+They do not lack the desire to reflect; they lack a reason to open the app on any given
+evening and a sense of progress when they do. They are mildly anxious rather than
+clinically ill, privacy-aware, and unwilling to be advertised to.
 
 ### 1.2 The wedge
 
-**Structured programs.** The competitor surface is a blank editor plus a prompt library.
-Aroel's surface is a curriculum with a beginning, a middle and an end.
+**The day record.** The competitor surface is a blank editor plus a streak counter.
+Aroel's surface is a structured day: a rating on an anchored eleven-stop scale, a small
+vocabulary of context tags, a sentiment value, three optional lines of gratitude, and
+whatever you wrote — all hanging off one record per calendar day.
 
-Consequence: the three launch programs are the product. Writing them is real work with a
-real cost, and they are the only part of v1 that cannot be outsourced to a framework.
+Consequence: the day record is the product, and every screen is a query over it. There is
+no curriculum behind it, so the record has to earn the return visit on its own, in four
+seconds.
 
-### 1.3 The second hook
+### 1.3 The ritual
 
-The **day record** is the retention mechanism. Programs demand five minutes and a mood; a
-rating demands four seconds and no mood at all. A user in a bad week can still close the
-day, keep the streak alive, and come back to the program when they have it in them.
+**Three small things.** A rating demands four seconds and no mood at all. A user in a bad
+week can still close the day, keep the streak alive, and come back to write when they
+have it in them.
 
 It also produces the data that makes the app worth keeping: after six weeks, Aroel knows
-what your good days have in common.
+what your good days have in common — because you tagged them, and the tagging was part
+of the four-second close rather than a separate ritual.
 
 ### 1.4 Anti-goals
 
 - Not a social network. No feeds, no sharing, no followers, ever in v1.
 - Not a therapy or clinical product. No diagnoses, no claims, no crisis triage.
 - Not an AI chat companion. No LLM in v1; see §8.3.
-- Not a notes app. Rich embeds, tables, attachments beyond photos and audio are out.
+- Not a notes app. Rich embeds, tables and attachments are out.
+- Not a guided curriculum. No programs, sessions or enrollments in v1.
+- Not an account-gated app. No sign-in wall, ever — see §5.1.
 
 ---
 
@@ -53,40 +67,54 @@ what your good days have in common.
 ### 2.1 Daily loop (the core)
 
 ```
-Today  →  session card  →  prompt 1  →  write  →  prompt 2  →  write
-       →  mood after         →  completion  →  back to Today (streak +1)
-```
-
-Target: 90 seconds to open and start, 5 minutes to finish. Resumable from any point,
-offline, no data loss.
-
-### 2.2 Day close (the four-second loop)
-
-```
 Today  →  rate the day (0–5, half steps)  →  tap a few tags  →  three small things
+       →  (optionally) write  →  day closed (streak +1)
 ```
 
-Available from Today at any hour, not gated behind the session. Once a day has a rating it
-appears in history immediately; editing is allowed, and the last write wins.
+Target: 4 seconds to close the day, 5 minutes if you also write. Resumable from any
+point, offline, no data loss. The rating is the hero of Today; writing is one tap away
+and never a gate.
+
+### 2.2 The four-second close
+
+```
+rate the day  →  tap a few tags  →  three small things
+```
+
+Available from Today at any hour, and never gated behind anything else. Once a day has a
+rating it appears in history immediately; editing is allowed, and the last write wins.
 
 ### 2.3 Forgiving streak
 
-A day counts if **any** of these happened: a session completed, a free entry, a rating, or
-a gratitude line. A single missed day costs one grace token instead of resetting. Two
-consecutive missed days reset. Never shown with guilt copy.
+A day counts if **any** of these happened: a rating, a tag, a gratitude line, or something
+written. A single missed day costs one grace token instead of resetting. Two consecutive
+missed days reset. Never shown with guilt copy.
 
-### 2.4 Weekly loop
+**Recovery.** A broken streak can be recovered on purpose: from the streak chip, the user
+can mark a missed day as kept. Recovery is free and unlimited, and recovered days are
+marked as recovered in the streak view — no shaming, no "you lost it" copy.
 
-Sunday evening: a reflection card on Today assembled deterministically from the week's data
-— rating average and direction, most-frequent tags, days kept, the entry the user returned
-to most, and one prompt aimed at the week's least-explored emotion. Templates plus numbers
-only; no model writes prose.
+### 2.4 Weekly review
 
-### 2.5 Program loop
+Once a week, the Insights screen shows the last seven days as numbers: rating average and
+direction against the week before, days rated, entries written, gratitude lines, the most
+used tags, sentiment average, and the best day of the week.
 
-Enrollment → day N → session complete → day N+1 unlocked. Days are calendar days, not
-completion-gated: a user who skips day 3 opens day 5 later and is offered a one-line
-"catch-up" note rather than a backlog.
+### 2.5 Monthly review
+
+The same numbers over the calendar month, with the month as a grid of ramp-coloured cells
+and a per-week breakdown inside it.
+
+Both reviews are arithmetic over local rows: no model, no prompt bank, no prose. They
+render offline and they never scold an empty week.
+
+### 2.6 The writing loop
+
+**Per-day writing.** Write → the entry attaches to the day you wrote it → tag it if you
+want. The day you wrote in is the day you wrote in, even at 00:30.
+
+**Notes.** A note has no date. Write it, pin it, find it in the notes list. Notes do not
+touch the streak and do not appear in day analytics — they are the shelf, not the record.
 
 ---
 
@@ -94,28 +122,27 @@ completion-gated: a user who skips day 3 opens day 5 later and is offered a one-
 
 | Area | v1 | Later |
 |---|---|---|
-| Programs | 3 hand-written: *Begin* (7 days), *Untangle* (30 days), *Gratitude* (14 days, seeded from the day record) | 20+ programs, authoring CMS |
-| Daily session | 1–3 prompts, autosave, resume, mood before/after, progress dots | audio-guided sessions |
-| Day record | rating 0–5 in half steps, up to 5 tags, 3 gratitude lines, optional one-line note | energy, sleep, location |
-| History | month calendar, day detail, edit any past day | year in review, photo recap |
-| Free entry | markdown-lite text, voice dictation, up to 3 photos, tags, pin | handwriting, embeds |
-| Momentary mood | optional check-in with an emotion from a fixed taxonomy | activity correlations |
-| Insights | rating trend at half-step resolution, weekday pattern, tag-vs-rating comparison, emotion counts, completion %, streak | predictive trends |
-| Search | full-text, tag filter, rating filter, works offline | semantic search |
-| Reminders | one daily reminder, local notification + push fallback | multiple, adaptive timing |
-| Export | Markdown + JSON + PDF, account deletion | scheduled backups |
-| AI | on-device sentiment only | — |
+| Account & sync | optional account; local-only by default; email + Apple + Google; delta sync | more providers, sync for shared devices |
+| Day record | rating 0–5 in half steps, up to 5 tags, sentiment, 3 gratitude lines, one-line note | energy, sleep, location |
+| Per-day writing | markdown-lite text, autosave, resume | photos, audio, dictation, handwriting |
+| Notes | plain notes with no date, pinnable | tags and linking on notes |
+| Streak | current and longest, one grace token per missed day, manual recovery | freezes, milestones |
+| Analytics | weekly and monthly: rating average and direction, days rated, entries, gratitude count, top tags, sentiment average and peaks | year in review, tag-vs-rating comparison, predictions |
+| On-device AI | sentiment tone per day | — |
 | Social | none | — |
 | Monetization | none — free, unlimited | — |
 | Platforms | iOS 16+, Android 10+ | web reader, watch app |
 | Languages | English | ES, DE |
 
-### 3.1 Deliberately out of v1
+### 3.1 Deferred to later
 
-Widgets, watch complications, HealthKit, weather import, cycle tracking, cloud backup
-scheduling, program recommendations, custom programs, community, prompt marketplace, tablet
-and landscape layouts, accessibility audit beyond baseline, analytics beyond crash
-reporting and opt-in funnel events.
+Guided programs and sessions; search; export (Markdown, JSON, PDF); photos, audio and
+dictation; reminders and push notifications; the timeline and the day archive; "on this
+day"; tag-vs-rating comparison; the privacy summary screen; entry links and backlinks;
+the weekly reflection card with prose.
+
+Deferred means deferred, not never: each of these was specified in an earlier revision of
+this document and the design decisions survive in the git history.
 
 ---
 
@@ -129,34 +156,38 @@ previous evening in the user's head, and to `local_date`, not to UTC.
 ### 4.1 The day is the unit
 
 `days` is the spine. One row per user per `local_date`, holding the rating and the gratitude.
-Entries, sessions and momentary moods hang off it. Everything the app calls "history" is a
-query over `days`, which means no aggregation guesswork and no timezone drift.
+Per-day writing and sentiment hang off it. Everything the app calls "history" or
+"analytics" is a query over `days`, which means no aggregation guesswork and no timezone
+drift. Notes are the one thing that sits outside the spine, by design.
 
 ### 4.2 Entities
 
 | Entity | Key fields | Notes |
 |---|---|---|
-| `users` | id, email, display_name, timezone, locale, avatar_url, created_at | one identity per person |
+| `users` | id, email, display_name, timezone, locale, created_at | one identity per person; absent in local-only mode |
 | `identities` | user_id, provider (`password`/`apple`/`google`), subject, secret_hash | argon2id for password |
 | `refresh_tokens` | id, user_id, token_hash, device_id, expires_at, rotated_from | rotation + reuse detection |
-| `programs` | id, slug, title, subtitle, description, duration_days, theme, cover_url, version | seeded, read-only to clients |
-| `program_days` | id, program_id, day_number, title, estimated_minutes | one row per program day |
-| `prompts` | id, program_day_id, position, type, text, helper, max_chars | types: free, list, scale, choose, letter |
-| `enrollments` | id, user_id, program_id, started_at, current_day, status, completed_at | status: active/paused/completed/abandoned |
-| `session_runs` | id, enrollment_id, day_number, started_at, completed_at, entry_id | one per attempted day |
+| `devices` | id, user_id, platform, push_token, app_version, last_seen_at | |
 | `days` | id, user_id, local_date, rating_half, note, rated_at, created_at, updated_at | **one per user per date**, unique (user_id, local_date) |
 | `day_tags` | day_id, tag_id | context: work, family, exercise, poor sleep |
 | `gratitude_items` | id, day_id, position (1–3), text | short, ≤ 140 chars each |
-| `entries` | id, user_id, day_id, kind, title, body_md, created_at, updated_at, word_count, pinned, session_run_id, deleted_at | kind: session/free/mood_only |
-| `moods` | id, user_id, day_id, rating_half, emotion_id, recorded_at | momentary check-in, same 0–10 half-point domain as the day rating |
+| `day_sentiment` | id, user_id, day_id, rating_half, emotion_id, source, recorded_at | one per day; `source` = manual/on_device |
+| `entries` | id, user_id, day_id, kind, title, body_md, created_at, updated_at, word_count, opened_count, last_opened_at, pinned, deleted_at | kind: free/mood_only |
+| `notes` | id, user_id, title, body_md, created_at, updated_at, word_count, pinned, deleted_at | **no `day_id`** — the shelf |
 | `emotions` | id, slug, label, family, valence_bias | seeded taxonomy, ~60 rows |
-| `entry_emotions` | entry_id, emotion_id | many-to-many |
-| `tags` | id, user_id, label, color, applies_to | `applies_to` in (day, entry, both) |
-| `entry_tags` | entry_id, tag_id | many-to-many |
-| `entry_links` | source_entry_id, target_entry_id | backlinks, resolved from `[[...]]` |
-| `media` | id, entry_id, kind (photo/audio), storage_key, width, height, duration_ms, bytes | S3 keys, signed URLs |
-| `reminders` | id, user_id, time_local, days_of_week, timezone, enabled, last_fired_at | v1: exactly one |
-| `devices` | id, user_id, platform, push_token, app_version, last_seen_at | |
+| `tags` | id, user_id, label, color | context tags for days |
+| `streak_state` | user_id, current_streak, longest_streak, grace_remaining, last_kept_date | one row per user |
+| `streak_restorations` | user_id, local_date | days the user chose to recover |
+
+**Local-only mode.** The client generates its own `user_id` (uuid7) on first launch and
+writes every row under it. Without an account those rows never leave the device. When the
+user later creates an account, the client sends that same id as the account's id; the
+server rejects an id that is already taken. Signing up therefore never re-keys a single
+row, and a phone that has been journalling for a month signs up without a migration.
+
+**Removed with earlier revisions.** `programs`, `program_days`, `prompts`, `enrollments`,
+`session_runs`, `media`, `entry_emotions`, `entry_tags`, `entry_links` and `weekly_prompts`
+were specified in earlier revisions and are not part of v1.
 
 ### 4.3 Rating representation
 
@@ -169,6 +200,9 @@ string: floats make `where rating = 3.5` unreliable and JSON round-trips of `3.5
 **`0` is a real score for a real day**, so "not rated" cannot be encoded as zero. Absence is
 `NULL` in the column, an omitted field in the API rather than a `0`, and a `paper.sunk` cell
 in the calendar — never the ramp's bottom step.
+
+The same domain is used by `day_sentiment.rating_half`, so a day's tone and its rating are
+comparable numbers.
 
 ### 4.4 DDL sketch (the parts that carry risk)
 
@@ -195,25 +229,56 @@ create table gratitude_items (
   unique (day_id, position)
 );
 
+create table day_sentiment (
+  id           uuid primary key,
+  user_id      uuid not null references users,
+  day_id       uuid not null references days on delete cascade,
+  rating_half  smallint check (rating_half between 0 and 10),
+  emotion_id   uuid references emotions,
+  source       text not null check (source in ('manual','on_device')),
+  recorded_at  timestamptz not null default now(),
+  updated_at   timestamptz not null default now(),
+  sync_seq     bigint not null default nextval('sync_seq'),
+  unique (user_id, day_id)
+);
+
 create table entries (
   id             uuid primary key,
   user_id        uuid not null references users,
   day_id         uuid not null references days,
-  kind           text not null check (kind in ('session','free','mood_only')),
+  kind           text not null check (kind in ('free','mood_only')),
   title          text,
   body_md        text not null default '',
   word_count     int  not null default 0,
+  opened_count   int  not null default 0,
+  last_opened_at timestamptz,
   pinned         boolean not null default false,
-  session_run_id uuid references session_runs,
-  search         tsvector generated always as
-                   (to_tsvector('english', coalesce(title,'') || ' ' || body_md)) stored,
   created_at     timestamptz not null default now(),
   updated_at     timestamptz not null default now(),
   deleted_at     timestamptz,
   sync_seq       bigint not null default nextval('sync_seq')
 );
 create index entries_user_date on entries (user_id, created_at desc) where deleted_at is null;
-create index entries_search on entries using gin (search);
+
+create table notes (
+  id           uuid primary key,
+  user_id      uuid not null references users,
+  title        text,
+  body_md      text not null default '',
+  word_count   int  not null default 0,
+  pinned       boolean not null default false,
+  created_at   timestamptz not null default now(),
+  updated_at   timestamptz not null default now(),
+  deleted_at   timestamptz,
+  sync_seq     bigint not null default nextval('sync_seq')
+);
+
+create table streak_restorations (
+  user_id    uuid not null references users,
+  local_date date not null,
+  created_at timestamptz not null default now(),
+  primary key (user_id, local_date)
+);
 
 -- Server-assigned monotonic cursor, added to every syncable table.
 create sequence sync_seq;
@@ -252,125 +317,96 @@ Seeded with stable slugs so analytics stay comparable across releases.
 
 ## 5. Screens
 
-Fourteen surfaces. Brackets are v1 acceptance criteria.
+Nine surfaces. Brackets are v1 acceptance criteria.
 
-### 5.1 Auth
+### 5.1 Auth (optional, never a wall)
 
 Email + password, Sign in with Apple, Sign in with Google. Provider buttons above an
-"or use email" disclosure. Password minimum 10 characters, no composition rules. Email
-verification is required before the first sync but not before writing — the app is usable
+"or use email" disclosure. Password minimum 10 characters, no composition rules.
+
+**The app never asks for an account before the user has written something.** Auth lives in
+Settings and in the onboarding's third step, where it is offered, not requested. Email
+verification is required before the first sync but never before writing — the app is usable
 offline immediately. [Sign-in completes in ≤ 2 taps for Apple/Google.]
 
-### 5.2 Onboarding (3 steps, skippable after step 1)
+### 5.2 Onboarding (3 steps, each skippable)
 
 1. **Intent** — "What brings you here?" (understand myself / slow down / work through
-   something / build a habit). Sets the default program and the tone of day-1 copy.
-2. **First program** — one recommended program pre-selected; alternatives behind "see other
-   programs".
-3. **Reminder** — time picker defaulting to 21:00 in the device timezone, with a clear
-   "not now".
+   something / build a habit). Sets the tone of the copy around the day record.
+2. **First rating** — the eleven-stop scale with its anchors explained, and the first
+   rating planted, so the gesture is learned before it matters.
+3. **Sync** — an invitation to create an account so the journal can follow you to another
+   device, with a clear "not now" that means it.
 
-Step 2 also plants the first rating with a scale-anchor explanation, so the gesture is
-learned before it matters. [Completes in < 60 s. No account required until first sync.]
+Every step carries a clear "not now", and the whole flow is skippable. [Completes in
+< 60 s. No account required until the user asks for one.]
 
 ### 5.3 Today (home)
 
-- Date eyebrow, greeting, streak chip with grace indicator.
-- **Session card** (hero): program · day N of M, prompt-derived title, duration, progress
-  bar, single primary action.
-- **Rate today**: eleven half-step stops along a hairline track, current value named
+- Date eyebrow, greeting, streak chip with the grace indicator and the recovery action.
+- **Rate today** (hero): eleven half-step stops along a hairline track, current value named
   (`4.0 · good`), anchors "bottom" and "good day" at the ends. One tap sets it, second tap
   on the same value clears it.
 - **Tag row**: the five most recently used day tags plus a `+` that opens a sheet with
   suggestions and free text.
 - **Three small things**: three lines, each optional, each autosaved on blur and on every
   keystroke pause. A filled line collapses to a single serif line with a small tick.
+- **Sentiment**: the day's tone, set by hand or derived from what you wrote.
+- **Write**: one action that opens the editor on today's record. An invitation, not a hero.
+- **Notes**: one action that opens a note with no date.
 - Recent: the two most recent entries.
 - No banners, no upsells, no notification badges.
 
 [Every element interactive before sync completes; whole screen hydrates from SQLite in
 < 150 ms; rating persists and re-renders in < 30 ms after tap.]
 
-### 5.4 Program detail
+### 5.4 Editor (per-day writing)
 
-Cover, description, day list with completion ticks, progress, pause/leave. Enrolling is one
-tap and starts at day 1 immediately; no scheduled start date.
+Markdown-lite (bold, italic, headings, lists, quotes). Autosave every keystroke to local
+SQLite with a 2 s debounced flush; back navigation keeps text. The entry attaches to the
+day it was written on — an entry started at 23:57 belongs to that evening. [Save-to-visible
+latency < 16 ms; nothing typed is lost across app kill, airplane mode, or backgrounding;
+entry readable offline forever.]
 
-### 5.5 Session run
+### 5.5 Entry read
 
-Full-screen, one prompt per page, no chrome except close, progress dots and prompt counter.
-Autosave every keystroke to local SQLite, debounced flush every 2 s. Back navigation keeps
-text. At the last prompt: mood-after check-in, then a completion screen with the streak
-increment and a single "Read what you wrote" link. [Nothing typed is ever lost across app
-kill, airplane mode, or backgrounding.]
+Serif typography on paper, metadata footer (date, sentiment, tags), edit and delete. Delete
+is soft for 30 days, then purged. Pinned entries float to the top.
 
-The session writes into the day it was started on, and completion offers one tap to rate
-that day if it is still unrated.
+### 5.6 Notes
 
-### 5.6 Editor (free entry)
+A list of notes, newest first, with pinned notes first. One editor, no date field by
+design — a note is for the things that have no date. Notes are excluded from day
+analytics and from the streak.
 
-Markdown-lite (bold, italic, headings, lists, quotes), `[[` autocomplete for entry links,
-tag chips below the body, photo attach, dictate. Autosave as above. [Save-to-visible
-latency < 16 ms; entry readable offline forever.]
-
-### 5.7 Entry read
-
-Serif typography on paper, metadata footer (date, program day, emotions, tags), backlinks
-list, edit and delete. Delete is soft for 30 days.
-
-### 5.8 Timeline
-
-Reverse-chronological, grouped by month. Each month header shows entries written, days kept
-and the month's rating average. Filter chips for program / tag / rating range. Virtualised,
-no pagination gap.
-
-### 5.9 Search
-
-Single field, offline FTS5 on device and Postgres FTS when available; tag and rating
-filters; jump to the matched paragraph. The index covers entry bodies, day notes and
-gratitude lines, so "that thing about the balcony" is findable even though it was never an
-entry.
-
-### 5.10 Insights
-
-Two modes on one screen, switched by a segmented control.
-
-**Calendar (default).** Month grid, one cell per date, filled from the rating ramp
-(§6.6). Unrated days are paper-sunk with a faint numeral. Rated days with an entry carry a
-2 px dot in the cell's corner. Tap opens the day detail. Month header shows average,
-days rated, and the best day. Swipe or arrows move between months; a year strip sits under
-the grid for fast travel.
-
-**Trends.** Rating line over 7 days / 30 days / year with half-step resolution; average and
-direction; entries count; streak; emotion frequency bars; weekday pattern. Then, once at
-least five tagged days exist in each group, **tag comparison** — "days tagged exercise
-average 4.2, other days 3.1" — computed locally with an explicit sample-size guard.
-
-Every chart derives from local data, so it renders offline. Empty states teach; they never
-scold.
-
-### 5.11 Day detail
+### 5.7 Day detail
 
 The record of one date: rating control, day tags editable, gratitude lines editable, the
-session run if any, entries from that day, and a one-line note. Reachable from the
-calendar, from a timeline group header, and from an entry's metadata. Future dates are
-read-only-empty, never editable.
+day's sentiment, the entries from that day, and a one-line note. Reachable from the
+monthly grid and from an entry's metadata. Future dates are read-only-empty, never
+editable.
 
-### 5.12 On this day
+### 5.8 Insights (weekly & monthly)
 
-Entries from one year ago and one month ago, surfaced inside Insights and at the foot of
-Day detail. Never on Today, so it never competes with the session.
+One screen, two windows, switched by a segmented control.
 
-### 5.13 Export
+**Weekly.** The last seven days as numbers: rating average and direction against the week
+before, days rated, entries written, gratitude lines, most-used tags, sentiment average,
+and the best day of the week.
 
-One screen: Markdown, JSON, PDF. JSON is the lossless one and says so. Export includes day
-records, ratings, tags and gratitude — not just entries.
+**Monthly.** The calendar month as a grid of ramp-coloured cells (§6.6), with the same
+numbers over the month, a per-week breakdown inside it, the best day of the month, and the
+highest-sentiment day — the month in its best light — with the entry that earned it.
 
-### 5.14 Settings
+Every number is arithmetic over local rows, so the screen renders offline. Empty states
+teach; they never scold.
 
-Account (email, password, sign out, delete account), reminder, appearance (light/dark/
-system), export, privacy summary, licences, version. Delete account is two steps, wipes
-server data within 24 h and local data immediately, and states this plainly.
+### 5.9 Settings
+
+Account (create, sign in, email, password change, sign out, delete account), sync status,
+streak (current, longest, recovered days), appearance (light/dark/system), licences,
+version. Delete account is two steps, wipes server data within 24 h and local data
+immediately, and states this plainly.
 
 ---
 
@@ -406,7 +442,7 @@ All pass AA.
 | Display (greeting) | Newsreader | 28 / 32 | 400 |
 | Page title | Newsreader | 22 / 28 | 500 |
 | Entry body | Newsreader | 17 / 28 | 400 |
-| Prompt | Newsreader | 20 / 30 | 400 |
+| Note body | Newsreader | 17 / 28 | 400 |
 | UI body | Inter | 14 / 20 | 400 |
 | Label | Inter | 11 / 16, +0.06em | 500, uppercase |
 | Caption | Inter | 11 / 16 | 400 |
@@ -424,7 +460,7 @@ All pass AA.
 ### 6.4 Motion
 
 120 ms for presses (scale .98), 220 ms ease-out for sheets and card expansion, 320 ms for
-page pushes. Light haptic on rating tap, session completion and gratitude save; never on
+page pushes. Light haptic on rating tap, gratitude save and entry save; never on
 navigation. Reduce-motion honours `MediaQuery.disableAnimations` and drops to opacity fades.
 
 ### 6.5 Voice and copy
@@ -467,8 +503,7 @@ lib/
   core/           result types, errors, clock, ids, analytics facade
   data/           drift database, api client, sync engine, repositories
   features/
-    auth/ onboarding/ today/ programs/ session/ editor/
-    journal/ history/ insights/ settings/
+    auth/ onboarding/ today/ journal/ notes/ insights/ settings/
   ui/             design-system widgets (Paper, Card, Button, Sheet, RatingTrack, DayGrid)
 ```
 
@@ -477,27 +512,25 @@ truth, `freezed` for models, `dio` + `retrofit` for HTTP. Feature-first; no cros
 imports outside `ui/` and `core/`.
 
 Offline-first rule: **every read comes from SQLite, every write goes to SQLite first.** The
-network is a sync process, never a dependency of an interaction.
+network is a sync process, never a dependency of an interaction. This is also what makes
+the account optional: the same code path serves local-only and synced users, and the only
+difference is whether a sync engine is attached.
 
-### 7.2 Server — .NET 9
+### 7.2 Server — .NET 11
 
 Minimal APIs in vertical slices, EF Core + Npgsql, one project, folders per endpoint group.
-Argon2id (`Konscious.Security.Cryptography`) for passwords, own OIDC validation for Apple
+C# 15. Argon2id (`Konscious.Security.Cryptography`) for passwords, own OIDC validation for Apple
 and Google, JWT access 15 min + rotating refresh 60 days with reuse detection.
 
 ```
 POST   /auth/register | /auth/login | /auth/oauth | /auth/refresh | /auth/logout
 GET    /me          PATCH /me          DELETE /me
-GET    /programs    GET /programs/{slug}
-POST   /enrollments  GET /enrollments/active  PATCH /enrollments/{id}
 GET    /days?from=&to=          PATCH /days/{localDate}
 GET    /sync?since={cursor}     POST /sync/batch
-GET    /search?q=&tags=&rating= GET /insights?from=&to=
-POST   /media/upload-url        GET /media/{id}
-GET    /export?format=md|json|pdf
+GET    /insights?window=week|month&from=&to=
 ```
 
-Rate limits: 5/min auth, 60/min sync, 30/min search. OpenAPI generated, versioned `/v1`.
+Rate limits: 5/min auth, 60/min sync, 30/min insights. OpenAPI generated, versioned `/v1`.
 
 ### 7.3 Sync
 
@@ -507,23 +540,23 @@ Rate limits: 5/min auth, 60/min sync, 30/min search. OpenAPI generated, versione
    rows.
 3. Client pulls `GET /sync?since=cursor` and merges; cursor stored locally.
 
-Single-user, multi-device means real conflicts are rare and LWW is acceptable. Program and
-prompt content is server-owned and pulled as versioned read-only data.
+Single-user, multi-device means real conflicts are rare and LWW is acceptable. Signing up
+after months of local-only use is the same batch with a larger backlog: the client pushes
+every local row under its own user id (§4.2) and the server accepts it.
 
 Rating edits are ordinary upserts on `days`, so rating the same evening on phone and tablet
 settles to the later write without any special casing.
 
-### 7.4 Reminders
+### 7.4 Analytics
 
-Client schedules a local notification at the chosen local time — reliable, no server
-dependency. The server keeps the reminder and sends a push only if the device has not
-opened the app for 24 h, from a small worker bucketing users by timezone into 15-minute
-slots.
+Every number is computed on device from local rows — no server call, no model, no network.
+`GET /insights` exists for the case of a second device asking for the same view, and its
+answers must match the local ones, because the arithmetic is the same.
 
 ### 7.5 Storage
 
-S3-compatible bucket for photos and audio, keys `u/{user_id}/e/{entry_id}/{media_id}`,
-short-lived signed URLs, 1 GB soft quota per user.
+Nothing to store: v1 has no photos and no audio. The bucket, the signed URLs and the media
+table are deferred with the rest of media (§3.1).
 
 ---
 
@@ -534,8 +567,12 @@ short-lived signed URLs, 1 GB soft quota per user.
 - No advertising SDKs; no third-party analytics beyond crash reports and opt-in funnel
   events.
 - Staff cannot read entry bodies, ratings or gratitude. Support has no such tool.
-- Export is one tap and lossless. Leaving is one flow.
-- Server-side encryption at rest (Postgres + bucket), TLS 1.3 in transit.
+- Leaving is one flow: delete the account and everything goes, locally at once and on the
+  server within 24 h.
+- Server-side encryption at rest (Postgres), TLS 1.3 in transit.
+
+Export is deferred in v1 (§3.1). That weakens the "leaving is easy" promise and is the
+first thing to put back if the scope allows it.
 
 ### 8.2 Security baseline
 
@@ -547,12 +584,11 @@ with 30-day purge, account deletion that actually deletes.
 
 No LLM. On-device sentiment runs on Apple `NaturalLanguage` (iOS) and ML Kit or a bundled
 small classifier (Android) behind one `SentimentService` interface, producing a discrete
-tone per entry used only for the weekly card and emotion suggestions. If the platform API
-is unavailable the feature degrades to nothing and the app is unchanged. Nothing is
-uploaded.
+tone for the day. If the platform API is unavailable the feature degrades to nothing and
+the app is unchanged. Nothing is uploaded.
 
-Tag-vs-rating comparisons, weekday averages and streaks involve no model at all — they are
-arithmetic over local rows, computed on device, and therefore work offline and free.
+Rating averages, weekday patterns, streaks and tag counts involve no model at all — they
+are arithmetic over local rows, computed on device, and therefore work offline and free.
 
 ---
 
@@ -561,13 +597,11 @@ arithmetic over local rows, computed on device, and therefore work offline and f
 | # | Milestone | Done when |
 |---|---|---|
 | M0 | Foundation | Flutter shell, paper theme, drift schema, .NET skeleton, Postgres migrations, CI |
-| M1 | Identity | email + Apple + Google, refresh rotation, onboarding, reminder scheduling |
-| M2 | Core loop | 1 program seeded, enrollment, session run, autosave, resume, streak |
-| M3 | Day record | rating control + ramp, day tags, gratitude, day detail, calendar history |
-| M4 | Capture | free editor, entry read, timeline with month summaries, photos |
-| M5 | Find | offline FTS, search, filters, insights trends, tag comparison |
-| M6 | Trust | export (md/json/pdf), account deletion, privacy screens, offline UX, error states |
-| M7 | Ship | 3 programs written and edited, on-device sentiment, store listings, TestFlight + Play internal |
+| M1 | Account & sync | local-only mode, email + Apple + Google, refresh rotation, delta sync, sign-up without re-keying |
+| M2 | Day record | rating control + ramp, tags, gratitude, sentiment, per-day writing, autosave, resume, streak with recovery |
+| M3 | Notes & day detail | notes list + editor, day detail, pinning, soft delete |
+| M4 | Analytics | weekly numbers, monthly grid and numbers, sentiment peaks, all offline |
+| M5 | Ship | on-device sentiment on both platforms, error states, store listings, TestFlight + Play internal |
 
 M2 is the go/no-go for the wedge; M3 is the go/no-go for retention. If rating a day does not
 feel like something you would do unprompted for a week, the rest does not matter.
@@ -576,19 +610,30 @@ feel like something you would do unprompted for a week, the rest does not matter
 
 ## 10. Open questions
 
-1. **Program authorship.** Three programs of publishable quality is roughly 60 sessions of
-   writing. Are you writing them, commissioning them, or licensing content?
-2. **Scale shape.** This spec treats 0 as the worst day and 5 as one of the best, with the
+1. **Scale shape.** This spec treats 0 as the worst day and 5 as one of the best, with the
    neutral point at 2.5. Confirm the direction, because flipping it later invalidates every
    chart, every anchor and every export. Confirm too that 0 is in the range at all — a
    scale that starts at 1 never lets anyone record the day that actually mattered.
-3. **Rating editability.** v1 lets you re-rate any past day. The alternative — rating locks
+2. **Rating editability.** v1 lets you re-rate any past day. The alternative — rating locks
    at midnight — produces cleaner data and a more honest record, at the cost of the person
    who forgot at 23:50. Current choice optimises for forgiveness.
-4. **Voice capture.** Platform dictation (free, inconsistent) versus a transcription vendor
-   (cost, and it breaks "nothing leaves the device" unless on-device).
-5. **Name.** "Aroel" reads well; check trademark and App Store availability before logo work.
-6. **Store risk.** Journaling with mood tracking sits near the "medical" line. Copy must
+3. **Sentiment, manual or computed.** A day's tone can be picked by hand from the emotion
+   taxonomy, derived on-device from what you wrote, or both. v1 allows both, with the
+   manual pick winning. Confirm whether the computed tone should overwrite the manual one
+   on a later day.
+4. **Name.** "Aroel" reads well; check trademark and App Store availability before logo work.
+5. **Store risk.** Journaling with mood tracking sits near the "medical" line. Copy must
    avoid diagnosis language from day one.
-7. **Free forever.** Fine while you fund hosting; decide now whether it is permanent, because
+6. **Free forever.** Fine while you fund hosting; decide now whether it is permanent, because
    a later paywall on an explicitly free product costs trust.
+7. **Differentiation without a curriculum.** With programs gone, the app's difference is
+   the anchored scale, the four-second close and the paper design. That is a thinner moat
+   than a curriculum. Worth deciding whether v2 leans into the writing side (a better
+   editor, richer media) or the ritual side (streaks, weekly reviews).
+8. **Streak recovery rules.** v1 lets the user recover a missed day for free and
+   indefinitely (§2.3). Decide whether recovery should be limited per streak, and whether
+   recovered days count as kept days in the analytics averages.
+9. **History of this document.** Earlier revisions specified guided programs with sessions,
+   search, export, media, reminders, a timeline and a weekly reflection card. All of it was
+   deliberately cut (§3.1). The git history holds the full design; nothing was lost by
+   accident.

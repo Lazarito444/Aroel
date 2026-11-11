@@ -11,5 +11,5 @@ As a **Writer**, I want to rate today on an eleven-stop track in one tap, with t
 - Anchors shown on first use, on long-press, and in the accessibility label. **[invariant]** [§4.5]
 - Light haptic on tap. [§6.4]
 - Rating persists and re-renders in < 30 ms after tap. **[screen bracket]** [§5.3]
-- Available from Today at any hour, not gated behind the session. **[invariant]** [§2.2]
+- Available from Today at any hour, not gated behind anything else. **[invariant]** [§2.2]
 - Hit target per stop is at least the full 1/11 segment; degrades to a 44 pt slider under 320 dp. [§6.6]

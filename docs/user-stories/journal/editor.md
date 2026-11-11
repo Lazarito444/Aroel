@@ -1,11 +1,12 @@
-# Journal — Free-entry editor
+# Journal — Per-day writing
 
-Epic E5 · Milestone M4 · Source: [`../README.md`](../README.md)
+Epic E5 · Milestone M2 · Source: [`../README.md`](../README.md)
 
-### US-501 · Write freely when the program doesn't fit
-As a **Writer**, I want a free-entry editor with markdown-lite, tag chips, photos and dictation, so that free writing is the escape hatch, not the product. [§5.6, §3]
+### US-501 · Write what today needed
+As a **Writer**, I want a plain editor for the day I am on, so that the days with something to say have a proper home. [§5.4]
 
-- Markdown-lite: bold, italic, headings, lists, quotes — no embeds, tables, or attachment types beyond photos and audio in v1. **[invariant: §3 scope]** [§1.4, §3]
-- `[[` autocomplete creates entry links (backlinks resolved on read). [§5.6, §4.2]
-- Up to 3 photos per entry; media keys `u/{user_id}/e/{entry_id}/{media_id}` with short-lived signed URLs, 1 GB soft quota. **[invariant]** [§3, §7.5]
-- Acceptance bracket: save-to-visible latency < 16 ms; **entry readable offline forever.** [§5.6]
+- Markdown-lite: bold, italic, headings, lists, quotes. No embeds, no tables, no attachments. **[invariant: §3 scope]** [§3, §5.4]
+- The entry attaches to the day it was written on — an entry started at 23:57 belongs to that evening, not to the next day. **[invariant: local_date, not UTC]** [§4, §5.4]
+- Autosave every keystroke to local SQLite, with a debounced flush every 2 s. **[invariant]** [§5.4, AGENTS.md]
+- Acceptance bracket: **nothing typed is ever lost across app kill, airplane mode, or backgrounding.** **[screen bracket]** [§5.4]
+- Acceptance bracket: save-to-visible latency < 16 ms; **entry readable offline forever.** [§5.4]
