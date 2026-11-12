@@ -6,8 +6,8 @@ import 'package:flutter/services.dart';
 /// A field in the app's own shape: a label above, the input sunk into the paper.
 class PaperTextField extends StatefulWidget {
   const PaperTextField({
-    super.key,
     required this.label,
+    super.key,
     this.controller,
     this.hint,
     this.obscure = false,
@@ -70,8 +70,7 @@ class PaperTextField extends StatefulWidget {
 }
 
 class _PaperTextFieldState extends State<PaperTextField> {
-  late final TextEditingController _controller =
-      widget.controller ?? TextEditingController();
+  late final TextEditingController _controller = widget.controller ?? TextEditingController();
   late final bool _ownsController = widget.controller == null;
   bool _hidden = true;
 
@@ -143,15 +142,11 @@ class _PaperTextFieldState extends State<PaperTextField> {
             suffixIcon: widget.obscure
                 ? IconButton(
                     icon: Icon(
-                      _hidden
-                          ? Icons.visibility_outlined
-                          : Icons.visibility_off_outlined,
+                      _hidden ? Icons.visibility_outlined : Icons.visibility_off_outlined,
                       size: 18,
                     ),
                     color: palette.inkFaint,
-                    tooltip: _hidden
-                        ? 'Show the password'
-                        : 'Hide the password',
+                    tooltip: _hidden ? 'Show the password' : 'Hide the password',
                     onPressed: () => setState(() => _hidden = !_hidden),
                   )
                 : null,

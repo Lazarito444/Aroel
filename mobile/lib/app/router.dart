@@ -1,6 +1,6 @@
+import 'package:aroel/core/onboarding.dart';
 import 'package:aroel/features/auth/account/account_screen.dart';
 import 'package:aroel/features/auth/delete/delete_account_screen.dart';
-import 'package:aroel/core/onboarding.dart';
 import 'package:aroel/features/auth/onboarding/onboarding_screen.dart';
 import 'package:aroel/features/auth/signin/sign_in_screen.dart';
 import 'package:aroel/features/settings/settings_screen.dart';
@@ -19,38 +19,31 @@ final Provider<GoRouter> routerProvider = Provider<GoRouter>((Ref ref) {
     routes: <RouteBase>[
       GoRoute(
         path: '/',
-        builder: (BuildContext context, GoRouterState state) =>
-            const TodayScreen(),
+        builder: (BuildContext context, GoRouterState state) => const TodayScreen(),
       ),
       GoRoute(
         path: '/onboarding',
-        builder: (BuildContext context, GoRouterState state) =>
-            const OnboardingScreen(),
+        builder: (BuildContext context, GoRouterState state) => const OnboardingScreen(),
       ),
       GoRoute(
         path: '/sign-in',
-        builder: (BuildContext context, GoRouterState state) =>
-            const SignInScreen(mode: AuthMode.signIn),
+        builder: (BuildContext context, GoRouterState state) => const SignInScreen(mode: AuthMode.signIn),
       ),
       GoRoute(
         path: '/sign-up',
-        builder: (BuildContext context, GoRouterState state) =>
-            const SignInScreen(mode: AuthMode.signUp),
+        builder: (BuildContext context, GoRouterState state) => const SignInScreen(mode: AuthMode.signUp),
       ),
       GoRoute(
         path: '/settings',
-        builder: (BuildContext context, GoRouterState state) =>
-            const SettingsScreen(),
+        builder: (BuildContext context, GoRouterState state) => const SettingsScreen(),
       ),
       GoRoute(
         path: '/settings/account',
-        builder: (BuildContext context, GoRouterState state) =>
-            const AccountScreen(),
+        builder: (BuildContext context, GoRouterState state) => const AccountScreen(),
       ),
       GoRoute(
         path: '/settings/account/delete',
-        builder: (BuildContext context, GoRouterState state) =>
-            const DeleteAccountScreen(),
+        builder: (BuildContext context, GoRouterState state) => const DeleteAccountScreen(),
       ),
     ],
     redirect: (BuildContext context, GoRouterState state) {

@@ -39,6 +39,5 @@ abstract final class Validators {
   ///
   /// Length is the only rule. There are no composition rules, so there is no message
   /// beyond the length check.
-  static bool isValidPassword(String value) =>
-      value.length >= minimumPasswordLength;
+  static bool isValidPassword(String value) => value.length >= minimumPasswordLength;
 }

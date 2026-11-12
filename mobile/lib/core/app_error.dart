@@ -71,39 +71,24 @@ abstract final class AuthErrorCodes {
 String _messageFor(String code) => switch (code) {
   ClientErrorCodes.emailInvalid => 'That does not look like an email address.',
   ClientErrorCodes.emailEmpty => 'Enter the email address you use.',
-  ClientErrorCodes.passwordTooShort =>
-    'Use at least eight characters. Nothing else is required.',
+  ClientErrorCodes.passwordTooShort => 'Use at least eight characters. Nothing else is required.',
   ClientErrorCodes.passwordEmpty => 'Enter your password.',
-  ClientErrorCodes.networkUnavailable =>
-    'You are offline. Everything you write is saved here and will sync when you are back.',
-  ClientErrorCodes.serverUnavailable =>
-    'The account service is not answering right now. Your journal is safe on this device.',
-  ClientErrorCodes.providerUnavailable =>
-    'That sign-in option is not available on this device yet.',
+  ClientErrorCodes.networkUnavailable => 'You are offline. Everything you write is saved here and will sync when you are back.',
+  ClientErrorCodes.serverUnavailable => 'The account service is not answering right now. Your journal is safe on this device.',
+  ClientErrorCodes.providerUnavailable => 'That sign-in option is not available on this device yet.',
   ClientErrorCodes.providerCancelled => 'Sign-in was cancelled.',
-  ClientErrorCodes.unexpected =>
-    'Something did not go through. Try again in a moment.',
-  AuthErrorCodes.emailTaken =>
-    'That address already has an account. Sign in instead.',
-  AuthErrorCodes.userIdTaken =>
-    'This device already belongs to an account. Sign in with the address you used.',
-  AuthErrorCodes.invalidCredentials =>
-    'That email and password do not match an account.',
-  AuthErrorCodes.accountLocked =>
-    'Too many attempts. This account is paused for five minutes.',
-  AuthErrorCodes.emailNotVerified =>
-    'Confirm your email address to turn on sync. Until then everything stays here.',
-  AuthErrorCodes.rateLimited =>
-    'Too many attempts. Give it a minute and try again.',
-  AuthErrorCodes.weakPassword =>
-    'Use at least eight characters for the password.',
+  ClientErrorCodes.unexpected => 'Something did not go through. Try again in a moment.',
+  AuthErrorCodes.emailTaken => 'That address already has an account. Sign in instead.',
+  AuthErrorCodes.userIdTaken => 'This device already belongs to an account. Sign in with the address you used.',
+  AuthErrorCodes.invalidCredentials => 'That email and password do not match an account.',
+  AuthErrorCodes.accountLocked => 'Too many attempts. This account is paused for five minutes.',
+  AuthErrorCodes.emailNotVerified => 'Confirm your email address to turn on sync. Until then everything stays here.',
+  AuthErrorCodes.rateLimited => 'Too many attempts. Give it a minute and try again.',
+  AuthErrorCodes.weakPassword => 'Use at least eight characters for the password.',
   ServerErrorCodes.emailInvalid => 'That does not look like an email address.',
   ServerErrorCodes.emailTooLong => 'That email address is too long.',
-  ServerErrorCodes.accountCreationFailed =>
-    'The account could not be created. Try again in a moment.',
-  ServerErrorCodes.refreshTokenReused =>
-    'This session was ended for safety. Sign in again to carry on.',
-  ServerErrorCodes.refreshTokenExpired =>
-    'Your session has expired. Sign in again.',
+  ServerErrorCodes.accountCreationFailed => 'The account could not be created. Try again in a moment.',
+  ServerErrorCodes.refreshTokenReused => 'This session was ended for safety. Sign in again to carry on.',
+  ServerErrorCodes.refreshTokenExpired => 'Your session has expired. Sign in again.',
   _ => 'Something did not go through. Try again in a moment.',
 };

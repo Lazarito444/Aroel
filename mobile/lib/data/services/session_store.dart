@@ -71,12 +71,8 @@ class SessionStore {
       emailVerified: values[_verifiedKey] == 'true',
       accessToken: accessToken,
       refreshToken: refreshToken,
-      accessTokenExpiresAt:
-          DateTime.tryParse(values[_accessExpiresKey] ?? '')?.toUtc() ??
-          DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
-      refreshTokenExpiresAt:
-          DateTime.tryParse(values[_refreshExpiresKey] ?? '')?.toUtc() ??
-          DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+      accessTokenExpiresAt: DateTime.tryParse(values[_accessExpiresKey] ?? '')?.toUtc() ?? DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
+      refreshTokenExpiresAt: DateTime.tryParse(values[_refreshExpiresKey] ?? '')?.toUtc() ?? DateTime.fromMillisecondsSinceEpoch(0, isUtc: true),
     );
   }
 
@@ -86,9 +82,7 @@ class SessionStore {
       _accessTokenKey: session.accessToken,
       _refreshTokenKey: session.refreshToken,
       _accessExpiresKey: session.accessTokenExpiresAt.toUtc().toIso8601String(),
-      _refreshExpiresKey: session.refreshTokenExpiresAt
-          .toUtc()
-          .toIso8601String(),
+      _refreshExpiresKey: session.refreshTokenExpiresAt.toUtc().toIso8601String(),
       _userIdKey: session.userId,
       _emailKey: session.email,
       _verifiedKey: session.emailVerified ? 'true' : 'false',
@@ -106,8 +100,7 @@ class SessionStore {
   ///
   /// The journal is wiped at once; this one value is kept until the server confirms, so
   /// that the promise on the deletion screen can be kept.
-  Future<void> rememberPendingDeletion(String accessToken) =>
-      _storage.write(_pendingDeletionKey, accessToken);
+  Future<void> rememberPendingDeletion(String accessToken) => _storage.write(_pendingDeletionKey, accessToken);
 
   /// The token of a deletion that has not reached the server yet.
   Future<String?> pendingDeletionToken() => _storage.read(_pendingDeletionKey);

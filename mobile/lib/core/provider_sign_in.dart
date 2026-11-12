@@ -1,7 +1,7 @@
 import 'package:aroel/core/app_error.dart';
 import 'package:aroel/core/result.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:sign_in_with_apple/sign_in_with_apple.dart';
 
@@ -76,45 +76,42 @@ class ProviderSignInService {
     } on AppError catch (error) {
       return Result.failure(error);
     } catch (_) {
-      return Result.failure(
-        const AppError.client(ClientErrorCodes.providerUnavailable),
+      return const Result.failure(
+        AppError.client(ClientErrorCodes.providerUnavailable),
       );
     }
   }
 
   Future<Result<ProviderCredential>> _signInWithApple() async {
     if (!await SignInWithApple.isAvailable()) {
-      return Result.failure(
-        const AppError.client(ClientErrorCodes.providerUnavailable),
+      return const Result.failure(
+        AppError.client(ClientErrorCodes.providerUnavailable),
       );
     }
 
-    final AuthorizationCredentialAppleID credential =
-        await SignInWithApple.getAppleIDCredential(
-          scopes: const <AppleIDAuthorizationScopes>[
-            AppleIDAuthorizationScopes.email,
-            AppleIDAuthorizationScopes.fullName,
-          ],
-          webAuthenticationOptions: appleWebClientId.isEmpty
-              ? null
-              : WebAuthenticationOptions(
-                  clientId: appleWebClientId,
-                  redirectUri: Uri.parse('https://$appleWebClientId/callback'),
-                ),
-        );
+    final AuthorizationCredentialAppleID credential = await SignInWithApple.getAppleIDCredential(
+      scopes: const <AppleIDAuthorizationScopes>[
+        AppleIDAuthorizationScopes.email,
+        AppleIDAuthorizationScopes.fullName,
+      ],
+      webAuthenticationOptions: appleWebClientId.isEmpty
+          ? null
+          : WebAuthenticationOptions(
+              clientId: appleWebClientId,
+              redirectUri: Uri.parse('https://$appleWebClientId/callback'),
+            ),
+    );
 
     final String? identityToken = credential.identityToken;
     if (identityToken == null || identityToken.isEmpty) {
-      return Result.failure(
-        const AppError.client(ClientErrorCodes.providerCancelled),
+      return const Result.failure(
+        AppError.client(ClientErrorCodes.providerCancelled),
       );
     }
 
     final String? givenName = credential.givenName;
     final String? familyName = credential.familyName;
-    final String? displayName = (givenName == null && familyName == null)
-        ? null
-        : <String?>[givenName, familyName].whereType<String>().join(' ');
+    final String? displayName = (givenName == null && familyName == null) ? null : <String?>[givenName, familyName].whereType<String>().join(' ');
 
     return Result.success(
       ProviderCredential(
@@ -128,26 +125,23 @@ class ProviderSignInService {
 
   Future<Result<ProviderCredential>> _signInWithGoogle() async {
     if (googleClientId.isEmpty && googleServerClientId.isEmpty) {
-      return Result.failure(
-        const AppError.client(ClientErrorCodes.providerUnavailable),
+      return const Result.failure(
+        AppError.client(ClientErrorCodes.providerUnavailable),
       );
     }
 
     _googleReady ??= GoogleSignIn.instance.initialize(
       clientId: googleClientId.isEmpty ? null : googleClientId,
-      serverClientId: googleServerClientId.isEmpty
-          ? null
-          : googleServerClientId,
+      serverClientId: googleServerClientId.isEmpty ? null : googleServerClientId,
     );
     await _googleReady;
 
-    final GoogleSignInAccount account = await GoogleSignIn.instance
-        .authenticate();
+    final GoogleSignInAccount account = await GoogleSignIn.instance.authenticate();
     final String? idToken = account.authentication.idToken;
 
     if (idToken == null || idToken.isEmpty) {
-      return Result.failure(
-        const AppError.client(ClientErrorCodes.providerCancelled),
+      return const Result.failure(
+        AppError.client(ClientErrorCodes.providerCancelled),
       );
     }
 
@@ -167,15 +161,14 @@ class ProviderSignInService {
 /// The identifiers come from the build, so that no environment is baked into the app:
 /// `AROEL_GOOGLE_CLIENT_ID`, `AROEL_GOOGLE_SERVER_CLIENT_ID` and
 /// `AROEL_APPLE_SERVICE_ID`.
-final Provider<ProviderSignInService> providerSignInServiceProvider =
-    Provider<ProviderSignInService>(
-      (Ref ref) => ProviderSignInService(
-        googleClientId: const String.fromEnvironment('AROEL_GOOGLE_CLIENT_ID'),
-        googleServerClientId: const String.fromEnvironment(
-          'AROEL_GOOGLE_SERVER_CLIENT_ID',
-        ),
-        appleWebClientId: const String.fromEnvironment(
-          'AROEL_APPLE_SERVICE_ID',
-        ),
-      ),
-    );
+final Provider<ProviderSignInService> providerSignInServiceProvider = Provider<ProviderSignInService>(
+  (Ref ref) => ProviderSignInService(
+    googleClientId: const String.fromEnvironment('AROEL_GOOGLE_CLIENT_ID'),
+    googleServerClientId: const String.fromEnvironment(
+      'AROEL_GOOGLE_SERVER_CLIENT_ID',
+    ),
+    appleWebClientId: const String.fromEnvironment(
+      'AROEL_APPLE_SERVICE_ID',
+    ),
+  ),
+);

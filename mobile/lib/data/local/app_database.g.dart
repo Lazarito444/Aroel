@@ -3,8 +3,7 @@
 part of 'app_database.dart';
 
 // ignore_for_file: type=lint
-class $LocalUsersTable extends LocalUsers
-    with TableInfo<$LocalUsersTable, LocalUser> {
+class $LocalUsersTable extends LocalUsers with TableInfo<$LocalUsersTable, LocalUser> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -292,9 +291,7 @@ class LocalUser extends DataClass implements Insertable<LocalUser> {
   LocalUsersCompanion toCompanion(bool nullToAbsent) {
     return LocalUsersCompanion(
       id: Value(id),
-      accountUserId: accountUserId == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accountUserId),
+      accountUserId: accountUserId == null && nullToAbsent ? const Value.absent() : Value(accountUserId),
       displayName: Value(displayName),
       timeZone: Value(timeZone),
       locale: Value(locale),
@@ -346,9 +343,7 @@ class LocalUser extends DataClass implements Insertable<LocalUser> {
     DateTime? updatedAt,
   }) => LocalUser(
     id: id ?? this.id,
-    accountUserId: accountUserId.present
-        ? accountUserId.value
-        : this.accountUserId,
+    accountUserId: accountUserId.present ? accountUserId.value : this.accountUserId,
     displayName: displayName ?? this.displayName,
     timeZone: timeZone ?? this.timeZone,
     locale: locale ?? this.locale,
@@ -359,17 +354,11 @@ class LocalUser extends DataClass implements Insertable<LocalUser> {
   LocalUser copyWithCompanion(LocalUsersCompanion data) {
     return LocalUser(
       id: data.id.present ? data.id.value : this.id,
-      accountUserId: data.accountUserId.present
-          ? data.accountUserId.value
-          : this.accountUserId,
-      displayName: data.displayName.present
-          ? data.displayName.value
-          : this.displayName,
+      accountUserId: data.accountUserId.present ? data.accountUserId.value : this.accountUserId,
+      displayName: data.displayName.present ? data.displayName.value : this.displayName,
       timeZone: data.timeZone.present ? data.timeZone.value : this.timeZone,
       locale: data.locale.present ? data.locale.value : this.locale,
-      hasLocalJournal: data.hasLocalJournal.present
-          ? data.hasLocalJournal.value
-          : this.hasLocalJournal,
+      hasLocalJournal: data.hasLocalJournal.present ? data.hasLocalJournal.value : this.hasLocalJournal,
       createdAt: data.createdAt.present ? data.createdAt.value : this.createdAt,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
     );
@@ -549,8 +538,7 @@ class LocalUsersCompanion extends UpdateCompanion<LocalUser> {
   }
 }
 
-class $PreferencesTable extends Preferences
-    with TableInfo<$PreferencesTable, Preference> {
+class $PreferencesTable extends Preferences with TableInfo<$PreferencesTable, Preference> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -667,8 +655,7 @@ class Preference extends DataClass implements Insertable<Preference> {
     };
   }
 
-  Preference copyWith({String? key, String? value}) =>
-      Preference(key: key ?? this.key, value: value ?? this.value);
+  Preference copyWith({String? key, String? value}) => Preference(key: key ?? this.key, value: value ?? this.value);
   Preference copyWithCompanion(PreferencesCompanion data) {
     return Preference(
       key: data.key.present ? data.key.value : this.key,
@@ -688,11 +675,7 @@ class Preference extends DataClass implements Insertable<Preference> {
   @override
   int get hashCode => Object.hash(key, value);
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is Preference &&
-          other.key == this.key &&
-          other.value == this.value);
+  bool operator ==(Object other) => identical(this, other) || (other is Preference && other.key == this.key && other.value == this.value);
 }
 
 class PreferencesCompanion extends UpdateCompanion<Preference> {
@@ -760,8 +743,7 @@ class PreferencesCompanion extends UpdateCompanion<Preference> {
   }
 }
 
-class $SyncStatesTable extends SyncStates
-    with TableInfo<$SyncStatesTable, SyncState> {
+class $SyncStatesTable extends SyncStates with TableInfo<$SyncStatesTable, SyncState> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
@@ -884,9 +866,7 @@ class SyncState extends DataClass implements Insertable<SyncState> {
     return SyncStatesCompanion(
       id: Value(id),
       cursor: Value(cursor),
-      lastSyncedAt: lastSyncedAt == null && nullToAbsent
-          ? const Value.absent()
-          : Value(lastSyncedAt),
+      lastSyncedAt: lastSyncedAt == null && nullToAbsent ? const Value.absent() : Value(lastSyncedAt),
     );
   }
 
@@ -924,9 +904,7 @@ class SyncState extends DataClass implements Insertable<SyncState> {
     return SyncState(
       id: data.id.present ? data.id.value : this.id,
       cursor: data.cursor.present ? data.cursor.value : this.cursor,
-      lastSyncedAt: data.lastSyncedAt.present
-          ? data.lastSyncedAt.value
-          : this.lastSyncedAt,
+      lastSyncedAt: data.lastSyncedAt.present ? data.lastSyncedAt.value : this.lastSyncedAt,
     );
   }
 
@@ -943,12 +921,7 @@ class SyncState extends DataClass implements Insertable<SyncState> {
   @override
   int get hashCode => Object.hash(id, cursor, lastSyncedAt);
   @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      (other is SyncState &&
-          other.id == this.id &&
-          other.cursor == this.cursor &&
-          other.lastSyncedAt == this.lastSyncedAt);
+  bool operator ==(Object other) => identical(this, other) || (other is SyncState && other.id == this.id && other.cursor == this.cursor && other.lastSyncedAt == this.lastSyncedAt);
 }
 
 class SyncStatesCompanion extends UpdateCompanion<SyncState> {
@@ -1022,8 +995,7 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   late final $PreferencesTable preferences = $PreferencesTable(this);
   late final $SyncStatesTable syncStates = $SyncStatesTable(this);
   @override
-  Iterable<TableInfo<Table, Object?>> get allTables =>
-      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
+  Iterable<TableInfo<Table, Object?>> get allTables => allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities => [
     localUsers,
@@ -1057,8 +1029,7 @@ typedef $$LocalUsersTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $$LocalUsersTableFilterComposer
-    extends Composer<_$AppDatabase, $LocalUsersTable> {
+class $$LocalUsersTableFilterComposer extends Composer<_$AppDatabase, $LocalUsersTable> {
   $$LocalUsersTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -1107,8 +1078,7 @@ class $$LocalUsersTableFilterComposer
   );
 }
 
-class $$LocalUsersTableOrderingComposer
-    extends Composer<_$AppDatabase, $LocalUsersTable> {
+class $$LocalUsersTableOrderingComposer extends Composer<_$AppDatabase, $LocalUsersTable> {
   $$LocalUsersTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -1157,8 +1127,7 @@ class $$LocalUsersTableOrderingComposer
   );
 }
 
-class $$LocalUsersTableAnnotationComposer
-    extends Composer<_$AppDatabase, $LocalUsersTable> {
+class $$LocalUsersTableAnnotationComposer extends Composer<_$AppDatabase, $LocalUsersTable> {
   $$LocalUsersTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -1166,8 +1135,7 @@ class $$LocalUsersTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<String> get id => $composableBuilder(column: $table.id, builder: (column) => column);
 
   GeneratedColumn<String> get accountUserId => $composableBuilder(
     column: $table.accountUserId,
@@ -1179,22 +1147,18 @@ class $$LocalUsersTableAnnotationComposer
     builder: (column) => column,
   );
 
-  GeneratedColumn<String> get timeZone =>
-      $composableBuilder(column: $table.timeZone, builder: (column) => column);
+  GeneratedColumn<String> get timeZone => $composableBuilder(column: $table.timeZone, builder: (column) => column);
 
-  GeneratedColumn<String> get locale =>
-      $composableBuilder(column: $table.locale, builder: (column) => column);
+  GeneratedColumn<String> get locale => $composableBuilder(column: $table.locale, builder: (column) => column);
 
   GeneratedColumn<bool> get hasLocalJournal => $composableBuilder(
     column: $table.hasLocalJournal,
     builder: (column) => column,
   );
 
-  GeneratedColumn<DateTime> get createdAt =>
-      $composableBuilder(column: $table.createdAt, builder: (column) => column);
+  GeneratedColumn<DateTime> get createdAt => $composableBuilder(column: $table.createdAt, builder: (column) => column);
 
-  GeneratedColumn<DateTime> get updatedAt =>
-      $composableBuilder(column: $table.updatedAt, builder: (column) => column);
+  GeneratedColumn<DateTime> get updatedAt => $composableBuilder(column: $table.updatedAt, builder: (column) => column);
 }
 
 class $$LocalUsersTableTableManager
@@ -1220,12 +1184,9 @@ class $$LocalUsersTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () =>
-              $$LocalUsersTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$LocalUsersTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$LocalUsersTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () => $$LocalUsersTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$LocalUsersTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$LocalUsersTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> id = const Value.absent(),
@@ -1270,9 +1231,7 @@ class $$LocalUsersTableTableManager
                 updatedAt: updatedAt,
                 rowid: rowid,
               ),
-          withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
-              .toList(),
+          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), BaseReferences(db, table, e))).toList(),
           prefetchHooksCallback: null,
         ),
       );
@@ -1305,8 +1264,7 @@ typedef $$PreferencesTableUpdateCompanionBuilder =
       Value<int> rowid,
     });
 
-class $$PreferencesTableFilterComposer
-    extends Composer<_$AppDatabase, $PreferencesTable> {
+class $$PreferencesTableFilterComposer extends Composer<_$AppDatabase, $PreferencesTable> {
   $$PreferencesTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -1325,8 +1283,7 @@ class $$PreferencesTableFilterComposer
   );
 }
 
-class $$PreferencesTableOrderingComposer
-    extends Composer<_$AppDatabase, $PreferencesTable> {
+class $$PreferencesTableOrderingComposer extends Composer<_$AppDatabase, $PreferencesTable> {
   $$PreferencesTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -1345,8 +1302,7 @@ class $$PreferencesTableOrderingComposer
   );
 }
 
-class $$PreferencesTableAnnotationComposer
-    extends Composer<_$AppDatabase, $PreferencesTable> {
+class $$PreferencesTableAnnotationComposer extends Composer<_$AppDatabase, $PreferencesTable> {
   $$PreferencesTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -1354,11 +1310,9 @@ class $$PreferencesTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<String> get key =>
-      $composableBuilder(column: $table.key, builder: (column) => column);
+  GeneratedColumn<String> get key => $composableBuilder(column: $table.key, builder: (column) => column);
 
-  GeneratedColumn<String> get value =>
-      $composableBuilder(column: $table.value, builder: (column) => column);
+  GeneratedColumn<String> get value => $composableBuilder(column: $table.value, builder: (column) => column);
 }
 
 class $$PreferencesTableTableManager
@@ -1384,12 +1338,9 @@ class $$PreferencesTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () =>
-              $$PreferencesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$PreferencesTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$PreferencesTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () => $$PreferencesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$PreferencesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$PreferencesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<String> key = const Value.absent(),
@@ -1406,9 +1357,7 @@ class $$PreferencesTableTableManager
                 value: value,
                 rowid: rowid,
               ),
-          withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
-              .toList(),
+          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), BaseReferences(db, table, e))).toList(),
           prefetchHooksCallback: null,
         ),
       );
@@ -1444,8 +1393,7 @@ typedef $$SyncStatesTableUpdateCompanionBuilder =
       Value<DateTime?> lastSyncedAt,
     });
 
-class $$SyncStatesTableFilterComposer
-    extends Composer<_$AppDatabase, $SyncStatesTable> {
+class $$SyncStatesTableFilterComposer extends Composer<_$AppDatabase, $SyncStatesTable> {
   $$SyncStatesTableFilterComposer({
     required super.$db,
     required super.$table,
@@ -1469,8 +1417,7 @@ class $$SyncStatesTableFilterComposer
   );
 }
 
-class $$SyncStatesTableOrderingComposer
-    extends Composer<_$AppDatabase, $SyncStatesTable> {
+class $$SyncStatesTableOrderingComposer extends Composer<_$AppDatabase, $SyncStatesTable> {
   $$SyncStatesTableOrderingComposer({
     required super.$db,
     required super.$table,
@@ -1494,8 +1441,7 @@ class $$SyncStatesTableOrderingComposer
   );
 }
 
-class $$SyncStatesTableAnnotationComposer
-    extends Composer<_$AppDatabase, $SyncStatesTable> {
+class $$SyncStatesTableAnnotationComposer extends Composer<_$AppDatabase, $SyncStatesTable> {
   $$SyncStatesTableAnnotationComposer({
     required super.$db,
     required super.$table,
@@ -1503,11 +1449,9 @@ class $$SyncStatesTableAnnotationComposer
     super.$addJoinBuilderToRootComposer,
     super.$removeJoinBuilderFromRootComposer,
   });
-  GeneratedColumn<int> get id =>
-      $composableBuilder(column: $table.id, builder: (column) => column);
+  GeneratedColumn<int> get id => $composableBuilder(column: $table.id, builder: (column) => column);
 
-  GeneratedColumn<int> get cursor =>
-      $composableBuilder(column: $table.cursor, builder: (column) => column);
+  GeneratedColumn<int> get cursor => $composableBuilder(column: $table.cursor, builder: (column) => column);
 
   GeneratedColumn<DateTime> get lastSyncedAt => $composableBuilder(
     column: $table.lastSyncedAt,
@@ -1538,12 +1482,9 @@ class $$SyncStatesTableTableManager
         TableManagerState(
           db: db,
           table: table,
-          createFilteringComposer: () =>
-              $$SyncStatesTableFilterComposer($db: db, $table: table),
-          createOrderingComposer: () =>
-              $$SyncStatesTableOrderingComposer($db: db, $table: table),
-          createComputedFieldComposer: () =>
-              $$SyncStatesTableAnnotationComposer($db: db, $table: table),
+          createFilteringComposer: () => $$SyncStatesTableFilterComposer($db: db, $table: table),
+          createOrderingComposer: () => $$SyncStatesTableOrderingComposer($db: db, $table: table),
+          createComputedFieldComposer: () => $$SyncStatesTableAnnotationComposer($db: db, $table: table),
           updateCompanionCallback:
               ({
                 Value<int> id = const Value.absent(),
@@ -1564,9 +1505,7 @@ class $$SyncStatesTableTableManager
                 cursor: cursor,
                 lastSyncedAt: lastSyncedAt,
               ),
-          withReferenceMapper: (p0) => p0
-              .map((e) => (e.readTable(table), BaseReferences(db, table, e)))
-              .toList(),
+          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), BaseReferences(db, table, e))).toList(),
           prefetchHooksCallback: null,
         ),
       );
@@ -1590,10 +1529,7 @@ typedef $$SyncStatesTableProcessedTableManager =
 class $AppDatabaseManager {
   final _$AppDatabase _db;
   $AppDatabaseManager(this._db);
-  $$LocalUsersTableTableManager get localUsers =>
-      $$LocalUsersTableTableManager(_db, _db.localUsers);
-  $$PreferencesTableTableManager get preferences =>
-      $$PreferencesTableTableManager(_db, _db.preferences);
-  $$SyncStatesTableTableManager get syncStates =>
-      $$SyncStatesTableTableManager(_db, _db.syncStates);
+  $$LocalUsersTableTableManager get localUsers => $$LocalUsersTableTableManager(_db, _db.localUsers);
+  $$PreferencesTableTableManager get preferences => $$PreferencesTableTableManager(_db, _db.preferences);
+  $$SyncStatesTableTableManager get syncStates => $$SyncStatesTableTableManager(_db, _db.syncStates);
 }

@@ -23,8 +23,8 @@ enum PaperButtonVariant {
 /// not splash.
 class PaperButton extends StatefulWidget {
   const PaperButton({
-    super.key,
     required this.label,
+    super.key,
     this.onPressed,
     this.variant = PaperButtonVariant.primary,
     this.busy = false,
@@ -133,9 +133,7 @@ class _PaperButtonState extends State<PaperButton> {
           onTapUp: _enabled ? (_) => setState(() => _pressed = false) : null,
           onTapCancel: _enabled ? () => setState(() => _pressed = false) : null,
           onTap: _enabled ? widget.onPressed : null,
-          child: widget.expand
-              ? SizedBox(width: double.infinity, child: button)
-              : button,
+          child: widget.expand ? SizedBox(width: double.infinity, child: button) : button,
         ),
       ),
     );

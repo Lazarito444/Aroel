@@ -22,12 +22,14 @@ in.
 ```
 flutter pub get
 dart run build_runner build
+dart format lib test
 flutter run
 ```
 
 `build_runner` writes the drift, freezed and json_serializable code. The generated files
 are committed, so a plain `flutter pub get` is enough to build; run the generator after
-changing a table, a model or a DTO.
+changing a table, a model or a DTO, and let `dart format` have the last word over what it
+writes.
 
 ### Where the server is
 

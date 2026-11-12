@@ -113,8 +113,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 keyboardType: TextInputType.emailAddress,
                 textInputAction: TextInputAction.next,
                 enabled: !auth.busy,
-                onChanged: (_) =>
-                    ref.read(accountControllerProvider.notifier).clearError(),
+                onChanged: (_) => ref.read(accountControllerProvider.notifier).clearError(),
               ),
               const SizedBox(height: Space.md),
               PaperTextField(
@@ -125,8 +124,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
                 textInputAction: TextInputAction.done,
                 enabled: !auth.busy,
                 onSubmitted: (_) => _submit(),
-                onChanged: (_) =>
-                    ref.read(accountControllerProvider.notifier).clearError(),
+                onChanged: (_) => ref.read(accountControllerProvider.notifier).clearError(),
               ),
               const SizedBox(height: Space.lg),
               PaperButton(
@@ -136,9 +134,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
               ),
               const SizedBox(height: Space.xs),
               PaperButton(
-                label: _isSignUp
-                    ? 'I already have an account'
-                    : 'Create an account',
+                label: _isSignUp ? 'I already have an account' : 'Create an account',
                 variant: PaperButtonVariant.quiet,
                 onPressed: () {
                   ref.read(accountControllerProvider.notifier).clearError();
@@ -163,9 +159,7 @@ class _SignInScreenState extends ConsumerState<SignInScreen> {
   }
 
   Future<void> _signInWithProvider(AuthProvider provider) async {
-    final bool signedIn = await ref
-        .read(accountControllerProvider.notifier)
-        .signInWithProvider(provider);
+    final bool signedIn = await ref.read(accountControllerProvider.notifier).signInWithProvider(provider);
     if (signedIn && mounted) {
       context.go('/');
     }

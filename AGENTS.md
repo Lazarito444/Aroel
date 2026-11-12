@@ -40,6 +40,7 @@ Client (Flutter, in `mobile/`; the app id is `dev.lazarito.aroel`):
 ```
 flutter pub get                 # from mobile/
 dart run build_runner build     # after changing a drift table, a model or a DTO
+dart format lib test            # the generator writes at its own width; the formatter has the last word
 flutter analyze
 flutter test
 flutter run --dart-define=AROEL_API_BASE_URL=https://localhost:5001/v1

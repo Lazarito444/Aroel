@@ -8,38 +8,30 @@ environment:
   sdk: ^3.12.2
 
 dependencies:
+  dio: ^5.11.1 # Transport.
+  drift: ^2.34.0 # The device's own store.
+  drift_flutter: ^0.3.1
   flutter:
     sdk: flutter
-
-  # State, navigation and storage (§7.1).
-  flutter_riverpod: ^3.5.0
-  riverpod: ^3.5.0
-  go_router: ^18.1.4
-  drift: ^2.34.0
-  drift_flutter: ^0.3.1
-  flutter_secure_storage: ^11.2.0
-
-  # Models and transport.
-  freezed_annotation: ^3.1.0
-  json_annotation: ^4.12.0
-  dio: ^5.11.1
-
-  # Identity providers (§5.1).
-  sign_in_with_apple: ^8.2.0
-  google_sign_in: ^7.2.0
-
-  # Foundations.
-  intl: ^0.20.2
+  flutter_riverpod: ^3.5.0 # State (§7.1).
+  flutter_secure_storage: ^11.2.0 # The keychain.
   flutter_timezone: ^5.1.1
+  freezed_annotation: ^3.1.0 # Models.
+  go_router: ^18.1.4 # Navigation (§7.1).
+  google_sign_in: ^7.2.0 # Identity providers (§5.1).
+  intl: ^0.20.2
+  json_annotation: ^4.12.0 # Models.
+  riverpod: ^3.5.0
+  sign_in_with_apple: ^8.2.0 # Identity providers (§5.1).
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
-  flutter_lints: ^6.0.0
   build_runner: ^2.15.1
   # Pinned: drift_dev 2.34.6+ asks for analyzer 13, which freezed 3.x (the last line that
   # runs on Dart 3.12) cannot live with.
   drift_dev: 2.34.0
+  flutter_lints: ^6.0.0
+  flutter_test:
+    sdk: flutter
   freezed: ^3.2.5
   json_serializable: ^6.15.2
   mocktail: ^1.0.5

@@ -2,8 +2,8 @@ import 'package:aroel/core/account.dart';
 import 'package:aroel/core/app_error.dart';
 import 'package:aroel/core/provider_sign_in.dart';
 import 'package:aroel/core/result.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'account_controller.freezed.dart';
 
@@ -36,8 +36,7 @@ class AccountController extends Notifier<AuthState> {
   AccountService get _account => ref.read(accountServiceProvider);
 
   /// Signs in with an address and a password.
-  Future<bool> signIn({required String email, required String password}) =>
-      _run(() => _account.login(email: email, password: password));
+  Future<bool> signIn({required String email, required String password}) => _run(() => _account.login(email: email, password: password));
 
   /// Creates an account, adopting the journal already on the device.
   Future<bool> register({
@@ -219,5 +218,4 @@ class AccountController extends Notifier<AuthState> {
 }
 
 /// The account of this device.
-final NotifierProvider<AccountController, AuthState> accountControllerProvider =
-    NotifierProvider<AccountController, AuthState>(AccountController.new);
+final NotifierProvider<AccountController, AuthState> accountControllerProvider = NotifierProvider<AccountController, AuthState>(AccountController.new);

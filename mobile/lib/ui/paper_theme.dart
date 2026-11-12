@@ -28,15 +28,13 @@ class PaperTokens extends ThemeExtension<PaperTokens> {
   final PaperElevation elevation;
 
   /// The tokens in force at [context].
-  static PaperTokens of(BuildContext context) =>
-      Theme.of(context).extension<PaperTokens>() ?? light;
+  static PaperTokens of(BuildContext context) => Theme.of(context).extension<PaperTokens>() ?? light;
 
   @override
-  PaperTokens copyWith({PaperPalette? palette, PaperElevation? elevation}) =>
-      PaperTokens(
-        palette: palette ?? this.palette,
-        elevation: elevation ?? this.elevation,
-      );
+  PaperTokens copyWith({PaperPalette? palette, PaperElevation? elevation}) => PaperTokens(
+    palette: palette ?? this.palette,
+    elevation: elevation ?? this.elevation,
+  );
 
   @override
   PaperTokens lerp(ThemeExtension<PaperTokens>? other, double t) {
@@ -160,8 +158,7 @@ class PaperType extends ThemeExtension<PaperType> {
   final TextStyle caption;
 
   /// The type roles in force at [context].
-  static PaperType of(BuildContext context) =>
-      Theme.of(context).extension<PaperType>() ?? light;
+  static PaperType of(BuildContext context) => Theme.of(context).extension<PaperType>() ?? light;
 
   @override
   PaperType copyWith({
@@ -185,8 +182,7 @@ class PaperType extends ThemeExtension<PaperType> {
   );
 
   @override
-  PaperType lerp(ThemeExtension<PaperType>? other, double t) =>
-      t < 0.5 ? this : (other as PaperType? ?? this);
+  PaperType lerp(ThemeExtension<PaperType>? other, double t) => t < 0.5 ? this : (other as PaperType? ?? this);
 }
 
 /// Builds the Material theme from the Warm Paper tokens.

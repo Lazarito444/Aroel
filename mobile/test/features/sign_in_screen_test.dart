@@ -29,9 +29,7 @@ void main() {
     expect(find.text('or use email'), findsOneWidget);
 
     final double apple = tester.getTopLeft(find.text('Continue with Apple')).dy;
-    final double google = tester
-        .getTopLeft(find.text('Continue with Google'))
-        .dy;
+    final double google = tester.getTopLeft(find.text('Continue with Google')).dy;
     final double disclosure = tester.getTopLeft(find.text('or use email')).dy;
 
     expect(apple, lessThan(disclosure));

@@ -13,8 +13,7 @@ void main() {
       () async {
         String requestedId = '';
         final FakeServer server = FakeServer((RequestOptions options) {
-          requestedId =
-              (options.data as Map<String, dynamic>)['userId'] as String;
+          requestedId = (options.data as Map<String, dynamic>)['userId'] as String;
           return authResponse(userId: requestedId);
         });
         final AccountHarness harness = AccountHarness(server: server);
@@ -138,8 +137,7 @@ void main() {
       'adopts the identifier of the account on a device with no journal',
       () async {
         final FakeServer server = FakeServer(
-          (RequestOptions options) =>
-              authResponse(userId: '0192f3a4-5b6c-7d8e-9f0a-0000000000aa'),
+          (RequestOptions options) => authResponse(userId: '0192f3a4-5b6c-7d8e-9f0a-0000000000aa'),
         );
         final AccountHarness harness = AccountHarness(server: server);
         addTearDown(harness.close);
@@ -196,8 +194,7 @@ void main() {
 
     test('keeps the session in the keychain, not in the database', () async {
       final FakeServer server = FakeServer(
-        (RequestOptions options) =>
-            authResponse(userId: '0192f3a4-5b6c-7d8e-9f0a-0000000000cc'),
+        (RequestOptions options) => authResponse(userId: '0192f3a4-5b6c-7d8e-9f0a-0000000000cc'),
       );
       final AccountHarness harness = AccountHarness(server: server);
       addTearDown(harness.close);
@@ -295,8 +292,7 @@ void main() {
   group('signing out', () {
     test('keeps the journal on the device', () async {
       final FakeServer server = FakeServer(
-        (RequestOptions options) =>
-            authResponse(userId: '0192f3a4-5b6c-7d8e-9f0a-0000000000aa'),
+        (RequestOptions options) => authResponse(userId: '0192f3a4-5b6c-7d8e-9f0a-0000000000aa'),
       );
       final AccountHarness harness = AccountHarness(server: server);
       addTearDown(harness.close);

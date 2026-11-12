@@ -89,7 +89,7 @@ class _Progress extends StatelessWidget {
                 style: TextButton.styleFrom(
                   foregroundColor: tokens.palette.inkSoft,
                   padding: EdgeInsets.zero,
-                  minimumSize: const Size(0, 0),
+                  minimumSize: Size.zero,
                   tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                 ),
                 child: Text(
@@ -107,13 +107,9 @@ class _Progress extends StatelessWidget {
                 child: Container(
                   height: 2,
                   margin: EdgeInsets.only(
-                    right: index == OnboardingState.stepCount - 1
-                        ? 0
-                        : Space.xs,
+                    right: index == OnboardingState.stepCount - 1 ? 0 : Space.xs,
                   ),
-                  color: index <= step
-                      ? tokens.palette.accent
-                      : tokens.palette.border,
+                  color: index <= step ? tokens.palette.accent : tokens.palette.border,
                 ),
               ),
             ),
@@ -172,9 +168,7 @@ class _RatingStep extends StatelessWidget {
     final PaperType type = PaperType.of(context);
     final PaperTokens tokens = PaperTokens.of(context);
     final int? rating = state.firstRating;
-    final String anchor = rating == null
-        ? 'Eleven stops, from a day you would rather not repeat to one of the good ones.'
-        : RatingStop.at(rating).anchor;
+    final String anchor = rating == null ? 'Eleven stops, from a day you would rather not repeat to one of the good ones.' : RatingStop.at(rating).anchor;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,

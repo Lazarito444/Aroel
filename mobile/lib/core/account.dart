@@ -1,6 +1,6 @@
 import 'package:aroel/core/result.dart';
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'account.freezed.dart';
 
@@ -63,8 +63,7 @@ abstract class AccountSnapshot with _$AccountSnapshot {
   bool get canSync => status == AccountStatus.signedIn && emailVerified;
 
   /// Whether the reader is signed in but has not confirmed the address.
-  bool get needsVerification =>
-      status == AccountStatus.signedIn && !emailVerified;
+  bool get needsVerification => status == AccountStatus.signedIn && !emailVerified;
 }
 
 /// What the account module needs from the server and from the device's store.
@@ -120,16 +119,13 @@ abstract interface class AccountService {
 /// The account of this device.
 ///
 /// The app wires the real service at launch; until it does, the account is not there.
-final Provider<AccountService> accountServiceProvider =
-    Provider<AccountService>(
-      (Ref ref) => throw StateError(
-        'The account has to be wired before the app starts.',
-      ),
-    );
+final Provider<AccountService> accountServiceProvider = Provider<AccountService>(
+  (Ref ref) => throw StateError(
+    'The account has to be wired before the app starts.',
+  ),
+);
 
 /// The account as it was read at launch.
-final Provider<AccountSnapshot> initialAccountProvider =
-    Provider<AccountSnapshot>(
-      (Ref ref) =>
-          throw StateError('The account has to be read before the app starts.'),
-    );
+final Provider<AccountSnapshot> initialAccountProvider = Provider<AccountSnapshot>(
+  (Ref ref) => throw StateError('The account has to be read before the app starts.'),
+);

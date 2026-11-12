@@ -77,17 +77,16 @@ final Provider<AuthApi> authApiProvider = Provider<AuthApi>(
 ///
 /// The service the client talks to. The rules of the account live in `core`; this is
 /// the adapter that reaches the server.
-final Provider<AccountRepository> accountRepositoryProvider =
-    Provider<AccountRepository>((Ref ref) {
-      final AccountRepository repository = AccountRepository(
-        api: ref.watch(authApiProvider),
-        database: ref.watch(databaseProvider),
-        sessionStore: ref.watch(sessionStoreProvider),
-        clock: ref.watch(clockProvider),
-        newId: Ids.uuid7,
-        deviceTimeZone: ref.watch(deviceTimeZoneProvider),
-        deviceLocale: ref.watch(deviceLocaleProvider),
-      );
-      ref.read(sessionHolderProvider).refresh = repository.refreshSession;
-      return repository;
-    });
+final Provider<AccountRepository> accountRepositoryProvider = Provider<AccountRepository>((Ref ref) {
+  final AccountRepository repository = AccountRepository(
+    api: ref.watch(authApiProvider),
+    database: ref.watch(databaseProvider),
+    sessionStore: ref.watch(sessionStoreProvider),
+    clock: ref.watch(clockProvider),
+    newId: Ids.uuid7,
+    deviceTimeZone: ref.watch(deviceTimeZoneProvider),
+    deviceLocale: ref.watch(deviceLocaleProvider),
+  );
+  ref.read(sessionHolderProvider).refresh = repository.refreshSession;
+  return repository;
+});

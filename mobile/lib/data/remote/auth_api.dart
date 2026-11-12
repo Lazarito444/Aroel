@@ -66,8 +66,7 @@ class AuthSession {
 /// Every method answers with a [Result]: a failure is a value the screen can show, never
 /// an exception it has to remember to catch.
 class AuthApi {
-  AuthApi(this._dio, {SessionHolder? session})
-    : _session = session ?? SessionHolder();
+  AuthApi(this._dio, {SessionHolder? session}) : _session = session ?? SessionHolder();
 
   final Dio _dio;
   final SessionHolder _session;
@@ -76,44 +75,40 @@ class AuthApi {
   SessionHolder get session => _session;
 
   /// Registers an account under the identifier the device already uses (§4.2).
-  Future<Result<AuthResponseDto>> register(RegisterRequestDto request) =>
-      _guard(() async {
-        final Response<dynamic> response = await _dio.post<dynamic>(
-          '/auth/register',
-          data: request.toJson(),
-        );
-        return AuthResponseDto.fromJson(_asMap(response.data));
-      });
+  Future<Result<AuthResponseDto>> register(RegisterRequestDto request) => _guard(() async {
+    final Response<dynamic> response = await _dio.post<dynamic>(
+      '/auth/register',
+      data: request.toJson(),
+    );
+    return AuthResponseDto.fromJson(_asMap(response.data));
+  });
 
   /// Signs in with an address and a password.
-  Future<Result<AuthResponseDto>> login(LoginRequestDto request) =>
-      _guard(() async {
-        final Response<dynamic> response = await _dio.post<dynamic>(
-          '/auth/login',
-          data: request.toJson(),
-        );
-        return AuthResponseDto.fromJson(_asMap(response.data));
-      });
+  Future<Result<AuthResponseDto>> login(LoginRequestDto request) => _guard(() async {
+    final Response<dynamic> response = await _dio.post<dynamic>(
+      '/auth/login',
+      data: request.toJson(),
+    );
+    return AuthResponseDto.fromJson(_asMap(response.data));
+  });
 
   /// Signs in with a provider token, which the server validates (§5.1).
-  Future<Result<AuthResponseDto>> oauth(OAuthRequestDto request) =>
-      _guard(() async {
-        final Response<dynamic> response = await _dio.post<dynamic>(
-          '/auth/oauth',
-          data: request.toJson(),
-        );
-        return AuthResponseDto.fromJson(_asMap(response.data));
-      });
+  Future<Result<AuthResponseDto>> oauth(OAuthRequestDto request) => _guard(() async {
+    final Response<dynamic> response = await _dio.post<dynamic>(
+      '/auth/oauth',
+      data: request.toJson(),
+    );
+    return AuthResponseDto.fromJson(_asMap(response.data));
+  });
 
   /// Exchanges a refresh token for a new pair, rotating the refresh token.
-  Future<Result<TokenDto>> refresh(RefreshRequestDto request) =>
-      _guard(() async {
-        final Response<dynamic> response = await _dio.post<dynamic>(
-          '/auth/refresh',
-          data: request.toJson(),
-        );
-        return TokenDto.fromJson(_asMap(response.data));
-      });
+  Future<Result<TokenDto>> refresh(RefreshRequestDto request) => _guard(() async {
+    final Response<dynamic> response = await _dio.post<dynamic>(
+      '/auth/refresh',
+      data: request.toJson(),
+    );
+    return TokenDto.fromJson(_asMap(response.data));
+  });
 
   /// Ends the session on the server.
   Future<Result<void>> logout() => _guardVoid(() async {
@@ -121,10 +116,9 @@ class AuthApi {
   });
 
   /// Changes the password of the signed-in account.
-  Future<Result<void>> changePassword(PasswordChangeDto request) =>
-      _guardVoid(() async {
-        await _dio.post<dynamic>('/auth/password', data: request.toJson());
-      });
+  Future<Result<void>> changePassword(PasswordChangeDto request) => _guardVoid(() async {
+    await _dio.post<dynamic>('/auth/password', data: request.toJson());
+  });
 
   /// Asks the server to send the verification email again.
   Future<Result<void>> sendVerificationEmail() => _guardVoid(() async {
@@ -138,17 +132,16 @@ class AuthApi {
   });
 
   /// Changes the display name or the timezone of the signed-in account.
-  Future<Result<UserDto>> updateMe({String? displayName, String? timeZone}) =>
-      _guard(() async {
-        final Response<dynamic> response = await _dio.patch<dynamic>(
-          '/me',
-          data: <String, dynamic>{
-            'displayName': ?displayName,
-            'timeZone': ?timeZone,
-          },
-        );
-        return UserDto.fromJson(_asMap(response.data));
-      });
+  Future<Result<UserDto>> updateMe({String? displayName, String? timeZone}) => _guard(() async {
+    final Response<dynamic> response = await _dio.patch<dynamic>(
+      '/me',
+      data: <String, dynamic>{
+        'displayName': ?displayName,
+        'timeZone': ?timeZone,
+      },
+    );
+    return UserDto.fromJson(_asMap(response.data));
+  });
 
   /// Deletes the account and everything the server holds for it.
   Future<Result<void>> deleteMe() => _guardVoid(() async {
@@ -170,18 +163,17 @@ class AuthApi {
   Future<Result<void>> _guardVoid(Future<void> Function() call) async {
     try {
       await call();
-      return Result<void>.success(null);
+      return const Result<void>.success(null);
     } on DioException catch (error) {
       return Result<void>.failure(_mapError(error));
     } catch (_) {
-      return Result<void>.failure(
-        const AppError.client(ClientErrorCodes.unexpected),
+      return const Result<void>.failure(
+        AppError.client(ClientErrorCodes.unexpected),
       );
     }
   }
 
-  static Map<String, dynamic> _asMap(dynamic data) =>
-      data is Map<String, dynamic> ? data : <String, dynamic>{};
+  static Map<String, dynamic> _asMap(dynamic data) => data is Map<String, dynamic> ? data : <String, dynamic>{};
 
   /// Turns a transport failure into a code the screen can explain.
   static AppError _mapError(DioException error) {

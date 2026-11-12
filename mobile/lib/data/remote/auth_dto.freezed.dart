@@ -287,7 +287,7 @@ as DateTime,
 /// @nodoc
 mixin _$UserDto {
 
- String get id; String get email; String get displayName; String get timeZone; String get locale; bool get emailVerified; DateTime get createdAt; DateTime get updatedAt;
+ String get id; String get email; String get displayName; String get timeZone; String get locale; DateTime get createdAt; DateTime get updatedAt; bool get emailVerified;
 /// Create a copy of UserDto
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -300,16 +300,16 @@ $UserDtoCopyWith<UserDto> get copyWith => _$UserDtoCopyWithImpl<UserDto>(this as
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.timeZone, timeZone) || other.timeZone == timeZone)&&(identical(other.locale, locale) || other.locale == locale)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is UserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.timeZone, timeZone) || other.timeZone == timeZone)&&(identical(other.locale, locale) || other.locale == locale)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,email,displayName,timeZone,locale,emailVerified,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,email,displayName,timeZone,locale,createdAt,updatedAt,emailVerified);
 
 @override
 String toString() {
-  return 'UserDto(id: $id, email: $email, displayName: $displayName, timeZone: $timeZone, locale: $locale, emailVerified: $emailVerified, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'UserDto(id: $id, email: $email, displayName: $displayName, timeZone: $timeZone, locale: $locale, createdAt: $createdAt, updatedAt: $updatedAt, emailVerified: $emailVerified)';
 }
 
 
@@ -320,7 +320,7 @@ abstract mixin class $UserDtoCopyWith<$Res>  {
   factory $UserDtoCopyWith(UserDto value, $Res Function(UserDto) _then) = _$UserDtoCopyWithImpl;
 @useResult
 $Res call({
- String id, String email, String displayName, String timeZone, String locale, bool emailVerified, DateTime createdAt, DateTime updatedAt
+ String id, String email, String displayName, String timeZone, String locale, DateTime createdAt, DateTime updatedAt, bool emailVerified
 });
 
 
@@ -337,17 +337,17 @@ class _$UserDtoCopyWithImpl<$Res>
 
 /// Create a copy of UserDto
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? email = null,Object? displayName = null,Object? timeZone = null,Object? locale = null,Object? emailVerified = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? id = null,Object? email = null,Object? displayName = null,Object? timeZone = null,Object? locale = null,Object? createdAt = null,Object? updatedAt = null,Object? emailVerified = null,}) {
   return _then(_self.copyWith(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,timeZone: null == timeZone ? _self.timeZone : timeZone // ignore: cast_nullable_to_non_nullable
 as String,locale: null == locale ? _self.locale : locale // ignore: cast_nullable_to_non_nullable
-as String,emailVerified: null == emailVerified ? _self.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
-as bool,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as DateTime,emailVerified: null == emailVerified ? _self.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 
@@ -432,10 +432,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String email,  String displayName,  String timeZone,  String locale,  bool emailVerified,  DateTime createdAt,  DateTime updatedAt)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( String id,  String email,  String displayName,  String timeZone,  String locale,  DateTime createdAt,  DateTime updatedAt,  bool emailVerified)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _UserDto() when $default != null:
-return $default(_that.id,_that.email,_that.displayName,_that.timeZone,_that.locale,_that.emailVerified,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.email,_that.displayName,_that.timeZone,_that.locale,_that.createdAt,_that.updatedAt,_that.emailVerified);case _:
   return orElse();
 
 }
@@ -453,10 +453,10 @@ return $default(_that.id,_that.email,_that.displayName,_that.timeZone,_that.loca
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String email,  String displayName,  String timeZone,  String locale,  bool emailVerified,  DateTime createdAt,  DateTime updatedAt)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( String id,  String email,  String displayName,  String timeZone,  String locale,  DateTime createdAt,  DateTime updatedAt,  bool emailVerified)  $default,) {final _that = this;
 switch (_that) {
 case _UserDto():
-return $default(_that.id,_that.email,_that.displayName,_that.timeZone,_that.locale,_that.emailVerified,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.email,_that.displayName,_that.timeZone,_that.locale,_that.createdAt,_that.updatedAt,_that.emailVerified);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -473,10 +473,10 @@ return $default(_that.id,_that.email,_that.displayName,_that.timeZone,_that.loca
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String email,  String displayName,  String timeZone,  String locale,  bool emailVerified,  DateTime createdAt,  DateTime updatedAt)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( String id,  String email,  String displayName,  String timeZone,  String locale,  DateTime createdAt,  DateTime updatedAt,  bool emailVerified)?  $default,) {final _that = this;
 switch (_that) {
 case _UserDto() when $default != null:
-return $default(_that.id,_that.email,_that.displayName,_that.timeZone,_that.locale,_that.emailVerified,_that.createdAt,_that.updatedAt);case _:
+return $default(_that.id,_that.email,_that.displayName,_that.timeZone,_that.locale,_that.createdAt,_that.updatedAt,_that.emailVerified);case _:
   return null;
 
 }
@@ -488,7 +488,7 @@ return $default(_that.id,_that.email,_that.displayName,_that.timeZone,_that.loca
 @JsonSerializable()
 
 class _UserDto implements UserDto {
-  const _UserDto({required this.id, required this.email, required this.displayName, required this.timeZone, required this.locale, this.emailVerified = false, required this.createdAt, required this.updatedAt});
+  const _UserDto({required this.id, required this.email, required this.displayName, required this.timeZone, required this.locale, required this.createdAt, required this.updatedAt, this.emailVerified = false});
   factory _UserDto.fromJson(Map<String, dynamic> json) => _$UserDtoFromJson(json);
 
 @override final  String id;
@@ -496,9 +496,9 @@ class _UserDto implements UserDto {
 @override final  String displayName;
 @override final  String timeZone;
 @override final  String locale;
-@override@JsonKey() final  bool emailVerified;
 @override final  DateTime createdAt;
 @override final  DateTime updatedAt;
+@override@JsonKey() final  bool emailVerified;
 
 /// Create a copy of UserDto
 /// with the given fields replaced by the non-null parameter values.
@@ -513,16 +513,16 @@ Map<String, dynamic> toJson() {
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.timeZone, timeZone) || other.timeZone == timeZone)&&(identical(other.locale, locale) || other.locale == locale)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _UserDto&&(identical(other.id, id) || other.id == id)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.timeZone, timeZone) || other.timeZone == timeZone)&&(identical(other.locale, locale) || other.locale == locale)&&(identical(other.createdAt, createdAt) || other.createdAt == createdAt)&&(identical(other.updatedAt, updatedAt) || other.updatedAt == updatedAt)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified));
 }
 
 @JsonKey(includeFromJson: false, includeToJson: false)
 @override
-int get hashCode => Object.hash(runtimeType,id,email,displayName,timeZone,locale,emailVerified,createdAt,updatedAt);
+int get hashCode => Object.hash(runtimeType,id,email,displayName,timeZone,locale,createdAt,updatedAt,emailVerified);
 
 @override
 String toString() {
-  return 'UserDto(id: $id, email: $email, displayName: $displayName, timeZone: $timeZone, locale: $locale, emailVerified: $emailVerified, createdAt: $createdAt, updatedAt: $updatedAt)';
+  return 'UserDto(id: $id, email: $email, displayName: $displayName, timeZone: $timeZone, locale: $locale, createdAt: $createdAt, updatedAt: $updatedAt, emailVerified: $emailVerified)';
 }
 
 
@@ -533,7 +533,7 @@ abstract mixin class _$UserDtoCopyWith<$Res> implements $UserDtoCopyWith<$Res> {
   factory _$UserDtoCopyWith(_UserDto value, $Res Function(_UserDto) _then) = __$UserDtoCopyWithImpl;
 @override @useResult
 $Res call({
- String id, String email, String displayName, String timeZone, String locale, bool emailVerified, DateTime createdAt, DateTime updatedAt
+ String id, String email, String displayName, String timeZone, String locale, DateTime createdAt, DateTime updatedAt, bool emailVerified
 });
 
 
@@ -550,17 +550,17 @@ class __$UserDtoCopyWithImpl<$Res>
 
 /// Create a copy of UserDto
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? email = null,Object? displayName = null,Object? timeZone = null,Object? locale = null,Object? emailVerified = null,Object? createdAt = null,Object? updatedAt = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? id = null,Object? email = null,Object? displayName = null,Object? timeZone = null,Object? locale = null,Object? createdAt = null,Object? updatedAt = null,Object? emailVerified = null,}) {
   return _then(_UserDto(
 id: null == id ? _self.id : id // ignore: cast_nullable_to_non_nullable
 as String,email: null == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
 as String,displayName: null == displayName ? _self.displayName : displayName // ignore: cast_nullable_to_non_nullable
 as String,timeZone: null == timeZone ? _self.timeZone : timeZone // ignore: cast_nullable_to_non_nullable
 as String,locale: null == locale ? _self.locale : locale // ignore: cast_nullable_to_non_nullable
-as String,emailVerified: null == emailVerified ? _self.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
-as bool,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
+as String,createdAt: null == createdAt ? _self.createdAt : createdAt // ignore: cast_nullable_to_non_nullable
 as DateTime,updatedAt: null == updatedAt ? _self.updatedAt : updatedAt // ignore: cast_nullable_to_non_nullable
-as DateTime,
+as DateTime,emailVerified: null == emailVerified ? _self.emailVerified : emailVerified // ignore: cast_nullable_to_non_nullable
+as bool,
   ));
 }
 

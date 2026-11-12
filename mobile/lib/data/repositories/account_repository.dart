@@ -16,20 +16,14 @@ import 'package:drift/drift.dart';
 /// means for the journal on the device.
 class AccountRepository implements AccountService {
   AccountRepository({
-    required AuthApi api,
-    required AppDatabase database,
-    required SessionStore sessionStore,
-    required Clock clock,
-    required String Function() newId,
-    required String deviceTimeZone,
-    required String deviceLocale,
-  }) : _api = api,
-       _database = database,
-       _sessionStore = sessionStore,
-       _clock = clock,
-       _newId = newId,
-       _deviceTimeZone = deviceTimeZone,
-       _deviceLocale = deviceLocale;
+    required this._api,
+    required this._database,
+    required this._sessionStore,
+    required this._clock,
+    required this._newId,
+    required this._deviceTimeZone,
+    required this._deviceLocale,
+  });
 
   final AuthApi _api;
   final AppDatabase _database;
@@ -97,8 +91,7 @@ class AccountRepository implements AccountService {
       displayName: profile.displayName,
       timeZone: profile.timeZone,
       emailVerified: stored.emailVerified,
-      localJournalIsSeparate:
-          profile.accountUserId != null && profile.accountUserId != profile.id,
+      localJournalIsSeparate: profile.accountUserId != null && profile.accountUserId != profile.id,
       accessTokenExpiresAt: stored.accessTokenExpiresAt,
     );
   }
@@ -115,21 +108,21 @@ class AccountRepository implements AccountService {
   }) async {
     final String normalized = Validators.normalizeEmail(email);
     if (normalized.isEmpty) {
-      return Result.failure(const AppError.client(ClientErrorCodes.emailEmpty));
+      return const Result.failure(AppError.client(ClientErrorCodes.emailEmpty));
     }
     if (!Validators.isValidEmail(normalized)) {
-      return Result.failure(
-        const AppError.client(ClientErrorCodes.emailInvalid),
+      return const Result.failure(
+        AppError.client(ClientErrorCodes.emailInvalid),
       );
     }
     if (password.isEmpty) {
-      return Result.failure(
-        const AppError.client(ClientErrorCodes.passwordEmpty),
+      return const Result.failure(
+        AppError.client(ClientErrorCodes.passwordEmpty),
       );
     }
     if (!Validators.isValidPassword(password)) {
-      return Result.failure(
-        const AppError.client(ClientErrorCodes.passwordTooShort),
+      return const Result.failure(
+        AppError.client(ClientErrorCodes.passwordTooShort),
       );
     }
 
@@ -140,9 +133,7 @@ class AccountRepository implements AccountService {
         userId: profile.id,
         email: normalized,
         password: password,
-        displayName: displayName?.trim().isNotEmpty == true
-            ? displayName!.trim()
-            : _defaultDisplayName(normalized),
+        displayName: displayName?.trim().isNotEmpty == true ? displayName!.trim() : _defaultDisplayName(normalized),
         timeZone: profile.timeZone,
         locale: profile.locale,
       ),
@@ -162,16 +153,16 @@ class AccountRepository implements AccountService {
   }) async {
     final String normalized = Validators.normalizeEmail(email);
     if (normalized.isEmpty) {
-      return Result.failure(const AppError.client(ClientErrorCodes.emailEmpty));
+      return const Result.failure(AppError.client(ClientErrorCodes.emailEmpty));
     }
     if (!Validators.isValidEmail(normalized)) {
-      return Result.failure(
-        const AppError.client(ClientErrorCodes.emailInvalid),
+      return const Result.failure(
+        AppError.client(ClientErrorCodes.emailInvalid),
       );
     }
     if (password.isEmpty) {
-      return Result.failure(
-        const AppError.client(ClientErrorCodes.passwordEmpty),
+      return const Result.failure(
+        AppError.client(ClientErrorCodes.passwordEmpty),
       );
     }
 
@@ -218,7 +209,7 @@ class AccountRepository implements AccountService {
   Future<Result<AuthSession>> refreshSession() async {
     final StoredSession? stored = await _sessionStore.read();
     if (stored == null) {
-      return Result.failure(const AppError.client(ClientErrorCodes.unexpected));
+      return const Result.failure(AppError.client(ClientErrorCodes.unexpected));
     }
 
     final Result<TokenDto> response = await _api.refresh(
@@ -227,8 +218,7 @@ class AccountRepository implements AccountService {
 
     if (response.isFailure) {
       final String code = response.errorOrNull!.code;
-      if (code == ServerErrorCodes.refreshTokenReused ||
-          code == ServerErrorCodes.refreshTokenExpired) {
+      if (code == ServerErrorCodes.refreshTokenReused || code == ServerErrorCodes.refreshTokenExpired) {
         await _forgetSession();
       }
       return Result.failure(response.errorOrNull!);
@@ -268,7 +258,7 @@ class AccountRepository implements AccountService {
   Future<Result<void>> signOut() async {
     await _api.logout();
     await _forgetSession();
-    return Result.success(null);
+    return const Result.success(null);
   }
 
   /// Changes the password of the signed-in account.
@@ -278,13 +268,13 @@ class AccountRepository implements AccountService {
     required String newPassword,
   }) async {
     if (newPassword.isEmpty) {
-      return Result.failure(
-        const AppError.client(ClientErrorCodes.passwordEmpty),
+      return const Result.failure(
+        AppError.client(ClientErrorCodes.passwordEmpty),
       );
     }
     if (!Validators.isValidPassword(newPassword)) {
-      return Result.failure(
-        const AppError.client(ClientErrorCodes.passwordTooShort),
+      return const Result.failure(
+        AppError.client(ClientErrorCodes.passwordTooShort),
       );
     }
 
@@ -333,9 +323,7 @@ class AccountRepository implements AccountService {
         displayName: user.displayName,
         timeZone: user.timeZone,
         emailVerified: user.emailVerified,
-        localJournalIsSeparate:
-            profile.accountUserId != null &&
-            profile.accountUserId != profile.id,
+        localJournalIsSeparate: profile.accountUserId != null && profile.accountUserId != profile.id,
         accessTokenExpiresAt: _session?.accessTokenExpiresAt,
       ),
     );
@@ -362,7 +350,7 @@ class AccountRepository implements AccountService {
     await _ensureProfile();
 
     if (token == null || token.isEmpty) {
-      return Result.success(null);
+      return const Result.success(null);
     }
 
     await _sessionStore.rememberPendingDeletion(token);
@@ -375,7 +363,7 @@ class AccountRepository implements AccountService {
       await _sessionStore.forgetPendingDeletion();
     }
 
-    return Result.success(null);
+    return const Result.success(null);
   }
 
   /// Finishes a deletion that did not reach the server the first time.

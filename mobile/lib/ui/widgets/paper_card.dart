@@ -5,8 +5,8 @@ import 'package:flutter/material.dart';
 /// A card: paper raised, one hairline border, warm shadow (§6.3).
 class PaperCard extends StatelessWidget {
   const PaperCard({
-    super.key,
     required this.child,
+    super.key,
     this.padding = const EdgeInsets.all(16),
     this.onTap,
     this.selected = false,
@@ -32,8 +32,7 @@ class PaperCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final PaperTokens tokens = PaperTokens.of(context);
     final PaperPalette palette = tokens.palette;
-    final Color border =
-        borderColor ?? (selected ? palette.accent : palette.border);
+    final Color border = borderColor ?? (selected ? palette.accent : palette.border);
 
     final Widget surface = DecoratedBox(
       decoration: BoxDecoration(

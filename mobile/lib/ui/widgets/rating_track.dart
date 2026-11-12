@@ -62,9 +62,7 @@ class _WideTrack extends StatelessWidget {
     final PaperType type = PaperType.of(context);
     final int? selected = value;
 
-    final String trailing = selected == null
-        ? 'Not rated'
-        : '${RatingStop.valueAt(selected)} · ${RatingStop.labelAt(selected)}';
+    final String trailing = selected == null ? 'Not rated' : '${RatingStop.valueAt(selected)} · ${RatingStop.labelAt(selected)}';
 
     return Semantics(
       label: selected == null
@@ -108,9 +106,7 @@ class _WideTrack extends StatelessWidget {
                                   selected == index ? null : index,
                                 )
                               : null,
-                          onLongPress: enabled
-                              ? () => _showAnchor(context, index, palette)
-                              : null,
+                          onLongPress: enabled ? () => _showAnchor(context, index, palette) : null,
                           child: const SizedBox.expand(),
                         ),
                       ),
@@ -120,19 +116,14 @@ class _WideTrack extends StatelessWidget {
                 LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints inner) {
                     final double width = inner.maxWidth;
-                    final double step =
-                        (width - RatingTrack._dot) /
-                        (RatingRamp.stops.length - 1);
+                    final double step = (width - RatingTrack._dot) / (RatingRamp.stops.length - 1);
                     return Stack(
                       children: List<Widget>.generate(RatingRamp.stops.length, (
                         int index,
                       ) {
                         final bool isSelected = selected == index;
-                        final double size = isSelected
-                            ? RatingTrack._selected
-                            : RatingTrack._dot;
-                        final double center =
-                            index * step + RatingTrack._dot / 2;
+                        final double size = isSelected ? RatingTrack._selected : RatingTrack._dot;
+                        final double center = index * step + RatingTrack._dot / 2;
                         return Positioned(
                           left: center - size / 2,
                           top: (RatingTrack._selected + 4 - size) / 2,
@@ -140,13 +131,9 @@ class _WideTrack extends StatelessWidget {
                             width: size,
                             height: size,
                             decoration: BoxDecoration(
-                              color: isSelected
-                                  ? RatingRamp.colorAt(index)
-                                  : palette.inkFaint,
+                              color: isSelected ? RatingRamp.colorAt(index) : palette.inkFaint,
                               shape: BoxShape.circle,
-                              border: isSelected
-                                  ? Border.all(color: palette.paper, width: 2)
-                                  : null,
+                              border: isSelected ? Border.all(color: palette.paper, width: 2) : null,
                             ),
                           ),
                         );
@@ -209,9 +196,7 @@ class _NarrowTrack extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.end,
           children: <Widget>[
             Text(
-              value == null
-                  ? 'Not rated'
-                  : '${RatingStop.valueAt(value!)} · ${RatingStop.labelAt(value!)}',
+              value == null ? 'Not rated' : '${RatingStop.valueAt(value!)} · ${RatingStop.labelAt(value!)}',
               style: type.label,
             ),
           ],
@@ -219,13 +204,9 @@ class _NarrowTrack extends StatelessWidget {
         SliderTheme(
           data: SliderTheme.of(context).copyWith(
             trackHeight: 1,
-            activeTrackColor: value == null
-                ? palette.border
-                : RatingRamp.colorAt(value!),
+            activeTrackColor: value == null ? palette.border : RatingRamp.colorAt(value!),
             inactiveTrackColor: palette.border,
-            thumbColor: value == null
-                ? palette.inkFaint
-                : RatingRamp.colorAt(value!),
+            thumbColor: value == null ? palette.inkFaint : RatingRamp.colorAt(value!),
             overlayColor: Colors.transparent,
             thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 10),
           ),

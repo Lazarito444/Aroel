@@ -1,5 +1,5 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'onboarding.freezed.dart';
 
@@ -33,12 +33,9 @@ extension OnboardingIntentCopy on OnboardingIntent {
 
   /// The line that says what the intent is for.
   String get description => switch (this) {
-    OnboardingIntent.understandMyself =>
-      'Keep a record and see what your days have in common.',
-    OnboardingIntent.slowDown =>
-      'A few seconds at the end of the day instead of scrolling.',
-    OnboardingIntent.workThroughSomething =>
-      'Put the day down in words, one evening at a time.',
+    OnboardingIntent.understandMyself => 'Keep a record and see what your days have in common.',
+    OnboardingIntent.slowDown => 'A few seconds at the end of the day instead of scrolling.',
+    OnboardingIntent.workThroughSomething => 'Put the day down in words, one evening at a time.',
     OnboardingIntent.buildAHabit => 'A small ritual that is easy to keep.',
   };
 
@@ -160,11 +157,9 @@ abstract final class PreferenceKeys {
 }
 
 /// The onboarding of this device.
-final NotifierProvider<OnboardingController, OnboardingState>
-onboardingControllerProvider =
-    NotifierProvider<OnboardingController, OnboardingState>(
-      OnboardingController.new,
-    );
+final NotifierProvider<OnboardingController, OnboardingState> onboardingControllerProvider = NotifierProvider<OnboardingController, OnboardingState>(
+  OnboardingController.new,
+);
 
 /// What the onboarding keeps on the device.
 ///
@@ -182,17 +177,15 @@ abstract interface class PreferencesStore {
 }
 
 /// The preferences of this device.
-final Provider<PreferencesStore> preferencesStoreProvider =
-    Provider<PreferencesStore>(
-      (Ref ref) => throw StateError(
-        'The device store has to be wired before the app starts.',
-      ),
-    );
+final Provider<PreferencesStore> preferencesStoreProvider = Provider<PreferencesStore>(
+  (Ref ref) => throw StateError(
+    'The device store has to be wired before the app starts.',
+  ),
+);
 
 /// The onboarding as it was read at launch.
-final Provider<OnboardingState> initialOnboardingProvider =
-    Provider<OnboardingState>(
-      (Ref ref) => throw StateError(
-        'The onboarding has to be read before the app starts.',
-      ),
-    );
+final Provider<OnboardingState> initialOnboardingProvider = Provider<OnboardingState>(
+  (Ref ref) => throw StateError(
+    'The onboarding has to be read before the app starts.',
+  ),
+);

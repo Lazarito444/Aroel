@@ -30,8 +30,7 @@ class LocalUsers extends Table {
   /// A device with rows of its own never adopts the identifier of an account: a row is
   /// never re-keyed (§4.2). A fresh device does adopt it, so that everything the account
   /// brings down lands under the same identifier.
-  BoolColumn get hasLocalJournal =>
-      boolean().withDefault(const Constant(false))();
+  BoolColumn get hasLocalJournal => boolean().withDefault(const Constant(false))();
 
   /// When the profile was created.
   DateTimeColumn get createdAt => dateTime()();

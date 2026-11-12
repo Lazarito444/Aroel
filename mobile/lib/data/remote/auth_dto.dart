@@ -16,8 +16,7 @@ abstract class TokenDto with _$TokenDto {
     required DateTime refreshTokenExpiresAt,
   }) = _TokenDto;
 
-  factory TokenDto.fromJson(Map<String, dynamic> json) =>
-      _$TokenDtoFromJson(json);
+  factory TokenDto.fromJson(Map<String, dynamic> json) => _$TokenDtoFromJson(json);
 }
 
 /// The journal profile of an account, as the server sends it (§4.2).
@@ -29,13 +28,12 @@ abstract class UserDto with _$UserDto {
     required String displayName,
     required String timeZone,
     required String locale,
-    @Default(false) bool emailVerified,
     required DateTime createdAt,
     required DateTime updatedAt,
+    @Default(false) bool emailVerified,
   }) = _UserDto;
 
-  factory UserDto.fromJson(Map<String, dynamic> json) =>
-      _$UserDtoFromJson(json);
+  factory UserDto.fromJson(Map<String, dynamic> json) => _$UserDtoFromJson(json);
 }
 
 /// What registration, sign-in and provider sign-in answer with.
@@ -46,8 +44,7 @@ abstract class AuthResponseDto with _$AuthResponseDto {
     required TokenDto tokens,
   }) = _AuthResponseDto;
 
-  factory AuthResponseDto.fromJson(Map<String, dynamic> json) =>
-      _$AuthResponseDtoFromJson(json);
+  factory AuthResponseDto.fromJson(Map<String, dynamic> json) => _$AuthResponseDtoFromJson(json);
 }
 
 /// What registration asks for.
@@ -62,8 +59,7 @@ abstract class RegisterRequestDto with _$RegisterRequestDto {
     required String locale,
   }) = _RegisterRequestDto;
 
-  factory RegisterRequestDto.fromJson(Map<String, dynamic> json) =>
-      _$RegisterRequestDtoFromJson(json);
+  factory RegisterRequestDto.fromJson(Map<String, dynamic> json) => _$RegisterRequestDtoFromJson(json);
 }
 
 /// What sign-in asks for.
@@ -74,8 +70,7 @@ abstract class LoginRequestDto with _$LoginRequestDto {
     required String password,
   }) = _LoginRequestDto;
 
-  factory LoginRequestDto.fromJson(Map<String, dynamic> json) =>
-      _$LoginRequestDtoFromJson(json);
+  factory LoginRequestDto.fromJson(Map<String, dynamic> json) => _$LoginRequestDtoFromJson(json);
 }
 
 /// What a provider sign-in asks for.
@@ -92,18 +87,15 @@ abstract class OAuthRequestDto with _$OAuthRequestDto {
     String? displayName,
   }) = _OAuthRequestDto;
 
-  factory OAuthRequestDto.fromJson(Map<String, dynamic> json) =>
-      _$OAuthRequestDtoFromJson(json);
+  factory OAuthRequestDto.fromJson(Map<String, dynamic> json) => _$OAuthRequestDtoFromJson(json);
 }
 
 /// What the token exchange asks for.
 @freezed
 abstract class RefreshRequestDto with _$RefreshRequestDto {
-  const factory RefreshRequestDto({required String refreshToken}) =
-      _RefreshRequestDto;
+  const factory RefreshRequestDto({required String refreshToken}) = _RefreshRequestDto;
 
-  factory RefreshRequestDto.fromJson(Map<String, dynamic> json) =>
-      _$RefreshRequestDtoFromJson(json);
+  factory RefreshRequestDto.fromJson(Map<String, dynamic> json) => _$RefreshRequestDtoFromJson(json);
 }
 
 /// What a password change asks for.
@@ -114,6 +106,5 @@ abstract class PasswordChangeDto with _$PasswordChangeDto {
     required String newPassword,
   }) = _PasswordChangeDto;
 
-  factory PasswordChangeDto.fromJson(Map<String, dynamic> json) =>
-      _$PasswordChangeDtoFromJson(json);
+  factory PasswordChangeDto.fromJson(Map<String, dynamic> json) => _$PasswordChangeDtoFromJson(json);
 }

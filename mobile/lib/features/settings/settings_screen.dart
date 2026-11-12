@@ -44,18 +44,14 @@ class SettingsScreen extends ConsumerWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: <Widget>[
                           Text(
-                            account.status == AccountStatus.signedIn
-                                ? (account.email ?? '')
-                                : 'Local only',
+                            account.status == AccountStatus.signedIn ? (account.email ?? '') : 'Local only',
                             style: type.uiBodyStrong.copyWith(
                               color: tokens.palette.ink,
                             ),
                           ),
                           const SizedBox(height: Space.xxs),
                           Text(
-                            account.status == AccountStatus.signedIn
-                                ? 'Your account and your journal'
-                                : 'Add an account and your journal can follow you',
+                            account.status == AccountStatus.signedIn ? 'Your account and your journal' : 'Add an account and your journal can follow you',
                             style: type.uiBody.copyWith(
                               color: tokens.palette.inkSoft,
                             ),
@@ -81,25 +77,19 @@ class SettingsScreen extends ConsumerWidget {
               _Appearance(
                 label: 'Light',
                 selected: mode == ThemeMode.light,
-                onTap: () => ref
-                    .read(themeModeProvider.notifier)
-                    .setMode(ThemeMode.light),
+                onTap: () => ref.read(themeModeProvider.notifier).setMode(ThemeMode.light),
               ),
               const SizedBox(width: Space.xs),
               _Appearance(
                 label: 'Dark',
                 selected: mode == ThemeMode.dark,
-                onTap: () => ref
-                    .read(themeModeProvider.notifier)
-                    .setMode(ThemeMode.dark),
+                onTap: () => ref.read(themeModeProvider.notifier).setMode(ThemeMode.dark),
               ),
               const SizedBox(width: Space.xs),
               _Appearance(
                 label: 'System',
                 selected: mode == ThemeMode.system,
-                onTap: () => ref
-                    .read(themeModeProvider.notifier)
-                    .setMode(ThemeMode.system),
+                onTap: () => ref.read(themeModeProvider.notifier).setMode(ThemeMode.system),
               ),
             ],
           ),

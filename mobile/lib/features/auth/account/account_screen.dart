@@ -31,7 +31,7 @@ class AccountScreen extends ConsumerWidget {
       child: ListView(
         children: <Widget>[
           if (account.needsVerification) ...<Widget>[
-            PaperNotice(
+            const PaperNotice(
               'Confirm your email address to turn on sync. Until then everything you '
               'write stays on this device.',
               tone: NoticeTone.warning,
@@ -42,9 +42,7 @@ class AccountScreen extends ConsumerWidget {
               label: 'Send the email again',
               variant: PaperButtonVariant.secondary,
               busy: auth.busy,
-              onPressed: () => ref
-                  .read(accountControllerProvider.notifier)
-                  .sendVerificationEmail(),
+              onPressed: () => ref.read(accountControllerProvider.notifier).sendVerificationEmail(),
             ),
             const SizedBox(height: Space.md),
           ],
@@ -62,8 +60,7 @@ class AccountScreen extends ConsumerWidget {
             const Divider(height: Space.lg),
             _Action(
               label: 'Sign out',
-              onTap: () =>
-                  ref.read(accountControllerProvider.notifier).signOut(),
+              onTap: () => ref.read(accountControllerProvider.notifier).signOut(),
             ),
             const Divider(height: Space.lg),
             _Action(
@@ -170,9 +167,7 @@ class _SignedIn extends ConsumerWidget {
               subtitle: 'The name shown in the app.',
               initial: account.displayName,
               field: 'Name',
-              apply: (String value) => ref
-                  .read(accountControllerProvider.notifier)
-                  .updateProfile(displayName: value),
+              apply: (String value) => ref.read(accountControllerProvider.notifier).updateProfile(displayName: value),
             ),
           ),
           const Divider(height: 1),
@@ -183,13 +178,10 @@ class _SignedIn extends ConsumerWidget {
               context,
               ref,
               title: 'Time zone',
-              subtitle:
-                  'The timezone your days are counted in, such as Europe/Madrid.',
+              subtitle: 'The timezone your days are counted in, such as Europe/Madrid.',
               initial: account.timeZone,
               field: 'Time zone',
-              apply: (String value) => ref
-                  .read(accountControllerProvider.notifier)
-                  .updateProfile(timeZone: value),
+              apply: (String value) => ref.read(accountControllerProvider.notifier).updateProfile(timeZone: value),
             ),
           ),
         ],

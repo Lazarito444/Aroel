@@ -90,8 +90,7 @@ class PaperPalette {
   ///
   /// Only the two darkest warm steps take paper-coloured numerals; the middle of the ramp
   /// is far too light for white type (§6.6).
-  Color onRating(int halfSteps) =>
-      halfSteps <= 1 ? paper : const Color(0xFF241C15);
+  Color onRating(int halfSteps) => halfSteps <= 1 ? paper : const Color(0xFF241C15);
 }
 
 /// The spacing steps (§6.3). Nothing between these.
@@ -244,8 +243,7 @@ abstract final class RatingRamp {
   ];
 
   /// The colour of the stop at [halfSteps], where 0 is 0.0 and 10 is 5.0.
-  static Color colorAt(int halfSteps) =>
-      stops[halfSteps.clamp(0, stops.length - 1)];
+  static Color colorAt(int halfSteps) => stops[halfSteps.clamp(0, stops.length - 1)];
 }
 
 /// One stop of the rating scale, with the words that explain it (§4.5).
@@ -341,8 +339,7 @@ class RatingStop {
   ];
 
   /// The stop at [halfSteps].
-  static RatingStop at(int halfSteps) =>
-      all[halfSteps.clamp(0, all.length - 1)];
+  static RatingStop at(int halfSteps) => all[halfSteps.clamp(0, all.length - 1)];
 
   /// The name of the stop at [halfSteps], e.g. `good`.
   static String labelAt(int halfSteps) => at(halfSteps).label;

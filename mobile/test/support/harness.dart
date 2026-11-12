@@ -4,12 +4,12 @@ import 'dart:typed_data';
 import 'package:aroel/app/providers.dart';
 import 'package:aroel/core/account.dart';
 import 'package:aroel/core/clock.dart';
+import 'package:aroel/core/onboarding.dart';
 import 'package:aroel/data/local/app_database.dart';
 import 'package:aroel/data/remote/auth_api.dart';
 import 'package:aroel/data/repositories/account_repository.dart';
 import 'package:aroel/data/services/secure_storage.dart';
 import 'package:aroel/data/services/session_store.dart';
-import 'package:aroel/core/onboarding.dart';
 import 'package:aroel/features/settings/theme_controller.dart';
 import 'package:dio/dio.dart';
 import 'package:drift/native.dart';
@@ -27,9 +27,7 @@ class FakeServer {
   final List<RequestOptions> requests = <RequestOptions>[];
 
   /// The requests for a path, with the `/v1` prefix the server is reached under.
-  List<RequestOptions> requestsFor(String path) => requests
-      .where((RequestOptions options) => options.uri.path == path)
-      .toList();
+  List<RequestOptions> requestsFor(String path) => requests.where((RequestOptions options) => options.uri.path == path).toList();
 
   /// A dio that talks to this server.
   Dio get dio {
@@ -195,11 +193,8 @@ Map<String, Object?> authResponse({
   'tokens': <String, Object?>{
     'accessToken': accessToken,
     'refreshToken': refreshToken,
-    'accessTokenExpiresAt':
-        (accessExpiresAt ?? DateTime.utc(2026, 11, 12, 9, 15))
-            .toIso8601String(),
-    'refreshTokenExpiresAt': (refreshExpiresAt ?? DateTime.utc(2026, 12, 11, 9))
-        .toIso8601String(),
+    'accessTokenExpiresAt': (accessExpiresAt ?? DateTime.utc(2026, 11, 12, 9, 15)).toIso8601String(),
+    'refreshTokenExpiresAt': (refreshExpiresAt ?? DateTime.utc(2026, 12, 11, 9)).toIso8601String(),
   },
 };
 

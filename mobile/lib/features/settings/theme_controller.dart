@@ -10,9 +10,7 @@ class ThemeModeController extends Notifier<ThemeMode> {
   /// Chooses the appearance and keeps the choice.
   Future<void> setMode(ThemeMode mode) async {
     state = mode;
-    await ref
-        .read(databaseProvider)
-        .writePreference(AppearanceKeys.themeMode, mode.name);
+    await ref.read(databaseProvider).writePreference(AppearanceKeys.themeMode, mode.name);
   }
 }
 
@@ -24,10 +22,8 @@ abstract final class AppearanceKeys {
 
 /// The appearance as it was read at launch.
 final Provider<ThemeMode> initialThemeModeProvider = Provider<ThemeMode>(
-  (Ref ref) =>
-      throw StateError('The appearance has to be read before the app starts.'),
+  (Ref ref) => throw StateError('The appearance has to be read before the app starts.'),
 );
 
 /// The appearance of the app.
-final NotifierProvider<ThemeModeController, ThemeMode> themeModeProvider =
-    NotifierProvider<ThemeModeController, ThemeMode>(ThemeModeController.new);
+final NotifierProvider<ThemeModeController, ThemeMode> themeModeProvider = NotifierProvider<ThemeModeController, ThemeMode>(ThemeModeController.new);

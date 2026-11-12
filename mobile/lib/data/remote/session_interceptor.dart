@@ -26,10 +26,7 @@ class SessionInterceptor extends Interceptor {
 
   @override
   void onError(DioException err, ErrorInterceptorHandler handler) {
-    final bool renewable =
-        err.response?.statusCode == 401 &&
-        _session.canRefresh &&
-        err.requestOptions.extra[_retriedKey] != true;
+    final bool renewable = err.response?.statusCode == 401 && _session.canRefresh && err.requestOptions.extra[_retriedKey] != true;
 
     if (!renewable) {
       handler.next(err);
@@ -44,15 +41,13 @@ class SessionInterceptor extends Interceptor {
 
       final RequestOptions options = err.requestOptions;
       options.extra[_retriedKey] = true;
-      options.headers['Authorization'] =
-          'Bearer ${result.valueOrNull!.accessToken}';
+      options.headers['Authorization'] = 'Bearer ${result.valueOrNull!.accessToken}';
 
       _dio
           .fetch<dynamic>(options)
           .then(
             (Response<dynamic> response) => handler.resolve(response),
-            onError: (Object failure) =>
-                handler.next(failure is DioException ? failure : err),
+            onError: (Object failure) => handler.next(failure is DioException ? failure : err),
           );
     }, onError: (Object _) => handler.next(err));
   }

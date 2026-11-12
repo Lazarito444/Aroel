@@ -63,9 +63,7 @@ class TodayScreen extends ConsumerWidget {
                 ),
                 const SizedBox(height: Space.md),
                 PaperButton(
-                  label: account.status == AccountStatus.signedIn
-                      ? 'Account'
-                      : 'Add sync',
+                  label: account.status == AccountStatus.signedIn ? 'Account' : 'Add sync',
                   variant: PaperButtonVariant.secondary,
                   onPressed: () => context.go('/settings/account'),
                 ),

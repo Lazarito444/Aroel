@@ -9,8 +9,8 @@ import 'package:flutter/material.dart';
 /// reads as paper rather than as a white rectangle (§6.3).
 class PaperScaffold extends StatelessWidget {
   const PaperScaffold({
-    super.key,
     required this.child,
+    super.key,
     this.title,
     this.leading,
     this.actions,
@@ -92,8 +92,7 @@ class _PaperGrain extends StatelessWidget {
       child: RepaintBoundary(
         child: CustomPaint(
           painter: _GrainPainter(
-            color: (isDark ? const Color(0xFFFFFFFF) : const Color(0xFF3C2814))
-                .withValues(alpha: 0.03),
+            color: (isDark ? const Color(0xFFFFFFFF) : const Color(0xFF3C2814)).withValues(alpha: 0.03),
           ),
         ),
       ),
@@ -110,9 +109,7 @@ class _GrainPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     final Random random = Random(1974);
     final Paint paint = Paint()..color = color;
-    final int count = ((size.width * size.height) / 1400)
-        .clamp(0, 2400)
-        .toInt();
+    final int count = ((size.width * size.height) / 1400).clamp(0, 2400).toInt();
 
     for (int i = 0; i < count; i++) {
       final double x = random.nextDouble() * size.width;
@@ -122,6 +119,5 @@ class _GrainPainter extends CustomPainter {
   }
 
   @override
-  bool shouldRepaint(covariant _GrainPainter oldDelegate) =>
-      oldDelegate.color != color;
+  bool shouldRepaint(covariant _GrainPainter oldDelegate) => oldDelegate.color != color;
 }

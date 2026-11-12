@@ -5,9 +5,9 @@ import 'package:flutter/material.dart';
 /// A choice the reader makes, offered as a row on paper.
 class PaperOption extends StatelessWidget {
   const PaperOption({
-    super.key,
     required this.title,
     required this.onTap,
+    super.key,
     this.description,
     this.selected = false,
   });
@@ -80,9 +80,7 @@ class PaperOption extends StatelessWidget {
                     width: 1.5,
                   ),
                 ),
-                child: selected
-                    ? Icon(Icons.check_rounded, size: 12, color: palette.paper)
-                    : null,
+                child: selected ? Icon(Icons.check_rounded, size: 12, color: palette.paper) : null,
               ),
             ],
           ),

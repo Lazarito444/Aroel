@@ -19,8 +19,7 @@ class DeleteAccountScreen extends ConsumerStatefulWidget {
   const DeleteAccountScreen({super.key});
 
   @override
-  ConsumerState<DeleteAccountScreen> createState() =>
-      _DeleteAccountScreenState();
+  ConsumerState<DeleteAccountScreen> createState() => _DeleteAccountScreenState();
 }
 
 class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
@@ -53,7 +52,7 @@ class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
               style: type.uiBody.copyWith(color: tokens.palette.inkSoft),
             ),
             const SizedBox(height: Space.lg),
-            PaperCard(
+            const PaperCard(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
@@ -61,7 +60,7 @@ class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
                     label: 'On this device',
                     value: 'Everything is wiped now.',
                   ),
-                  const SizedBox(height: Space.sm),
+                  SizedBox(height: Space.sm),
                   _Line(
                     label: 'On the server',
                     value: 'The copy is wiped within 24 hours.',
@@ -101,9 +100,7 @@ class _DeleteAccountScreenState extends ConsumerState<DeleteAccountScreen> {
               busy: auth.busy,
               onPressed: _confirmation.text.trim().toLowerCase() == 'delete'
                   ? () async {
-                      final bool deleted = await ref
-                          .read(accountControllerProvider.notifier)
-                          .deleteAccount();
+                      final bool deleted = await ref.read(accountControllerProvider.notifier).deleteAccount();
                       if (deleted && context.mounted) {
                         context.go('/');
                       }
