@@ -1,7 +1,8 @@
 # Aroel — v1 Scope & Design
 
-**Status:** definition · **Date:** 2026-11-11 · **Stage:** pre-build (no Flutter client yet;
-backend scaffold in `backend/`)
+**Status:** definition · **Date:** 2026-11-12 · **Stage:** pre-build (no Flutter client yet;
+backend scaffold in `backend/`, with the domain model, the identity split and the first
+migration in place)
 
 > **Change 2026-11-11 — v1 trimmed to six things.** Account + sync (optional), the day
 > record (per-day writing, rating, tags, sentiment, gratitude), notes, a recoverable
@@ -94,6 +95,12 @@ missed days reset. Never shown with guilt copy.
 can mark a missed day as kept. Recovery is free and unlimited, and recovered days are
 marked as recovered in the streak view — no shaming, no "you lost it" copy.
 
+**As implemented.** The streak is evaluated lazily against the last day that was kept, so
+no nightly job is needed and the answer is the same whenever it is asked for. One missed
+day spends the grace token and the streak continues; two missed days in a row break it,
+and the fresh streak starts with a fresh token. Whether the token should replenish over
+time is still open (§10.8).
+
 ### 2.4 Weekly review
 
 Once a week, the Insights screen shows the last seven days as numbers: rating average and
@@ -162,22 +169,33 @@ drift. Notes are the one thing that sits outside the spine, by design.
 
 ### 4.2 Entities
 
-| Entity | Key fields | Notes |
-|---|---|---|
-| `users` | id, email, display_name, timezone, locale, created_at | one identity per person; absent in local-only mode |
-| `identities` | user_id, provider (`password`/`apple`/`google`), subject, secret_hash | argon2id for password |
-| `refresh_tokens` | id, user_id, token_hash, device_id, expires_at, rotated_from | rotation + reuse detection |
-| `devices` | id, user_id, platform, push_token, app_version, last_seen_at | |
-| `days` | id, user_id, local_date, rating_half, note, rated_at, created_at, updated_at | **one per user per date**, unique (user_id, local_date) |
-| `day_tags` | day_id, tag_id | context: work, family, exercise, poor sleep |
-| `gratitude_items` | id, day_id, position (1–3), text | short, ≤ 140 chars each |
-| `day_sentiment` | id, user_id, day_id, rating_half, emotion_id, source, recorded_at | one per day; `source` = manual/on_device |
-| `entries` | id, user_id, day_id, kind, title, body_md, created_at, updated_at, word_count, opened_count, last_opened_at, pinned, deleted_at | kind: free/mood_only |
-| `notes` | id, user_id, title, body_md, created_at, updated_at, word_count, pinned, deleted_at | **no `day_id`** — the shelf |
-| `emotions` | id, slug, label, family, valence_bias | seeded taxonomy, ~60 rows |
-| `tags` | id, user_id, label, color | context tags for days |
-| `streak_state` | user_id, current_streak, longest_streak, grace_remaining, last_kept_date | one row per user |
-| `streak_restorations` | user_id, local_date | days the user chose to recover |
+| Entity | Table | Key fields | Notes |
+|---|---|---|---|
+| `CoreUser` | `users` | id, display_name, timezone, locale, created_at, updated_at | the journal profile of one person; absent in local-only mode; **no email** — that belongs to the identity row |
+| `InfrastructureUser` | `aspnet_users` | id, email, password_hash, security_stamp, … | ASP.NET Core Identity; owns the credential and **shares its key** with the profile |
+| — | `aspnet_user_logins`, `aspnet_user_claims`, `aspnet_user_tokens`, `aspnet_roles`, … | | provider links (`apple`, `google`) and the rest of the identity schema, owned by the framework |
+| `CoreRefreshToken` | `refresh_tokens` | id, user_id, token_hash, device_id, expires_at, revoked_at, rotated_from_id | rotation + reuse detection |
+| `CoreDevice` | `devices` | id, user_id, platform, push_token, app_version, last_seen_at | |
+| `CoreDay` | `days` | id, user_id, local_date, rating_half, note, rated_at, created_at, updated_at, sync_seq | **one per user per date**, unique (user_id, local_date) |
+| `CoreGratitudeItem` | `gratitude_items` | id, day_id, position (1–3), text, created_at, updated_at, sync_seq | unique (day_id, position) |
+| `CoreDayTag` | `day_tags` | id, day_id, tag_id, created_at, updated_at, sync_seq | the link between a day and a tag |
+| `CoreDaySentiment` | `day_sentiment` | id, user_id, day_id, rating_half, emotion_id, source, recorded_at, sync_seq | one per day; `source` = manual/on_device |
+| `CoreEntry` | `entries` | id, user_id, day_id, kind, title, body_md, word_count, opened_count, last_opened_at, pinned, deleted_at, sync_seq | kind: free/mood_only |
+| `CoreNote` | `notes` | id, user_id, title, body_md, word_count, pinned, deleted_at, sync_seq | **no `day_id`** — the shelf |
+| `CoreEmotion` | `emotions` | id, slug, label, family, valence_bias | seeded taxonomy, ~60 rows |
+| `CoreTag` | `tags` | id, user_id, label, color, sync_seq | context tags for days |
+| `CoreStreakState` | `streak_states` | id, user_id, current_streak, longest_streak, grace_remaining, last_kept_date | one row per user |
+| `CoreStreakRestoration` | `streak_restorations` | id, user_id, streak_state_id, local_date | days the user chose to recover |
+
+**How the code is shaped.** The domain lives in `Aroel.Core` and knows nothing about
+Entity Framework or ASP.NET Core Identity. Every entity is built by a static `Create`
+that returns a `Result`, so a rule that cannot be met is a value the caller has to deal
+with rather than an exception it can forget; state then changes only through the
+behaviour the entity exposes, which is where the invariants live (a day carries at most
+five tags and three gratitude lines, a rating is half points, an unrated day is absent
+rather than zero). The identity side is the one place where the domain and the framework
+meet: `InfrastructureUser` is ASP.NET Core Identity's user, and `CoreUser` is the
+journal profile it points at.
 
 **Local-only mode.** The client generates its own `user_id` (uuid7) on first launch and
 writes every row under it. Without an account those rows never leave the device. When the
@@ -204,88 +222,151 @@ in the calendar — never the ramp's bottom step.
 The same domain is used by `day_sentiment.rating_half`, so a day's tone and its rating are
 comparable numbers.
 
-### 4.4 DDL sketch (the parts that carry risk)
+### 4.4 DDL (as migrated)
+
+The schema is what `backend/Aroel.Data/Migrations` generates; this is the shape of the
+tables that carry risk.
 
 ```sql
+-- Server-assigned monotonic cursor, shared by every syncable table.
+create sequence sync_seq start with 1 increment by 1 no cycle;
+
+create table users (
+  id           uuid primary key,
+  display_name varchar(120) not null,
+  timezone     varchar(64) not null,
+  locale       varchar(35) not null,
+  created_at   timestamptz not null,
+  updated_at   timestamptz not null
+);
+
+-- The identity row: ASP.NET Core Identity owns the credential, the journal owns the
+-- profile, and the two share a primary key.
+create table aspnet_users (
+  id           uuid primary key references users (id) on delete cascade,
+  email        varchar(256),
+  password_hash text,
+  -- ... the rest of the identity schema
+);
+
 create table days (
   id           uuid primary key,
-  user_id      uuid not null references users,
+  user_id      uuid not null references users (id) on delete cascade,
   local_date   date not null,
   rating_half  smallint check (rating_half between 0 and 10),
-  note         text,
+  note         varchar(280),
   rated_at     timestamptz,
-  created_at   timestamptz not null default now(),
-  updated_at   timestamptz not null default now(),
-  sync_seq     bigint not null default nextval('sync_seq'),
+  created_at   timestamptz not null,
+  updated_at   timestamptz not null,
+  sync_seq     bigint not null default nextval('sync_seq'::regclass),
   unique (user_id, local_date)
 );
-create index days_user_date on days (user_id, local_date desc);
 
 create table gratitude_items (
-  id        uuid primary key,
-  day_id    uuid not null references days on delete cascade,
-  position  smallint not null check (position between 1 and 3),
-  text      text not null check (length(text) between 1 and 140),
+  id         uuid primary key,
+  day_id     uuid not null references days (id) on delete cascade,
+  position   smallint not null check (position between 1 and 3),
+  text       varchar(140) not null check (length(text) between 1 and 140),
+  created_at timestamptz not null,
+  updated_at timestamptz not null,
+  sync_seq   bigint not null default nextval('sync_seq'::regclass),
   unique (day_id, position)
+);
+
+create table day_tags (
+  id         uuid primary key,
+  day_id     uuid not null references days (id) on delete cascade,
+  tag_id     uuid not null references tags (id) on delete cascade,
+  created_at timestamptz not null,
+  updated_at timestamptz not null,
+  sync_seq   bigint not null default nextval('sync_seq'::regclass),
+  unique (day_id, tag_id)
 );
 
 create table day_sentiment (
   id           uuid primary key,
-  user_id      uuid not null references users,
-  day_id       uuid not null references days on delete cascade,
+  user_id      uuid not null references users (id) on delete cascade,
+  day_id       uuid not null references days (id) on delete cascade,
   rating_half  smallint check (rating_half between 0 and 10),
-  emotion_id   uuid references emotions,
-  source       text not null check (source in ('manual','on_device')),
-  recorded_at  timestamptz not null default now(),
-  updated_at   timestamptz not null default now(),
-  sync_seq     bigint not null default nextval('sync_seq'),
+  emotion_id   uuid references emotions (id) on delete set null,
+  source       varchar(16) not null check (source in ('manual','on_device')),
+  recorded_at  timestamptz not null,
+  created_at   timestamptz not null,
+  updated_at   timestamptz not null,
+  sync_seq     bigint not null default nextval('sync_seq'::regclass),
   unique (user_id, day_id)
 );
 
 create table entries (
   id             uuid primary key,
-  user_id        uuid not null references users,
-  day_id         uuid not null references days,
-  kind           text not null check (kind in ('free','mood_only')),
-  title          text,
+  user_id        uuid not null references users (id) on delete cascade,
+  day_id         uuid not null references days (id) on delete cascade,
+  kind           varchar(16) not null check (kind in ('free','mood_only')),
+  title          varchar(200),
   body_md        text not null default '',
   word_count     int  not null default 0,
   opened_count   int  not null default 0,
   last_opened_at timestamptz,
   pinned         boolean not null default false,
-  created_at     timestamptz not null default now(),
-  updated_at     timestamptz not null default now(),
+  created_at     timestamptz not null,
+  updated_at     timestamptz not null,
   deleted_at     timestamptz,
-  sync_seq       bigint not null default nextval('sync_seq')
+  sync_seq       bigint not null default nextval('sync_seq'::regclass)
 );
 create index entries_user_date on entries (user_id, created_at desc) where deleted_at is null;
 
 create table notes (
-  id           uuid primary key,
-  user_id      uuid not null references users,
-  title        text,
-  body_md      text not null default '',
-  word_count   int  not null default 0,
-  pinned       boolean not null default false,
-  created_at   timestamptz not null default now(),
-  updated_at   timestamptz not null default now(),
-  deleted_at   timestamptz,
-  sync_seq     bigint not null default nextval('sync_seq')
+  id         uuid primary key,
+  user_id    uuid not null references users (id) on delete cascade,
+  title      varchar(200),
+  body_md    text not null default '',
+  word_count int  not null default 0,
+  pinned     boolean not null default false,
+  created_at timestamptz not null,
+  updated_at timestamptz not null,
+  deleted_at timestamptz,
+  sync_seq   bigint not null default nextval('sync_seq'::regclass)
+);
+
+create table refresh_tokens (
+  id              uuid primary key,
+  user_id         uuid not null references users (id) on delete cascade,
+  token_hash      varchar(256) not null unique,
+  device_id       uuid,
+  expires_at      timestamptz not null,
+  revoked_at      timestamptz,
+  rotated_from_id uuid,
+  created_at      timestamptz not null,
+  updated_at      timestamptz not null
+);
+
+create table streak_states (
+  id              uuid primary key,
+  user_id         uuid not null unique references users (id) on delete cascade,
+  current_streak  int not null default 0,
+  longest_streak  int not null default 0,
+  grace_remaining int not null default 1,
+  last_kept_date  date,
+  created_at      timestamptz not null,
+  updated_at      timestamptz not null
 );
 
 create table streak_restorations (
-  user_id    uuid not null references users,
-  local_date date not null,
-  created_at timestamptz not null default now(),
-  primary key (user_id, local_date)
+  id             uuid primary key,
+  user_id        uuid not null references users (id) on delete cascade,
+  streak_state_id uuid not null references streak_states (id) on delete cascade,
+  local_date     date not null,
+  created_at     timestamptz not null,
+  updated_at     timestamptz not null,
+  unique (user_id, local_date)
 );
-
--- Server-assigned monotonic cursor, added to every syncable table.
-create sequence sync_seq;
 ```
 
 `sync_seq` (rather than `updated_at` alone) is what makes delta sync correct: it survives
-clock skew and never misses a row written in the same millisecond as the pull.
+clock skew and never misses a row written in the same millisecond as the pull. Every
+table the client owns carries one — including `gratitude_items` and `day_tags`, because
+a gratitude line and a tag are edited after the day is written, and a row without a
+cursor is a row a second device never hears about.
 
 ### 4.5 Rating semantics
 
@@ -322,7 +403,8 @@ Nine surfaces. Brackets are v1 acceptance criteria.
 ### 5.1 Auth (optional, never a wall)
 
 Email + password, Sign in with Apple, Sign in with Google. Provider buttons above an
-"or use email" disclosure. Password minimum 10 characters, no composition rules.
+"or use email" disclosure. Password minimum 8 characters, no composition rules. An email
+address belongs to one account. Ten failed sign-ins lock the account for five minutes.
 
 **The app never asks for an account before the user has written something.** Auth lives in
 Settings and in the onboarding's third step, where it is offered, not requested. Email
@@ -519,8 +601,9 @@ difference is whether a sync engine is attached.
 ### 7.2 Server — .NET 11
 
 Minimal APIs in vertical slices, EF Core + Npgsql, one project, folders per endpoint group.
-C# 15. Argon2id (`Konscious.Security.Cryptography`) for passwords, own OIDC validation for Apple
-and Google, JWT access 15 min + rotating refresh 60 days with reuse detection.
+C# 15. PBKDF2 for passwords, which is the ASP.NET Core Identity default and needs no
+third-party hasher; own OIDC validation for Apple and Google, JWT access 15 min + rotating
+refresh 60 days with reuse detection.
 
 ```
 POST   /auth/register | /auth/login | /auth/oauth | /auth/refresh | /auth/logout
@@ -576,9 +659,10 @@ first thing to put back if the scope allows it.
 
 ### 8.2 Security baseline
 
-Argon2id hashing, refresh-token rotation with reuse detection, strict CORS, no secrets in
-the client, per-user row isolation enforced in queries, rate limits on auth, soft-delete
-with 30-day purge, account deletion that actually deletes.
+PBKDF2 password hashing (the Identity default), unique email, lockout for five minutes
+after ten failed attempts, refresh-token rotation with reuse detection, strict CORS, no
+secrets in the client, per-user row isolation enforced in queries, rate limits on auth,
+soft-delete with 30-day purge, account deletion that actually deletes.
 
 ### 8.3 On-device AI, precisely
 
@@ -632,7 +716,10 @@ feel like something you would do unprompted for a week, the rest does not matter
    editor, richer media) or the ritual side (streaks, weekly reviews).
 8. **Streak recovery rules.** v1 lets the user recover a missed day for free and
    indefinitely (§2.3). Decide whether recovery should be limited per streak, and whether
-   recovered days count as kept days in the analytics averages.
+   recovered days count as kept days in the analytics averages. *As implemented for now:*
+   recovery is free and unlimited, the grace token is spent when it forgives a miss and a
+   fresh streak starts with a fresh one, and a recovered day counts as kept but is not yet
+   distinguished in the averages.
 9. **History of this document.** Earlier revisions specified guided programs with sessions,
    search, export, media, reminders, a timeline and a weekly reflection card. All of it was
    deliberately cut (§3.1). The git history holds the full design; nothing was lost by

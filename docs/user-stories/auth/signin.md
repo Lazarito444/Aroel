@@ -7,9 +7,10 @@ As a **Writer**, I want to create an account with email and password, so that my
 
 - **The app never requires an account.** Writing, rating, tags, gratitude, notes and the streak all work with no account at all, and no sign-in wall is ever shown. **[invariant]** [§5.1, §7.1]
 - Signing up later adopts the journal already on the device: the client sends its own `uuid7` user id at registration and the server rejects an id that is taken, so not one row is re-keyed. **[invariant]** [§4.2]
-- Password minimum 10 characters, no composition rules. [§5.1]
+- Password minimum 8 characters, no composition rules. [§5.1]
+- An email address belongs to one account; ten failed sign-ins lock the account for five minutes. [§5.1, §8.2]
 - Email verification is required **before the first sync but not before writing** — the app is fully usable offline immediately after signup, with zero account interaction. **[invariant]** [§5.1]
-- Payload is hashed with Argon2id; no password rules messages beyond the length check. [§7.2, §8.2]
+- Payload is hashed with PBKDF2 (the Identity default); no password rules messages beyond the length check. [§7.2, §8.2]
 
 ### US-102 · Sign in with Apple or Google
 As a **Writer**, I want to sign in with one tap on a provider button, so that I don't manage another password. [§5.1]
