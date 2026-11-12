@@ -7,6 +7,7 @@
   </Folder>
   <Folder Name="/tests/">
     <Project Path="Aroel.Core.Tests/Aroel.Core.Tests.csproj" Id="2b7f1c44-9d3a-4f0e-8a6b-1c5e2f7d9042" />
+    <Project Path="Aroel.Data.Tests/Aroel.Data.Tests.csproj" Id="6d0b4f92-5a1e-4c77-9b31-8f4a2c6e5b13" />
   </Folder>
   <Folder Name="/Solution Items/">
     <File Path="../.gitignore" />

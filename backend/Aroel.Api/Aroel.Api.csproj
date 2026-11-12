@@ -2,6 +2,16 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.OpenApi" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aroel.Application\Aroel.Application.csproj" />
+    <ProjectReference Include="..\Aroel.Core\Aroel.Core.csproj" />
+    <ProjectReference Include="..\Aroel.Data\Aroel.Data.csproj" />
   </ItemGroup>
 
 </Project>
