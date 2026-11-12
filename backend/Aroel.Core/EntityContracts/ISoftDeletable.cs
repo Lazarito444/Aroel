@@ -9,9 +9,14 @@ namespace Aroel.Core.EntityContracts;
 public interface ISoftDeletable
 {
     /// <summary>
-    /// Gets or sets the time of deletion, <see langword="null"/> while the item is alive.
+    /// Gets the time of deletion, <see langword="null"/> while the item is alive.
     /// In UTC, like every timestamp in the schema; tombstones carry it through sync instead of
     /// a bare delete so devices converge via last-write-wins.
     /// </summary>
-    DateTime? DeletedAt { get; set; }
+    /// <remarks>
+    /// The contract is read-only on purpose: an aggregate deletes itself through its own
+    /// behaviour, so the moment of deletion is a fact of the aggregate and not something
+    /// a caller may write.
+    /// </remarks>
+    DateTimeOffset? DeletedAt { get; }
 }

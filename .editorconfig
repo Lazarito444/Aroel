@@ -127,3 +127,9 @@ indent_size = 2
 [{obj/**,bin/**,**/*.g.dart,**/*.freezed.dart,**/*.mapper.dart,**/Migrations/**}]
 generated_code = true
 dotnet_analyzer_diagnostic.severity = none
+
+# ============================================
+# Tests — a test name reads as Subject_Expectation
+# ============================================
+[backend/**.Tests/**/*.cs]
+dotnet_diagnostic.CA1707.severity = none

@@ -5,7 +5,9 @@
     <Project Path="Aroel.Core/Aroel.Core.csproj" Id="e95f8ba1-e5dc-4cbd-b38f-4d0114748035" />
     <Project Path="Aroel.Data/Aroel.Data.csproj" Id="b9181651-1c3f-4915-ab39-d8122e0dcdbc" />
   </Folder>
-  <Folder Name="/tests/" />
+  <Folder Name="/tests/">
+    <Project Path="Aroel.Core.Tests/Aroel.Core.Tests.csproj" Id="2b7f1c44-9d3a-4f0e-8a6b-1c5e2f7d9042" />
+  </Folder>
   <Folder Name="/Solution Items/">
     <File Path="../.gitignore" />
     <File Path="../.gitattributes" />
