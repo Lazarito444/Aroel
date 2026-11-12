@@ -1,7 +1,8 @@
 # AGENTS.md
 
-Aroel is a personal journaling app for iOS/Android. **The repo is docs-only on the client side —
-no Flutter app exists yet**; the server scaffold lives in [`backend/`](backend). The single source
+Aroel is a personal journaling app for iOS/Android. **The client lives in [`mobile/`](mobile)** — a Flutter
+app on Riverpod, `go_router`, drift and freezed, with the auth module of milestone M1 built; the server
+scaffold lives in [`backend/`](backend) and has no HTTP endpoints yet. The single source
 of truth is [`docs/scope-and-design.md`](docs/scope-and-design.md)
 (v1 scope, domain model, screens, design system, architecture, milestones). Read it before
 building anything; `README.md` is just a pointer to it.
@@ -34,9 +35,20 @@ Aroel.Api         composition root: wiring, endpoints                   (depends
 Aroel.Core.Tests  domain tests        Aroel.Data.Tests  identity tests
 ```
 
-Client: no `package.json` or `pubspec.yaml` exists yet — do not hunt for scripts. When you
-scaffold the first Flutter code (milestone M0 in §9), create the tooling then and record the
-real commands here. Verify what you add actually runs before claiming a milestone is done.
+Client (Flutter, in `mobile/`; the app id is `dev.lazarito.aroel`):
+
+```
+flutter pub get                 # from mobile/
+dart run build_runner build     # after changing a drift table, a model or a DTO
+flutter analyze
+flutter test
+flutter run --dart-define=AROEL_API_BASE_URL=https://localhost:5001/v1
+```
+
+The generated code (`*.g.dart`, `*.freezed.dart`) is committed, so a clone builds without
+the generator; run it anyway before you trust a change. The client is feature-first:
+`lib/app`, `lib/core`, `lib/data`, `lib/features/<feature>`, `lib/ui`. Verify what you add
+actually runs before claiming a milestone is done.
 
 ## How the domain is written
 
@@ -62,6 +74,28 @@ real commands here. Verify what you add actually runs before claiming a mileston
   fails at boot instead of on the first request that needs it.
 - **The identity policy lives in `Aroel.Data`** (`IdentitySetup`) and is pinned by a test;
   the composition root only wires it.
+
+## How the client is written
+
+- **The client owns its identifiers.** `lib/core/ids.dart` makes `uuid7` values that keep
+  their order, so a burst of offline writes does not shuffle itself.
+- **The account is a repository, not a screen.** `AccountRepository` holds the rules: what
+  a password may be, what an account is called, when a session is renewed, when the
+  journal is adopted and what deleting an account means. The screens ask it and show what
+  it answers.
+- **`core` owns the ports; `data` implements them.** `AccountService` and
+  `PreferencesStore` are declared in `lib/core`, and the app wires the adapters at
+  launch. The layers only ever point one way: `core` knows nothing below it, `data` knows
+  `core`, the features know `core` and `ui`, and the app knows everything.
+- **A failure is a value.** `Result<T>` carries an `AppError` code; the code is turned
+  into a sentence at the edge, so no screen carries prose of its own.
+- **Tokens live in the keychain** (`SessionStore` over `SecureStorage`), never in the
+  database and never in a log.
+- **Nothing waits for the network.** The local store is the source of truth; the account
+  is an invitation, and a failure to reach the server says so in one plain sentence.
+- **The design system is code, not a description.** `lib/ui/tokens.dart` holds the palette,
+  the spacing steps, the radii, the durations and the rating ramp; `lib/ui/paper_theme.dart`
+  holds the type roles. Read them instead of writing hex values.
 
 ## Mandated stack (§7)
 

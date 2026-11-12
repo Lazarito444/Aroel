@@ -57,9 +57,12 @@ nuget.exe
 build/
 generated_plugin_registrant.*
 
-# Generated Dart files — uncomment to ignore, or keep *.g.dart committed for drift
+# Generated Dart files — the client's drift, freezed and json_serializable output is
+# committed, so a clone builds without running the generator.
 *.freezed.dart
 *.g.dart
+!mobile/lib/**/*.freezed.dart
+!mobile/lib/**/*.g.dart
 
 # Note: pubspec.lock is NOT ignored — Flutter apps should commit it (only packages ignore it)
 

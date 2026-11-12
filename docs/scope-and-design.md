@@ -1,8 +1,9 @@
 # Aroel — v1 Scope & Design
 
-**Status:** definition · **Date:** 2026-11-12 · **Stage:** pre-build (no Flutter client yet;
-backend scaffold in `backend/`, with the domain model, the identity split and the first
-migration in place)
+**Status:** definition · **Date:** 2026-11-12 · **Stage:** in build (the Flutter client
+lives in `mobile/`, with the auth module of M1 — onboarding, sign-in, account, deletion —
+done and tested; the day record is M2 and is not there yet. The backend has the domain
+model, the identity split and the first migration, but no HTTP endpoints yet)
 
 > **Change 2026-11-11 — v1 trimmed to six things.** Account + sync (optional), the day
 > record (per-day writing, rating, tags, sentiment, gratitude), notes, a recoverable
@@ -607,6 +608,7 @@ refresh 60 days with reuse detection.
 
 ```
 POST   /auth/register | /auth/login | /auth/oauth | /auth/refresh | /auth/logout
+POST   /auth/password | /auth/email-verification
 GET    /me          PATCH /me          DELETE /me
 GET    /days?from=&to=          PATCH /days/{localDate}
 GET    /sync?since={cursor}     POST /sync/batch
@@ -614,6 +616,16 @@ GET    /insights?window=week|month&from=&to=
 ```
 
 Rate limits: 5/min auth, 60/min sync, 30/min insights. OpenAPI generated, versioned `/v1`.
+
+**What the client sends.** `POST /auth/register` carries the identifier the device already
+writes its rows under (`userId`), so the account adopts the journal on the device and not
+one row is re-keyed; the server rejects an identifier that is taken. `POST /auth/oauth`
+carries the provider, the provider's token and the same `userId`. `POST /auth/password`
+changes the password of the signed-in account, and `POST /auth/email-verification` sends
+the verification email again; both are needed by §5.9 and are not implied by the list
+above. Errors answer with a code — `email.invalid`, `auth.email_taken`,
+`auth.invalid_credentials`, `auth.account_locked`, `auth.rate_limited`,
+`refresh_token.reused` — and the client turns the code into a sentence.
 
 ### 7.3 Sync
 

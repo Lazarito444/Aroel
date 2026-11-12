@@ -16,6 +16,11 @@ Structure: one folder per module (mirrors `lib/features` in §7.1), one file per
 
 26 stories across 7 modules.
 
+**Where they are.** The auth module (`US-101`…`US-106`) is built in the client, in
+[`mobile/lib/features/auth/`](../../mobile/lib/features/auth), and its rules are pinned by
+the tests in [`mobile/test/`](../../mobile/test). The server half — `/auth/*` and `/me` —
+does not exist yet, so the client talks to a contract, not to an endpoint.
+
 **Retired stories.** IDs are not stable across revisions of the scope doc — do not reuse a
 retired ID.
 

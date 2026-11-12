@@ -1,0 +1,12 @@
+# The analyzer reads this file. `flutter analyze` runs it over the whole client.
+include: package:flutter_lints/flutter.yaml
+
+linter:
+  rules:
+    # A named parameter cannot start with an underscore, so the rule's suggestion is
+    # impossible for the private fields of the wiring classes.
+    prefer_initializing_formals: false
+
+    # The public API of this client is documented by hand; the analyzer has nothing to
+    # add about it.
+    public_member_api_docs: false
