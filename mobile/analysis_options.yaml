@@ -34,3 +34,8 @@ linter:
     use_super_parameters: true
     use_truncating_division: true
     valid_regexps: true
+analyzer:
+  exclude:
+    - build/**
+    - android/**
+    - ios/**
