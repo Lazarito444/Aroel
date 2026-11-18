@@ -1,6 +1,6 @@
 import 'package:aroel/ui/paper_theme.dart';
 import 'package:aroel/ui/tokens.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A choice the reader makes, offered as a row on paper.
 class PaperOption extends StatelessWidget {

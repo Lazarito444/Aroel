@@ -13,7 +13,7 @@ import 'package:aroel/data/services/session_store.dart';
 import 'package:aroel/features/settings/theme_controller.dart';
 import 'package:dio/dio.dart';
 import 'package:drift/native.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:riverpod/misc.dart' show Override;
 
 /// A server that answers with what the test tells it to.

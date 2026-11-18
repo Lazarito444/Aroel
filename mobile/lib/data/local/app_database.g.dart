@@ -1004,30 +1004,28 @@ abstract class _$AppDatabase extends GeneratedDatabase {
   ];
 }
 
-typedef $$LocalUsersTableCreateCompanionBuilder =
-    LocalUsersCompanion Function({
-      required String id,
-      Value<String?> accountUserId,
-      Value<String> displayName,
-      required String timeZone,
-      required String locale,
-      Value<bool> hasLocalJournal,
-      required DateTime createdAt,
-      required DateTime updatedAt,
-      Value<int> rowid,
-    });
-typedef $$LocalUsersTableUpdateCompanionBuilder =
-    LocalUsersCompanion Function({
-      Value<String> id,
-      Value<String?> accountUserId,
-      Value<String> displayName,
-      Value<String> timeZone,
-      Value<String> locale,
-      Value<bool> hasLocalJournal,
-      Value<DateTime> createdAt,
-      Value<DateTime> updatedAt,
-      Value<int> rowid,
-    });
+typedef $$LocalUsersTableCreateCompanionBuilder = LocalUsersCompanion Function({
+  required String id,
+  Value<String?> accountUserId,
+  Value<String> displayName,
+  required String timeZone,
+  required String locale,
+  Value<bool> hasLocalJournal,
+  required DateTime createdAt,
+  required DateTime updatedAt,
+  Value<int> rowid,
+});
+typedef $$LocalUsersTableUpdateCompanionBuilder = LocalUsersCompanion Function({
+  Value<String> id,
+  Value<String?> accountUserId,
+  Value<String> displayName,
+  Value<String> timeZone,
+  Value<String> locale,
+  Value<bool> hasLocalJournal,
+  Value<DateTime> createdAt,
+  Value<DateTime> updatedAt,
+  Value<int> rowid,
+});
 
 class $$LocalUsersTableFilterComposer extends Composer<_$AppDatabase, $LocalUsersTable> {
   $$LocalUsersTableFilterComposer({
@@ -1231,7 +1229,18 @@ class $$LocalUsersTableTableManager
                 updatedAt: updatedAt,
                 rowid: rowid,
               ),
-          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), BaseReferences(db, table, e))).toList(),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$LocalUsersTable, LocalUser>(table),
+                  BaseReferences<_$AppDatabase, $LocalUsersTable, LocalUser>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
           prefetchHooksCallback: null,
         ),
       );
@@ -1251,18 +1260,16 @@ typedef $$LocalUsersTableProcessedTableManager =
       LocalUser,
       PrefetchHooks Function()
     >;
-typedef $$PreferencesTableCreateCompanionBuilder =
-    PreferencesCompanion Function({
-      required String key,
-      required String value,
-      Value<int> rowid,
-    });
-typedef $$PreferencesTableUpdateCompanionBuilder =
-    PreferencesCompanion Function({
-      Value<String> key,
-      Value<String> value,
-      Value<int> rowid,
-    });
+typedef $$PreferencesTableCreateCompanionBuilder = PreferencesCompanion Function({
+  required String key,
+  required String value,
+  Value<int> rowid,
+});
+typedef $$PreferencesTableUpdateCompanionBuilder = PreferencesCompanion Function({
+  Value<String> key,
+  Value<String> value,
+  Value<int> rowid,
+});
 
 class $$PreferencesTableFilterComposer extends Composer<_$AppDatabase, $PreferencesTable> {
   $$PreferencesTableFilterComposer({
@@ -1341,12 +1348,11 @@ class $$PreferencesTableTableManager
           createFilteringComposer: () => $$PreferencesTableFilterComposer($db: db, $table: table),
           createOrderingComposer: () => $$PreferencesTableOrderingComposer($db: db, $table: table),
           createComputedFieldComposer: () => $$PreferencesTableAnnotationComposer($db: db, $table: table),
-          updateCompanionCallback:
-              ({
-                Value<String> key = const Value.absent(),
-                Value<String> value = const Value.absent(),
-                Value<int> rowid = const Value.absent(),
-              }) => PreferencesCompanion(key: key, value: value, rowid: rowid),
+          updateCompanionCallback: ({
+            Value<String> key = const Value.absent(),
+            Value<String> value = const Value.absent(),
+            Value<int> rowid = const Value.absent(),
+          }) => PreferencesCompanion(key: key, value: value, rowid: rowid),
           createCompanionCallback:
               ({
                 required String key,
@@ -1357,7 +1363,18 @@ class $$PreferencesTableTableManager
                 value: value,
                 rowid: rowid,
               ),
-          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), BaseReferences(db, table, e))).toList(),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$PreferencesTable, Preference>(table),
+                  BaseReferences<_$AppDatabase, $PreferencesTable, Preference>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
           prefetchHooksCallback: null,
         ),
       );
@@ -1380,18 +1397,16 @@ typedef $$PreferencesTableProcessedTableManager =
       Preference,
       PrefetchHooks Function()
     >;
-typedef $$SyncStatesTableCreateCompanionBuilder =
-    SyncStatesCompanion Function({
-      Value<int> id,
-      Value<int> cursor,
-      Value<DateTime?> lastSyncedAt,
-    });
-typedef $$SyncStatesTableUpdateCompanionBuilder =
-    SyncStatesCompanion Function({
-      Value<int> id,
-      Value<int> cursor,
-      Value<DateTime?> lastSyncedAt,
-    });
+typedef $$SyncStatesTableCreateCompanionBuilder = SyncStatesCompanion Function({
+  Value<int> id,
+  Value<int> cursor,
+  Value<DateTime?> lastSyncedAt,
+});
+typedef $$SyncStatesTableUpdateCompanionBuilder = SyncStatesCompanion Function({
+  Value<int> id,
+  Value<int> cursor,
+  Value<DateTime?> lastSyncedAt,
+});
 
 class $$SyncStatesTableFilterComposer extends Composer<_$AppDatabase, $SyncStatesTable> {
   $$SyncStatesTableFilterComposer({
@@ -1505,7 +1520,18 @@ class $$SyncStatesTableTableManager
                 cursor: cursor,
                 lastSyncedAt: lastSyncedAt,
               ),
-          withReferenceMapper: (p0) => p0.map((e) => (e.readTable(table), BaseReferences(db, table, e))).toList(),
+          withReferenceMapper: (p0) => p0
+              .map(
+                (e) => (
+                  e.readTable<$SyncStatesTable, SyncState>(table),
+                  BaseReferences<_$AppDatabase, $SyncStatesTable, SyncState>(
+                    db,
+                    table,
+                    e,
+                  ),
+                ),
+              )
+              .toList(),
           prefetchHooksCallback: null,
         ),
       );

@@ -5,11 +5,11 @@ publish_to: 'none'
 version: 0.1.0+1
 
 environment:
-  sdk: ^3.12.2
+  sdk: ^3.14.0
 
 dependencies:
   dio: ^5.11.1 # Transport.
-  drift: ^2.34.0 # The device's own store.
+  drift: ^2.35.4 # The device's own store.
   drift_flutter: ^0.3.1
   flutter:
     sdk: flutter
@@ -21,18 +21,17 @@ dependencies:
   google_sign_in: ^7.2.0 # Identity providers (§5.1).
   intl: ^0.20.2
   json_annotation: ^4.12.0 # Models.
+  material_ui: ^1.11.1 # Standalone Material package (default since Flutter 3.50).
   riverpod: ^3.5.0
   sign_in_with_apple: ^8.2.0 # Identity providers (§5.1).
 
 dev_dependencies:
-  build_runner: ^2.15.1
-  # Pinned: drift_dev 2.34.6+ asks for analyzer 13, which freezed 3.x (the last line that
-  # runs on Dart 3.12) cannot live with.
-  drift_dev: 2.34.0
+  build_runner: ^2.17.1
+  drift_dev: ^2.35.3
   flutter_lints: ^6.0.0
   flutter_test:
     sdk: flutter
-  freezed: ^3.2.5
+  freezed: ^4.0.3
   json_serializable: ^6.15.2
   mocktail: ^1.0.5
 

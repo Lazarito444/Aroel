@@ -5,9 +5,9 @@ import 'package:aroel/ui/paper_theme.dart';
 import 'package:aroel/ui/tokens.dart';
 import 'package:aroel/ui/widgets/paper_card.dart';
 import 'package:aroel/ui/widgets/paper_scaffold.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// The settings of the app (§5.9).
 class SettingsScreen extends ConsumerWidget {

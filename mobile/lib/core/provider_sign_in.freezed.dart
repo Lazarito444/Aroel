@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'provider_sign_in.dart';
@@ -9,6 +9,7 @@ part of 'provider_sign_in.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -29,16 +30,21 @@ $ProviderCredentialCopyWith<ProviderCredential> get copyWith => _$ProviderCreden
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProviderCredential&&(identical(other.provider, provider) || other.provider == provider)&&(identical(other.idToken, idToken) || other.idToken == idToken)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName));
+  final _this = this as ProviderCredential;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is ProviderCredential&&(identical(other.provider, _this.provider) || other.provider == _this.provider)&&(identical(other.idToken, _this.idToken) || other.idToken == _this.idToken)&&(identical(other.email, _this.email) || other.email == _this.email)&&(identical(other.displayName, _this.displayName) || other.displayName == _this.displayName));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,provider,idToken,email,displayName);
+int get hashCode {
+  final _this = this as ProviderCredential;
+  return Object.hash(runtimeType,_this.provider,_this.idToken,_this.email,_this.displayName);
+}
 
 @override
 String toString() {
-  return 'ProviderCredential(provider: $provider, idToken: $idToken, email: $email, displayName: $displayName)';
+  final _this = this as ProviderCredential;
+  return 'ProviderCredential(provider: ${_this.provider}, idToken: ${_this.idToken}, email: ${_this.email}, displayName: ${_this.displayName})';
 }
 
 
@@ -67,7 +73,7 @@ class _$ProviderCredentialCopyWithImpl<$Res>
 /// Create a copy of ProviderCredential
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? provider = null,Object? idToken = null,Object? email = freezed,Object? displayName = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(ProviderCredential(
 provider: null == provider ? _self.provider : provider // ignore: cast_nullable_to_non_nullable
 as AuthProvider,idToken: null == idToken ? _self.idToken : idToken // ignore: cast_nullable_to_non_nullable
 as String,email: freezed == email ? _self.email : email // ignore: cast_nullable_to_non_nullable
@@ -235,16 +241,18 @@ _$ProviderCredentialCopyWith<_ProviderCredential> get copyWith => __$ProviderCre
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProviderCredential&&(identical(other.provider, provider) || other.provider == provider)&&(identical(other.idToken, idToken) || other.idToken == idToken)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _ProviderCredential&&(identical(other.provider, provider) || other.provider == provider)&&(identical(other.idToken, idToken) || other.idToken == idToken)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,provider,idToken,email,displayName);
+int get hashCode {
+    return Object.hash(runtimeType,provider,idToken,email,displayName);
+}
 
 @override
 String toString() {
-  return 'ProviderCredential(provider: $provider, idToken: $idToken, email: $email, displayName: $displayName)';
+    return 'ProviderCredential(provider: $provider, idToken: $idToken, email: $email, displayName: $displayName)';
 }
 
 

@@ -1,6 +1,6 @@
 import 'package:aroel/ui/paper_theme.dart';
 import 'package:aroel/ui/tokens.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// The rating control: eleven half steps on a hairline track (§6.6).
 ///

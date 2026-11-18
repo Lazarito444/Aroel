@@ -1,6 +1,6 @@
 import 'package:aroel/app/providers.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// The appearance of the app: light, dark or whatever the device says (§5.9).
 class ThemeModeController extends Notifier<ThemeMode> {

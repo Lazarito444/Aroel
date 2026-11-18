@@ -12,8 +12,8 @@ import 'package:aroel/data/services/secure_storage.dart';
 import 'package:aroel/data/services/session_store.dart';
 import 'package:aroel/features/settings/theme_controller.dart';
 import 'package:dio/dio.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_timezone/flutter_timezone.dart';
+import 'package:material_ui/material_ui.dart';
 import 'package:riverpod/misc.dart' show Override;
 
 /// Reads what the app needs before it shows anything.

@@ -6,9 +6,9 @@ import 'package:aroel/ui/widgets/paper_button.dart';
 import 'package:aroel/ui/widgets/paper_notice.dart';
 import 'package:aroel/ui/widgets/paper_scaffold.dart';
 import 'package:aroel/ui/widgets/paper_text_field.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// Which way the reader is going.
 enum AuthMode {

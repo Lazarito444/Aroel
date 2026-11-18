@@ -1,6 +1,6 @@
 import 'package:aroel/ui/paper_theme.dart';
 import 'package:aroel/ui/tokens.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// A card: paper raised, one hairline border, warm shadow (§6.3).
 class PaperCard extends StatelessWidget {

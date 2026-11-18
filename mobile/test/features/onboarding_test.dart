@@ -1,9 +1,9 @@
 import 'package:aroel/app/app.dart';
 import 'package:aroel/core/onboarding.dart';
 import 'package:aroel/ui/widgets/rating_track.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../support/harness.dart';
 

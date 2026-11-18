@@ -1,5 +1,5 @@
 import 'package:aroel/ui/tokens.dart';
-import 'package:flutter/material.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// The colours and shadows of the current mode.
 ///

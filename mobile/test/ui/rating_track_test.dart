@@ -1,6 +1,6 @@
 import 'package:aroel/ui/widgets/rating_track.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 void main() {
   testWidgets('one tap sets a value, a second tap on the same stop clears it', (

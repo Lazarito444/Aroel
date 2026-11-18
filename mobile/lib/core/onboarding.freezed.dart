@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'onboarding.dart';
@@ -9,6 +9,7 @@ part of 'onboarding.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -29,16 +30,21 @@ $OnboardingStateCopyWith<OnboardingState> get copyWith => _$OnboardingStateCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnboardingState&&(identical(other.completed, completed) || other.completed == completed)&&(identical(other.intent, intent) || other.intent == intent)&&(identical(other.firstRating, firstRating) || other.firstRating == firstRating)&&(identical(other.step, step) || other.step == step));
+  final _this = this as OnboardingState;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnboardingState&&(identical(other.completed, _this.completed) || other.completed == _this.completed)&&(identical(other.intent, _this.intent) || other.intent == _this.intent)&&(identical(other.firstRating, _this.firstRating) || other.firstRating == _this.firstRating)&&(identical(other.step, _this.step) || other.step == _this.step));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,completed,intent,firstRating,step);
+int get hashCode {
+  final _this = this as OnboardingState;
+  return Object.hash(runtimeType,_this.completed,_this.intent,_this.firstRating,_this.step);
+}
 
 @override
 String toString() {
-  return 'OnboardingState(completed: $completed, intent: $intent, firstRating: $firstRating, step: $step)';
+  final _this = this as OnboardingState;
+  return 'OnboardingState(completed: ${_this.completed}, intent: ${_this.intent}, firstRating: ${_this.firstRating}, step: ${_this.step})';
 }
 
 
@@ -67,7 +73,7 @@ class _$OnboardingStateCopyWithImpl<$Res>
 /// Create a copy of OnboardingState
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? completed = null,Object? intent = freezed,Object? firstRating = freezed,Object? step = null,}) {
-  return _then(_self.copyWith(
+  return _then(OnboardingState(
 completed: null == completed ? _self.completed : completed // ignore: cast_nullable_to_non_nullable
 as bool,intent: freezed == intent ? _self.intent : intent // ignore: cast_nullable_to_non_nullable
 as OnboardingIntent?,firstRating: freezed == firstRating ? _self.firstRating : firstRating // ignore: cast_nullable_to_non_nullable
@@ -235,16 +241,18 @@ _$OnboardingStateCopyWith<_OnboardingState> get copyWith => __$OnboardingStateCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnboardingState&&(identical(other.completed, completed) || other.completed == completed)&&(identical(other.intent, intent) || other.intent == intent)&&(identical(other.firstRating, firstRating) || other.firstRating == firstRating)&&(identical(other.step, step) || other.step == step));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _OnboardingState&&(identical(other.completed, completed) || other.completed == completed)&&(identical(other.intent, intent) || other.intent == intent)&&(identical(other.firstRating, firstRating) || other.firstRating == firstRating)&&(identical(other.step, step) || other.step == step));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,completed,intent,firstRating,step);
+int get hashCode {
+    return Object.hash(runtimeType,completed,intent,firstRating,step);
+}
 
 @override
 String toString() {
-  return 'OnboardingState(completed: $completed, intent: $intent, firstRating: $firstRating, step: $step)';
+    return 'OnboardingState(completed: $completed, intent: $intent, firstRating: $firstRating, step: $step)';
 }
 
 

@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // coverage:ignore-file
-// ignore_for_file: type=lint
+// ignore_for_file: type=lint, type=warning, deprecated_member_use, deprecated_member_use_from_same_package
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
 part of 'account.dart';
@@ -9,6 +9,7 @@ part of 'account.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// GENERATED CODE - DO NOT MODIFY BY HAND
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
@@ -37,16 +38,21 @@ $AccountSnapshotCopyWith<AccountSnapshot> get copyWith => _$AccountSnapshotCopyW
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountSnapshot&&(identical(other.status, status) || other.status == status)&&(identical(other.localUserId, localUserId) || other.localUserId == localUserId)&&(identical(other.accountUserId, accountUserId) || other.accountUserId == accountUserId)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.timeZone, timeZone) || other.timeZone == timeZone)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified)&&(identical(other.localJournalIsSeparate, localJournalIsSeparate) || other.localJournalIsSeparate == localJournalIsSeparate)&&(identical(other.accessTokenExpiresAt, accessTokenExpiresAt) || other.accessTokenExpiresAt == accessTokenExpiresAt));
+  final _this = this as AccountSnapshot;
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is AccountSnapshot&&(identical(other.status, _this.status) || other.status == _this.status)&&(identical(other.localUserId, _this.localUserId) || other.localUserId == _this.localUserId)&&(identical(other.accountUserId, _this.accountUserId) || other.accountUserId == _this.accountUserId)&&(identical(other.email, _this.email) || other.email == _this.email)&&(identical(other.displayName, _this.displayName) || other.displayName == _this.displayName)&&(identical(other.timeZone, _this.timeZone) || other.timeZone == _this.timeZone)&&(identical(other.emailVerified, _this.emailVerified) || other.emailVerified == _this.emailVerified)&&(identical(other.localJournalIsSeparate, _this.localJournalIsSeparate) || other.localJournalIsSeparate == _this.localJournalIsSeparate)&&(identical(other.accessTokenExpiresAt, _this.accessTokenExpiresAt) || other.accessTokenExpiresAt == _this.accessTokenExpiresAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,localUserId,accountUserId,email,displayName,timeZone,emailVerified,localJournalIsSeparate,accessTokenExpiresAt);
+int get hashCode {
+  final _this = this as AccountSnapshot;
+  return Object.hash(runtimeType,_this.status,_this.localUserId,_this.accountUserId,_this.email,_this.displayName,_this.timeZone,_this.emailVerified,_this.localJournalIsSeparate,_this.accessTokenExpiresAt);
+}
 
 @override
 String toString() {
-  return 'AccountSnapshot(status: $status, localUserId: $localUserId, accountUserId: $accountUserId, email: $email, displayName: $displayName, timeZone: $timeZone, emailVerified: $emailVerified, localJournalIsSeparate: $localJournalIsSeparate, accessTokenExpiresAt: $accessTokenExpiresAt)';
+  final _this = this as AccountSnapshot;
+  return 'AccountSnapshot(status: ${_this.status}, localUserId: ${_this.localUserId}, accountUserId: ${_this.accountUserId}, email: ${_this.email}, displayName: ${_this.displayName}, timeZone: ${_this.timeZone}, emailVerified: ${_this.emailVerified}, localJournalIsSeparate: ${_this.localJournalIsSeparate}, accessTokenExpiresAt: ${_this.accessTokenExpiresAt})';
 }
 
 
@@ -75,7 +81,7 @@ class _$AccountSnapshotCopyWithImpl<$Res>
 /// Create a copy of AccountSnapshot
 /// with the given fields replaced by the non-null parameter values.
 @pragma('vm:prefer-inline') @override $Res call({Object? status = null,Object? localUserId = null,Object? accountUserId = freezed,Object? email = freezed,Object? displayName = null,Object? timeZone = null,Object? emailVerified = null,Object? localJournalIsSeparate = null,Object? accessTokenExpiresAt = freezed,}) {
-  return _then(_self.copyWith(
+  return _then(AccountSnapshot(
 status: null == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
 as AccountStatus,localUserId: null == localUserId ? _self.localUserId : localUserId // ignore: cast_nullable_to_non_nullable
 as String,accountUserId: freezed == accountUserId ? _self.accountUserId : accountUserId // ignore: cast_nullable_to_non_nullable
@@ -261,16 +267,18 @@ _$AccountSnapshotCopyWith<_AccountSnapshot> get copyWith => __$AccountSnapshotCo
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _AccountSnapshot&&(identical(other.status, status) || other.status == status)&&(identical(other.localUserId, localUserId) || other.localUserId == localUserId)&&(identical(other.accountUserId, accountUserId) || other.accountUserId == accountUserId)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.timeZone, timeZone) || other.timeZone == timeZone)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified)&&(identical(other.localJournalIsSeparate, localJournalIsSeparate) || other.localJournalIsSeparate == localJournalIsSeparate)&&(identical(other.accessTokenExpiresAt, accessTokenExpiresAt) || other.accessTokenExpiresAt == accessTokenExpiresAt));
+    return identical(this, other) || (other.runtimeType == runtimeType&&other is _AccountSnapshot&&(identical(other.status, status) || other.status == status)&&(identical(other.localUserId, localUserId) || other.localUserId == localUserId)&&(identical(other.accountUserId, accountUserId) || other.accountUserId == accountUserId)&&(identical(other.email, email) || other.email == email)&&(identical(other.displayName, displayName) || other.displayName == displayName)&&(identical(other.timeZone, timeZone) || other.timeZone == timeZone)&&(identical(other.emailVerified, emailVerified) || other.emailVerified == emailVerified)&&(identical(other.localJournalIsSeparate, localJournalIsSeparate) || other.localJournalIsSeparate == localJournalIsSeparate)&&(identical(other.accessTokenExpiresAt, accessTokenExpiresAt) || other.accessTokenExpiresAt == accessTokenExpiresAt));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,status,localUserId,accountUserId,email,displayName,timeZone,emailVerified,localJournalIsSeparate,accessTokenExpiresAt);
+int get hashCode {
+    return Object.hash(runtimeType,status,localUserId,accountUserId,email,displayName,timeZone,emailVerified,localJournalIsSeparate,accessTokenExpiresAt);
+}
 
 @override
 String toString() {
-  return 'AccountSnapshot(status: $status, localUserId: $localUserId, accountUserId: $accountUserId, email: $email, displayName: $displayName, timeZone: $timeZone, emailVerified: $emailVerified, localJournalIsSeparate: $localJournalIsSeparate, accessTokenExpiresAt: $accessTokenExpiresAt)';
+    return 'AccountSnapshot(status: $status, localUserId: $localUserId, accountUserId: $accountUserId, email: $email, displayName: $displayName, timeZone: $timeZone, emailVerified: $emailVerified, localJournalIsSeparate: $localJournalIsSeparate, accessTokenExpiresAt: $accessTokenExpiresAt)';
 }
 
 

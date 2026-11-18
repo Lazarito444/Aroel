@@ -1,8 +1,8 @@
 import 'package:aroel/app/router.dart';
 import 'package:aroel/features/settings/theme_controller.dart';
 import 'package:aroel/ui/paper_theme.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:material_ui/material_ui.dart';
 
 /// The app.
 class AroelApp extends ConsumerWidget {

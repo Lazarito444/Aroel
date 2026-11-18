@@ -1,9 +1,9 @@
 import 'package:aroel/core/account.dart';
 import 'package:aroel/features/auth/account/account_screen.dart';
 import 'package:aroel/ui/widgets/paper_button.dart';
-import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:material_ui/material_ui.dart';
 
 import '../support/harness.dart';
 
