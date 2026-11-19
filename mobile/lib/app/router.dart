@@ -3,8 +3,14 @@ import 'package:aroel/features/auth/account/account_screen.dart';
 import 'package:aroel/features/auth/delete/delete_account_screen.dart';
 import 'package:aroel/features/auth/onboarding/onboarding_screen.dart';
 import 'package:aroel/features/auth/signin/sign_in_screen.dart';
+import 'package:aroel/features/day/day_detail_screen.dart';
+import 'package:aroel/features/entries/entry_read_screen.dart';
+import 'package:aroel/features/insights/insights_screen.dart';
+import 'package:aroel/features/notes/note_editor_screen.dart';
+import 'package:aroel/features/notes/notes_list_screen.dart';
 import 'package:aroel/features/settings/settings_screen.dart';
 import 'package:aroel/features/today/today_screen.dart';
+import 'package:aroel/features/today/write_screen.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -20,6 +26,30 @@ final Provider<GoRouter> routerProvider = Provider<GoRouter>((Ref ref) {
       GoRoute(
         path: '/',
         builder: (BuildContext context, GoRouterState state) => const TodayScreen(),
+      ),
+      GoRoute(
+        path: '/write',
+        builder: (BuildContext context, GoRouterState state) => WriteScreen(localDate: state.uri.queryParameters['date']),
+      ),
+      GoRoute(
+        path: '/notes',
+        builder: (BuildContext context, GoRouterState state) => const NotesListScreen(),
+      ),
+      GoRoute(
+        path: '/notes/:id',
+        builder: (BuildContext context, GoRouterState state) => NoteEditorScreen(id: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/day/:localDate',
+        builder: (BuildContext context, GoRouterState state) => DayDetailScreen(localDate: state.pathParameters['localDate']!),
+      ),
+      GoRoute(
+        path: '/entry/:id',
+        builder: (BuildContext context, GoRouterState state) => EntryReadScreen(id: state.pathParameters['id']!),
+      ),
+      GoRoute(
+        path: '/insights',
+        builder: (BuildContext context, GoRouterState state) => const InsightsScreen(),
       ),
       GoRoute(
         path: '/onboarding',

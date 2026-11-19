@@ -110,9 +110,12 @@ class AuthApi {
     return TokenDto.fromJson(_asMap(response.data));
   });
 
-  /// Ends the session on the server.
-  Future<Result<void>> logout() => _guardVoid(() async {
-    await _dio.post<dynamic>('/auth/logout');
+  /// Ends the session on the server, when one was presented.
+  Future<Result<void>> logout({String? refreshToken}) => _guardVoid(() async {
+    await _dio.post<dynamic>(
+      '/auth/logout',
+      data: refreshToken == null ? null : <String, Object?>{'refreshToken': refreshToken},
+    );
   });
 
   /// Changes the password of the signed-in account.

@@ -1,5 +1,6 @@
 import 'package:aroel/core/account.dart';
 import 'package:aroel/core/account_controller.dart';
+import 'package:aroel/core/day_controller.dart';
 import 'package:aroel/features/settings/theme_controller.dart';
 import 'package:aroel/ui/paper_theme.dart';
 import 'package:aroel/ui/tokens.dart';
@@ -18,6 +19,7 @@ class SettingsScreen extends ConsumerWidget {
     final AuthState auth = ref.watch(accountControllerProvider);
     final AccountSnapshot account = auth.account;
     final ThemeMode mode = ref.watch(themeModeProvider);
+    final DayState day = ref.watch(dayControllerProvider);
     final PaperTokens tokens = PaperTokens.of(context);
     final PaperType type = PaperType.of(context);
 
@@ -70,6 +72,18 @@ class SettingsScreen extends ConsumerWidget {
             ),
           ),
           const SizedBox(height: Space.lg),
+          Text('STREAK', style: type.label),
+          const SizedBox(height: Space.xs),
+          PaperCard(
+            child: Row(
+              children: <Widget>[
+                _StreakFigure(label: 'CURRENT', value: '${day.streak.current}'),
+                _StreakFigure(label: 'LONGEST', value: '${day.streak.longest}'),
+                _StreakFigure(label: 'RECOVERED', value: '${day.streak.recoveredDates.length}'),
+              ],
+            ),
+          ),
+          const SizedBox(height: Space.lg),
           Text('APPEARANCE', style: type.label),
           const SizedBox(height: Space.xs),
           Row(
@@ -100,6 +114,30 @@ class SettingsScreen extends ConsumerWidget {
             'Aroel is a quiet journal that keeps a record of your days.',
             style: type.uiBody.copyWith(color: tokens.palette.inkSoft),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+/// One of the three streak numbers. Never with guilt copy: a streak is a record
+/// of showing up, not a debt.
+class _StreakFigure extends StatelessWidget {
+  const _StreakFigure({required this.label, required this.value});
+
+  final String label;
+  final String value;
+
+  @override
+  Widget build(BuildContext context) {
+    final PaperTokens tokens = PaperTokens.of(context);
+    final PaperType type = PaperType.of(context);
+
+    return Expanded(
+      child: Column(
+        children: <Widget>[
+          Text(label, style: type.label),
+          Text(value, style: type.pageTitle.copyWith(color: tokens.palette.ink)),
         ],
       ),
     );

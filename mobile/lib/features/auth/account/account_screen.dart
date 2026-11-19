@@ -1,5 +1,8 @@
+import 'package:aroel/app/providers.dart';
 import 'package:aroel/core/account.dart';
 import 'package:aroel/core/account_controller.dart';
+import 'package:aroel/core/result.dart';
+import 'package:aroel/data/services/sync_engine.dart';
 import 'package:aroel/ui/paper_theme.dart';
 import 'package:aroel/ui/tokens.dart';
 import 'package:aroel/ui/widgets/paper_button.dart';
@@ -51,6 +54,10 @@ class AccountScreen extends ConsumerWidget {
             AccountStatus.signedOut => _SignedOut(email: account.email),
             AccountStatus.localOnly => const _LocalOnly(),
           },
+          if (account.status == AccountStatus.signedIn) ...<Widget>[
+            const SizedBox(height: Space.md),
+            const _SyncRow(),
+          ],
           if (account.status == AccountStatus.signedIn) ...<Widget>[
             const SizedBox(height: Space.lg),
             _Action(
@@ -382,5 +389,58 @@ class _Action extends StatelessWidget {
         ),
       ),
     );
+  }
+}
+
+/// One row for the sync: a quiet button, and one plain sentence about how it went.
+class _SyncRow extends ConsumerStatefulWidget {
+  const _SyncRow();
+
+  @override
+  ConsumerState<_SyncRow> createState() => _SyncRowState();
+}
+
+class _SyncRowState extends ConsumerState<_SyncRow> {
+  bool _busy = false;
+  String? _message;
+
+  @override
+  Widget build(BuildContext context) {
+    final PaperTokens tokens = PaperTokens.of(context);
+    final PaperType type = PaperType.of(context);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        PaperButton(
+          label: 'Sync now',
+          variant: PaperButtonVariant.quiet,
+          busy: _busy,
+          onPressed: _run,
+        ),
+        if (_message != null) ...<Widget>[
+          const SizedBox(height: Space.xs),
+          Text(_message!, style: type.caption.copyWith(color: tokens.palette.inkSoft)),
+        ],
+      ],
+    );
+  }
+
+  Future<void> _run() async {
+    setState(() {
+      _busy = true;
+      _message = null;
+    });
+
+    final Result<SyncSummary> result = await ref.read(syncEngineProvider).syncNow();
+
+    if (!mounted) {
+      return;
+    }
+
+    setState(() {
+      _busy = false;
+      _message = result.isSuccess ? 'Everything is in step with the server.' : result.errorOrNull!.message;
+    });
   }
 }

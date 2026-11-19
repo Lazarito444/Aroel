@@ -2,12 +2,16 @@ import 'package:aroel/app/providers.dart';
 import 'package:aroel/core/account.dart';
 import 'package:aroel/core/clock.dart';
 import 'package:aroel/core/config.dart';
+import 'package:aroel/core/day.dart';
 import 'package:aroel/core/ids.dart';
+import 'package:aroel/core/notes.dart';
 import 'package:aroel/core/onboarding.dart';
 import 'package:aroel/data/local/app_database.dart';
 import 'package:aroel/data/remote/auth_api.dart';
 import 'package:aroel/data/remote/session_interceptor.dart';
 import 'package:aroel/data/repositories/account_repository.dart';
+import 'package:aroel/data/repositories/day_repository.dart';
+import 'package:aroel/data/repositories/note_repository.dart';
 import 'package:aroel/data/services/secure_storage.dart';
 import 'package:aroel/data/services/session_store.dart';
 import 'package:aroel/features/settings/theme_controller.dart';
@@ -58,6 +62,22 @@ Future<List<Override>> bootstrapAroel() async {
   final OnboardingState onboarding = await _readOnboarding(database);
   final ThemeMode themeMode = await _readThemeMode(database);
 
+  final DayRepository dayRepository = DayRepository(
+    database: database,
+    clock: clock,
+    newId: Ids.uuid7,
+    deviceTimeZone: timeZone,
+    deviceLocale: locale,
+  );
+
+  final NoteRepository noteRepository = NoteRepository(
+    database: database,
+    clock: clock,
+    newId: Ids.uuid7,
+    deviceTimeZone: timeZone,
+    deviceLocale: locale,
+  );
+
   // A deletion that did not reach the server the first time is finished now.
   await repository.completePendingDeletion();
 
@@ -71,6 +91,10 @@ Future<List<Override>> bootstrapAroel() async {
     deviceLocaleProvider.overrideWithValue(locale),
     accountRepositoryProvider.overrideWithValue(repository),
     accountServiceProvider.overrideWithValue(repository),
+    dayRepositoryProvider.overrideWithValue(dayRepository),
+    dayServiceProvider.overrideWithValue(dayRepository),
+    noteRepositoryProvider.overrideWithValue(noteRepository),
+    noteServiceProvider.overrideWithValue(noteRepository),
     preferencesStoreProvider.overrideWithValue(database),
     initialAccountProvider.overrideWithValue(account),
     initialOnboardingProvider.overrideWithValue(onboarding),

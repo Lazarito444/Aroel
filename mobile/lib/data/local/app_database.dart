@@ -69,11 +69,358 @@ class SyncStates extends Table {
   Set<Column<Object>> get primaryKey => <Column<Object>>{id};
 }
 
+/// The day is the unit (§4.1). One row per user per `local_date`; everything the app
+/// calls history or analytics is a query over this table.
+class Days extends Table {
+  /// The identifier of the day record.
+  TextColumn get id => text()();
+
+  /// The identifier of the person the day belongs to.
+  TextColumn get userId => text()();
+
+  /// The day as a diary counts it, `YYYY-MM-DD`. Not a UTC instant.
+  TextColumn get localDate => text()();
+
+  /// Half points, 0..10. `null` means the day is not rated; `0` is a real score.
+  IntColumn get ratingHalf => integer().nullable()();
+
+  /// The one-line note of the day, when there is one.
+  TextColumn get note => text().nullable()();
+
+  /// When the rating was set or last changed.
+  DateTimeColumn get ratedAt => dateTime().nullable()();
+
+  /// When the row was created.
+  DateTimeColumn get createdAt => dateTime()();
+
+  /// When the row last changed.
+  DateTimeColumn get updatedAt => dateTime()();
+
+  /// The server cursor of the last sync, when the row has reached the server.
+  IntColumn get syncSeq => integer().nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
+
+  @override
+  List<Set<Column<Object>>>? get uniqueKeys => [
+    {userId, localDate},
+  ];
+}
+
+/// The three small things of a day (§5.3). Each line is optional.
+class GratitudeItems extends Table {
+  /// The identifier of the line.
+  TextColumn get id => text()();
+
+  /// The day the line belongs to.
+  TextColumn get dayId => text()();
+
+  /// The position of the line, 1 to 3.
+  IntColumn get position => integer()();
+
+  /// What the reader wrote. Empty text is a removed line, kept rather than deleted.
+  TextColumn get line => text().named('text')();
+
+  /// When the row was created.
+  DateTimeColumn get createdAt => dateTime()();
+
+  /// When the row last changed.
+  DateTimeColumn get updatedAt => dateTime()();
+
+  /// The server cursor of the last sync, when the row has reached the server.
+  IntColumn get syncSeq => integer().nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
+
+  @override
+  List<Set<Column<Object>>>? get uniqueKeys => [
+    {dayId, position},
+  ];
+}
+
+/// A context tag for a day (§4.2).
+class Tags extends Table {
+  /// The identifier of the tag.
+  TextColumn get id => text()();
+
+  /// The identifier of the person the tag belongs to.
+  TextColumn get userId => text()();
+
+  /// The word the reader sees.
+  TextColumn get label => text()();
+
+  /// The colour of the tag, when the reader chose one.
+  TextColumn get color => text().nullable()();
+
+  /// When the row was created.
+  DateTimeColumn get createdAt => dateTime()();
+
+  /// When the row last changed.
+  DateTimeColumn get updatedAt => dateTime()();
+
+  /// The server cursor of the last sync, when the row has reached the server.
+  IntColumn get syncSeq => integer().nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
+
+  @override
+  List<Set<Column<Object>>>? get uniqueKeys => [
+    {userId, label},
+  ];
+}
+
+/// The link between a day and a tag (§4.2).
+class DayTags extends Table {
+  /// The identifier of the link.
+  TextColumn get id => text()();
+
+  /// The day the tag is on.
+  TextColumn get dayId => text()();
+
+  /// The tag that is on the day.
+  TextColumn get tagId => text()();
+
+  /// When the row was created.
+  DateTimeColumn get createdAt => dateTime()();
+
+  /// When the row last changed.
+  DateTimeColumn get updatedAt => dateTime()();
+
+  /// The server cursor of the last sync, when the row has reached the server.
+  IntColumn get syncSeq => integer().nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
+
+  @override
+  List<Set<Column<Object>>>? get uniqueKeys => [
+    {dayId, tagId},
+  ];
+}
+
+/// Per-day writing (§5.4). The entry attaches to the day it was written on.
+class Entries extends Table {
+  /// The identifier of the entry.
+  TextColumn get id => text()();
+
+  /// The identifier of the person the entry belongs to.
+  TextColumn get userId => text()();
+
+  /// The day the entry belongs to.
+  TextColumn get dayId => text()();
+
+  /// `free` or `mood_only`.
+  TextColumn get kind => text()();
+
+  /// The title, when there is one.
+  TextColumn get title => text().withDefault(const Constant(''))();
+
+  /// The markdown-lite body.
+  TextColumn get bodyMd => text()();
+
+  /// The number of words in the body, kept so analytics never has to recount.
+  IntColumn get wordCount => integer().withDefault(const Constant(0))();
+
+  /// How many times the entry has been opened.
+  IntColumn get openedCount => integer().withDefault(const Constant(0))();
+
+  /// When the entry was last opened.
+  DateTimeColumn get lastOpenedAt => dateTime().nullable()();
+
+  /// Whether the entry is pinned.
+  BoolColumn get pinned => boolean().withDefault(const Constant(false))();
+
+  /// When the entry was soft-deleted. `null` means the entry is live.
+  DateTimeColumn get deletedAt => dateTime().nullable()();
+
+  /// When the row was created.
+  DateTimeColumn get createdAt => dateTime()();
+
+  /// When the row last changed.
+  DateTimeColumn get updatedAt => dateTime()();
+
+  /// The server cursor of the last sync, when the row has reached the server.
+  IntColumn get syncSeq => integer().nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
+}
+
+/// The tone of a day (§4.6). At most one per day; a hand pick wins over a derived one.
+class DaySentiments extends Table {
+  /// The identifier of the tone record.
+  TextColumn get id => text()();
+
+  /// The identifier of the person the tone belongs to.
+  TextColumn get userId => text()();
+
+  /// The day the tone belongs to.
+  TextColumn get dayId => text()();
+
+  /// The tone on the same half point scale as a rating, when one was picked.
+  IntColumn get ratingHalf => integer().nullable()();
+
+  /// Where the tone came from: `manual` or `on_device`.
+  TextColumn get source => text()();
+
+  /// When the tone was recorded.
+  DateTimeColumn get recordedAt => dateTime()();
+
+  /// When the row last changed.
+  DateTimeColumn get updatedAt => dateTime()();
+
+  /// The server cursor of the last sync, when the row has reached the server.
+  IntColumn get syncSeq => integer().nullable()();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
+
+  @override
+  List<Set<Column<Object>>>? get uniqueKeys => [
+    {dayId},
+  ];
+}
+
+/// The notes shelf (§4.2). A note has no date and never touches the streak.
+class NoteRows extends Table {
+  /// The identifier of the note.
+  TextColumn get id => text()();
+
+  /// The identifier of the person the note belongs to.
+  TextColumn get userId => text()();
+
+  /// The title of the note, when there is one.
+  TextColumn get title => text().withDefault(const Constant(''))();
+
+  /// The markdown-lite body.
+  TextColumn get bodyMd => text()();
+
+  /// The number of words in the body.
+  IntColumn get wordCount => integer().withDefault(const Constant(0))();
+
+  /// Whether the note is pinned.
+  BoolColumn get pinned => boolean().withDefault(const Constant(false))();
+
+  /// When the note was soft-deleted. `null` means the note is live.
+  DateTimeColumn get deletedAt => dateTime().nullable()();
+
+  /// When the row was created.
+  DateTimeColumn get createdAt => dateTime()();
+
+  /// When the row last changed.
+  DateTimeColumn get updatedAt => dateTime()();
+
+  /// The server cursor of the last sync, when the row has reached the server.
+  IntColumn get syncSeq => integer().nullable()();
+
+  @override
+  String get tableName => 'notes';
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
+}
+
+/// The spine of the sync: deletions that have to travel as tombstones (§7.3).
+class Tombstones extends Table {
+  /// The identifier of the tombstone.
+  TextColumn get id => text()();
+
+  /// The table the row was deleted from, e.g. `day_tags`.
+  TextColumn get sourceTable => text().named('table_name')();
+
+  /// The identifier of the row that was deleted.
+  TextColumn get rowId => text()();
+
+  /// When the row was deleted.
+  DateTimeColumn get deletedAt => dateTime()();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
+}
+
+/// The streak of this reader (§2.3). One row per user.
+class StreakStates extends Table {
+  /// The identifier of the state.
+  TextColumn get id => text()();
+
+  /// The identifier of the person the streak belongs to.
+  TextColumn get userId => text()();
+
+  /// The days in a row that count right now.
+  IntColumn get currentStreak => integer().withDefault(const Constant(0))();
+
+  /// The longest run the reader has ever had.
+  IntColumn get longestStreak => integer().withDefault(const Constant(0))();
+
+  /// Whether the grace token is available.
+  IntColumn get graceRemaining => integer().withDefault(const Constant(1))();
+
+  /// The last day that was kept, `YYYY-MM-DD`.
+  TextColumn get lastKeptDate => text().nullable()();
+
+  /// When the row last changed.
+  DateTimeColumn get updatedAt => dateTime()();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
+
+  @override
+  List<Set<Column<Object>>>? get uniqueKeys => [
+    {userId},
+  ];
+}
+
+/// A day the reader chose to recover (§2.3). Recovered days count as kept, and are
+/// marked as recovered.
+class StreakRestorations extends Table {
+  /// The identifier of the restoration.
+  TextColumn get id => text()();
+
+  /// The identifier of the person the restoration belongs to.
+  TextColumn get userId => text()();
+
+  /// The streak the restoration belongs to.
+  TextColumn get streakStateId => text()();
+
+  /// The day that was recovered, `YYYY-MM-DD`.
+  TextColumn get localDate => text()();
+
+  /// When the row was created.
+  DateTimeColumn get createdAt => dateTime()();
+
+  @override
+  Set<Column<Object>> get primaryKey => <Column<Object>>{id};
+
+  @override
+  List<Set<Column<Object>>>? get uniqueKeys => [
+    {userId, localDate},
+  ];
+}
+
 /// The device's own store (§7.1).
 ///
 /// Every read the app makes comes from here and every write lands here first; the
 /// network is a sync process, never a dependency of an interaction.
-@DriftDatabase(tables: <Type>[LocalUsers, Preferences, SyncStates])
+@DriftDatabase(
+  tables: <Type>[
+    LocalUsers,
+    Preferences,
+    SyncStates,
+    Days,
+    GratitudeItems,
+    Tags,
+    DayTags,
+    Entries,
+    StreakStates,
+    StreakRestorations,
+    DaySentiments,
+    NoteRows,
+    Tombstones,
+  ],
+)
 class AppDatabase extends _$AppDatabase implements PreferencesStore {
   AppDatabase(super.e);
 
@@ -81,7 +428,27 @@ class AppDatabase extends _$AppDatabase implements PreferencesStore {
   factory AppDatabase.open() => AppDatabase(driftDatabase(name: 'aroel'));
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 3;
+
+  @override
+  MigrationStrategy get migration => MigrationStrategy(
+    onUpgrade: (Migrator m, int from, int to) async {
+      if (from < 2) {
+        await m.createTable(days);
+        await m.createTable(gratitudeItems);
+        await m.createTable(tags);
+        await m.createTable(dayTags);
+        await m.createTable(entries);
+        await m.createTable(streakStates);
+        await m.createTable(streakRestorations);
+      }
+      if (from < 3) {
+        await m.createTable(daySentiments);
+        await m.createTable(noteRows);
+        await m.createTable(tombstones);
+      }
+    },
+  );
 
   /// The profile of this device, created on first launch if it is not there yet.
   Future<LocalUser> ensureLocalProfile({
@@ -221,6 +588,16 @@ class AppDatabase extends _$AppDatabase implements PreferencesStore {
   /// — and the profile is made again by the next call that needs it.
   Future<void> wipeLocalData() async {
     await transaction(() async {
+      await delete(tombstones).go();
+      await delete(noteRows).go();
+      await delete(daySentiments).go();
+      await delete(streakRestorations).go();
+      await delete(streakStates).go();
+      await delete(entries).go();
+      await delete(dayTags).go();
+      await delete(tags).go();
+      await delete(gratitudeItems).go();
+      await delete(days).go();
       await delete(localUsers).go();
       await delete(syncStates).go();
     });

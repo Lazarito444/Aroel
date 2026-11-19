@@ -1,12 +1,17 @@
+import 'package:aroel/core/account_controller.dart';
 import 'package:aroel/core/clock.dart';
 import 'package:aroel/core/config.dart';
 import 'package:aroel/core/ids.dart';
 import 'package:aroel/data/local/app_database.dart';
 import 'package:aroel/data/remote/auth_api.dart';
 import 'package:aroel/data/remote/session_interceptor.dart';
+import 'package:aroel/data/remote/sync_api.dart';
 import 'package:aroel/data/repositories/account_repository.dart';
+import 'package:aroel/data/repositories/day_repository.dart';
+import 'package:aroel/data/repositories/note_repository.dart';
 import 'package:aroel/data/services/secure_storage.dart';
 import 'package:aroel/data/services/session_store.dart';
+import 'package:aroel/data/services/sync_engine.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -72,6 +77,47 @@ final Provider<AuthApi> authApiProvider = Provider<AuthApi>(
     session: ref.watch(sessionHolderProvider),
   ),
 );
+
+/// The notes shelf of this device.
+final Provider<NoteRepository> noteRepositoryProvider = Provider<NoteRepository>((Ref ref) {
+  return NoteRepository(
+    database: ref.watch(databaseProvider),
+    clock: ref.watch(clockProvider),
+    newId: Ids.uuid7,
+    deviceTimeZone: ref.watch(deviceTimeZoneProvider),
+    deviceLocale: ref.watch(deviceLocaleProvider),
+  );
+});
+
+/// The day record of this device.
+///
+/// The service the client talks to. The rules of the day live in `core`; this is the
+/// adapter that reaches the device's own store.
+final Provider<DayRepository> dayRepositoryProvider = Provider<DayRepository>((Ref ref) {
+  return DayRepository(
+    database: ref.watch(databaseProvider),
+    clock: ref.watch(clockProvider),
+    newId: Ids.uuid7,
+    deviceTimeZone: ref.watch(deviceTimeZoneProvider),
+    deviceLocale: ref.watch(deviceLocaleProvider),
+  );
+});
+
+/// The sync of this device (§7.3).
+///
+/// One engine for the whole app; it pushes the local writes and pulls what the server
+/// has, and it never blocks a writing interaction.
+final Provider<SyncEngine> syncEngineProvider = Provider<SyncEngine>((Ref ref) {
+  return SyncEngine(
+    database: ref.watch(databaseProvider),
+    api: SyncApi(
+      ref.watch(dioProvider),
+      session: ref.watch(sessionHolderProvider),
+    ),
+    clock: ref.watch(clockProvider),
+    canSync: () => ref.read(accountControllerProvider).account.canSync,
+  );
+});
 
 /// The account of this device.
 ///

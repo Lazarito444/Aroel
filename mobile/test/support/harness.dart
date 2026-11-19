@@ -4,10 +4,14 @@ import 'dart:typed_data';
 import 'package:aroel/app/providers.dart';
 import 'package:aroel/core/account.dart';
 import 'package:aroel/core/clock.dart';
+import 'package:aroel/core/day.dart';
+import 'package:aroel/core/notes.dart';
 import 'package:aroel/core/onboarding.dart';
 import 'package:aroel/data/local/app_database.dart';
 import 'package:aroel/data/remote/auth_api.dart';
 import 'package:aroel/data/repositories/account_repository.dart';
+import 'package:aroel/data/repositories/day_repository.dart';
+import 'package:aroel/data/repositories/note_repository.dart';
 import 'package:aroel/data/services/secure_storage.dart';
 import 'package:aroel/data/services/session_store.dart';
 import 'package:aroel/features/settings/theme_controller.dart';
@@ -106,6 +110,20 @@ class AccountHarness {
       deviceLocale: 'en-GB',
     );
     holder.refresh = repository.refreshSession;
+    dayRepository = DayRepository(
+      database: database,
+      clock: clock,
+      newId: nextId,
+      deviceTimeZone: 'Europe/Madrid',
+      deviceLocale: 'en-GB',
+    );
+    noteRepository = NoteRepository(
+      database: database,
+      clock: clock,
+      newId: nextId,
+      deviceTimeZone: 'Europe/Madrid',
+      deviceLocale: 'en-GB',
+    );
   }
 
   /// The server the account talks to.
@@ -128,6 +146,12 @@ class AccountHarness {
 
   /// The account half of the API.
   late final AuthApi api;
+
+  /// The day record of this device.
+  late final DayRepository dayRepository;
+
+  /// The notes shelf of this device.
+  late final NoteRepository noteRepository;
 
   /// The account of the device.
   late final AccountRepository repository;
@@ -152,6 +176,10 @@ class AccountHarness {
     authApiProvider.overrideWithValue(api),
     accountRepositoryProvider.overrideWithValue(repository),
     accountServiceProvider.overrideWithValue(repository),
+    dayRepositoryProvider.overrideWithValue(dayRepository),
+    dayServiceProvider.overrideWithValue(dayRepository),
+    noteRepositoryProvider.overrideWithValue(noteRepository),
+    noteServiceProvider.overrideWithValue(noteRepository),
     preferencesStoreProvider.overrideWithValue(database),
     initialAccountProvider.overrideWithValue(
       account ??

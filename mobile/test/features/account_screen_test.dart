@@ -42,6 +42,7 @@ void main() {
       server: FakeServer((options) => <String, Object?>{}),
     );
     addTearDown(harness.close);
+    addTearDown(tester.view.resetPhysicalSize);
 
     const AccountSnapshot account = AccountSnapshot(
       status: AccountStatus.signedIn,
@@ -51,6 +52,10 @@ void main() {
       displayName: 'ada',
       timeZone: 'Europe/Madrid',
     );
+
+    // The shelf is long; everything on it has to be reachable without scrolling games.
+    tester.view.physicalSize = const Size(800, 2400);
+    tester.view.devicePixelRatio = 1.0;
 
     await tester.pumpWidget(
       ProviderScope(
@@ -66,6 +71,7 @@ void main() {
     expect(find.text('Change password'), findsOneWidget);
     expect(find.text('Sign out'), findsOneWidget);
     expect(find.text('Delete account'), findsOneWidget);
+    expect(find.text('Sync now'), findsOneWidget);
   });
 
   testWidgets(

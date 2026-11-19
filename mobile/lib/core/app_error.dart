@@ -45,6 +45,15 @@ abstract final class ClientErrorCodes {
   static const String providerUnavailable = 'client.provider_unavailable';
   static const String providerCancelled = 'client.provider_cancelled';
   static const String unexpected = 'client.unexpected';
+  static const String syncPartialFailure = 'client.sync_partial_failure';
+}
+
+/// Codes the day record raises on its own.
+abstract final class DayErrorCodes {
+  static const String tooManyTags = 'day.too_many_tags';
+  static const String invalidGratitudePosition = 'day.invalid_gratitude_position';
+  static const String invalidRating = 'day.invalid_rating';
+  static const String tagLabelEmpty = 'day.tag_label_empty';
 }
 
 /// Codes the server raises, as declared in `Aroel.Core.Domain.Errors.ErrorCodes`.
@@ -69,6 +78,10 @@ abstract final class AuthErrorCodes {
 }
 
 String _messageFor(String code) => switch (code) {
+  DayErrorCodes.tooManyTags => 'Five tags is enough for one day. Remove one to add another.',
+  DayErrorCodes.invalidGratitudePosition => 'A line belongs to one of the three positions.',
+  DayErrorCodes.invalidRating => 'A rating runs from 0 to 5 in half steps.',
+  DayErrorCodes.tagLabelEmpty => 'Give the tag a word.',
   ClientErrorCodes.emailInvalid => 'That does not look like an email address.',
   ClientErrorCodes.emailEmpty => 'Enter the email address you use.',
   ClientErrorCodes.passwordTooShort => 'Use at least eight characters. Nothing else is required.',
@@ -78,6 +91,7 @@ String _messageFor(String code) => switch (code) {
   ClientErrorCodes.providerUnavailable => 'That sign-in option is not available on this device yet.',
   ClientErrorCodes.providerCancelled => 'Sign-in was cancelled.',
   ClientErrorCodes.unexpected => 'Something did not go through. Try again in a moment.',
+  ClientErrorCodes.syncPartialFailure => 'Some changes have not reached the server yet. They will go with the next sync.',
   AuthErrorCodes.emailTaken => 'That address already has an account. Sign in instead.',
   AuthErrorCodes.userIdTaken => 'This device already belongs to an account. Sign in with the address you used.',
   AuthErrorCodes.invalidCredentials => 'That email and password do not match an account.',

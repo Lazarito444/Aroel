@@ -256,7 +256,8 @@ class AccountRepository implements AccountService {
   /// work.
   @override
   Future<Result<void>> signOut() async {
-    await _api.logout();
+    final StoredSession? stored = await _sessionStore.read();
+    await _api.logout(refreshToken: stored?.refreshToken);
     await _forgetSession();
     return const Result.success(null);
   }
