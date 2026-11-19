@@ -509,6 +509,53 @@ partial class AroelDbContextModelSnapshot : ModelSnapshot
                 b.ToTable("streak_states");
             });
 
+        modelBuilder.Entity("Aroel.Core.Domain.Sync.CoreSyncTombstone", b =>
+            {
+                b.Property<Guid>("Id")
+                    .HasColumnType("uuid")
+                    .HasColumnName("id");
+
+                b.Property<DateTimeOffset>("CreatedAt")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("created_at");
+
+                b.Property<DateTimeOffset>("DeletedAt")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("deleted_at");
+
+                b.Property<string>("TableName")
+                    .IsRequired()
+                    .HasMaxLength(64)
+                    .HasColumnType("character varying(64)")
+                    .HasColumnName("table_name");
+
+                b.Property<long>("SyncSequence")
+                    .ValueGeneratedOnAdd()
+                    .HasDefaultValueSql("nextval('sync_seq'::regclass)")
+                    .HasColumnType("bigint")
+                    .HasColumnName("sync_seq");
+
+                b.Property<DateTimeOffset>("UpdatedAt")
+                    .HasColumnType("timestamp with time zone")
+                    .HasColumnName("updated_at");
+
+                b.Property<Guid>("RowId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("row_id");
+
+                b.Property<Guid>("UserId")
+                    .HasColumnType("uuid")
+                    .HasColumnName("user_id");
+
+                b.HasKey("Id");
+
+                b.HasIndex("RowId");
+
+                b.HasIndex("UserId", "SyncSequence");
+
+                b.ToTable("sync_tombstones");
+            });
+
         modelBuilder.Entity("Aroel.Core.Domain.Users.CoreDevice", b =>
             {
                 b.Property<Guid>("Id")
@@ -975,6 +1022,15 @@ partial class AroelDbContextModelSnapshot : ModelSnapshot
             });
 
         modelBuilder.Entity("Aroel.Core.Domain.Streak.CoreStreakState", b =>
+            {
+                b.HasOne("Aroel.Core.Domain.Users.CoreUser", null)
+                    .WithMany()
+                    .HasForeignKey("UserId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+            });
+
+        modelBuilder.Entity("Aroel.Core.Domain.Sync.CoreSyncTombstone", b =>
             {
                 b.HasOne("Aroel.Core.Domain.Users.CoreUser", null)
                     .WithMany()

@@ -6,6 +6,7 @@
     <Project Path="Aroel.Data/Aroel.Data.csproj" Id="b9181651-1c3f-4915-ab39-d8122e0dcdbc" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="Aroel.Api.Tests/Aroel.Api.Tests.csproj" Id="7e1c5a80-3f64-47ab-a2d8-19c4b7e05f46" />
     <Project Path="Aroel.Core.Tests/Aroel.Core.Tests.csproj" Id="2b7f1c44-9d3a-4f0e-8a6b-1c5e2f7d9042" />
     <Project Path="Aroel.Data.Tests/Aroel.Data.Tests.csproj" Id="6d0b4f92-5a1e-4c77-9b31-8f4a2c6e5b13" />
   </Folder>
@@ -17,3 +18,4 @@
     <File Path="Directory.Packages.props" />
   </Folder>
 </Solution>
+
