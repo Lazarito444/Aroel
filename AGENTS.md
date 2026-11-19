@@ -1,8 +1,11 @@
 # AGENTS.md
 
 Aroel is a personal journaling app for iOS/Android. **The client lives in [`mobile/`](mobile)** — a Flutter
-app on Riverpod, `go_router`, drift and freezed, with the auth module of milestone M1 built; the server
-scaffold lives in [`backend/`](backend) and has no HTTP endpoints yet. The single source
+app on Riverpod, `go_router`, drift and freezed, with M1 (auth) and the day record of M2
+built and tested; the server lives in [`backend/`](backend) and serves the account,
+profile, sync, days and insights endpoints under `/v1` (auth, `/me`, `GET/POST /sync`,
+`GET /days`, `GET /insights`), with rotated refresh tokens, verification-gated sync,
+tombstone-based deletes and last-write-wins merge. The single source
 of truth is [`docs/scope-and-design.md`](docs/scope-and-design.md)
 (v1 scope, domain model, screens, design system, architecture, milestones). Read it before
 building anything; `README.md` is just a pointer to it.

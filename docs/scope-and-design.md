@@ -1,9 +1,18 @@
 # Aroel — v1 Scope & Design
 
-**Status:** definition · **Date:** 2026-11-12 · **Stage:** in build (the Flutter client
-lives in `mobile/`, with the auth module of M1 — onboarding, sign-in, account, deletion —
-done and tested; the day record is M2 and is not there yet. The backend has the domain
-model, the identity split and the first migration, but no HTTP endpoints yet)
+**Status:** definition · **Date:** 2026-11-12 · **Stage:** v1 built (the Flutter client
+lives in `mobile/`: onboarding, sign-in, account and deletion of M1; the day record of M2 —
+rating, tags, gratitude, per-day writing with autosave, streak with recovery and a
+manual tone picker; the notes shelf, the day detail and the entry read view of M3; the
+weekly and monthly review screens of M4 — all offline-first from SQLite (schema v3), all
+tested). The server lives in `backend/` and serves the account, profile, days, insights
+and sync endpoints under `/v1` (register, login, oauth, refresh with rotation and reuse
+detection, logout, password, email verification, `GET/PATCH/DELETE /me`, `GET /days`,
+`GET /insights`, `GET /sync`, `POST /sync/batch`), with verification-gated sync,
+tombstone-based deletes and last-write-wins merge. The client syncs on launch, on sign-in
+and on demand from the account screen. On-device classification of the tone and the
+store listings of M5 are not there yet. Sentiment is manual only for now; the on-device
+classifier of §4.6 remains for M5)
 
 > **Change 2026-11-11 — v1 trimmed to six things.** Account + sync (optional), the day
 > record (per-day writing, rating, tags, sentiment, gratitude), notes, a recoverable
